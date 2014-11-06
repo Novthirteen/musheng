@@ -1,9 +1,0 @@
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\bin\Debug\com.Sconit.Entity.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\bin\Debug\com.Sconit.Entity.pdb
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\bin\Debug\NHibernate.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\bin\Debug\Iesi.Collections.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\bin\Debug\Castle.DynamicProxy.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\bin\Debug\log4net.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\obj\Debug\Entity.csprojResolveAssemblyReference.cache
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\obj\Debug\com.Sconit.Entity.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\WebApplication\Entity\obj\Debug\com.Sconit.Entity.pdb

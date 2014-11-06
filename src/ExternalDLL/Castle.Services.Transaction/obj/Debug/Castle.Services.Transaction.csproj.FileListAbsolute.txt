@@ -1,6 +1,0 @@
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Services.Transaction\bin\Debug\Castle.Services.Transaction.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Services.Transaction\bin\Debug\Castle.Services.Transaction.pdb
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Services.Transaction\bin\Debug\Castle.Core.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Services.Transaction\obj\Debug\ResolveAssemblyReference.cache
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Services.Transaction\obj\Debug\Castle.Services.Transaction.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Services.Transaction\obj\Debug\Castle.Services.Transaction.pdb

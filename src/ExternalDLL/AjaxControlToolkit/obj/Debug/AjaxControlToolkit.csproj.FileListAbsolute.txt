@@ -1,8 +1,0 @@
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\bin\Debug\AjaxControlToolkit.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\bin\Debug\AjaxControlToolkit.pdb
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\obj\Debug\ResolveAssemblyReference.cache
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\obj\Debug\AjaxControlToolkit.Properties.Resources.resources
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\obj\Debug\AjaxControlToolkit.ScriptResources.ScriptResources.resources
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\obj\Debug\AjaxControlToolkit.csproj.GenerateResource.Cache
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\obj\Debug\AjaxControlToolkit.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\AjaxControlToolkit\obj\Debug\AjaxControlToolkit.pdb

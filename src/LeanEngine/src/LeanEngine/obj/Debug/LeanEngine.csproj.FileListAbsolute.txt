@@ -1,4 +1,0 @@
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\LeanEngine\src\LeanEngine\bin\Debug\LeanEngine.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\LeanEngine\src\LeanEngine\bin\Debug\LeanEngine.pdb
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\LeanEngine\src\LeanEngine\obj\Debug\LeanEngine.dll
-G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\LeanEngine\src\LeanEngine\obj\Debug\LeanEngine.pdb
