@@ -1,0 +1,8 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\bin\Debug\NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\bin\Debug\NHibernate.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\bin\Debug\Castle.DynamicProxy.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\bin\Debug\Iesi.Collections.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\bin\Debug\log4net.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\obj\Debug\NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate\obj\Debug\NHibernate.pdb

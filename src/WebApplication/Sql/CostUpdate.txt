@@ -1,0 +1,601 @@
+
+GO
+
+/****** Object:  Table [dbo].[C_Balance]    Script Date: 12/16/2011 12:02:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_Balance](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[ItemCategory] [varchar](50) NOT NULL,
+	[Qty] [float] NOT NULL,
+	[Amount] [float] NOT NULL,
+	[Cost] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[IsProvEst] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_Balance] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_Balance] ADD  CONSTRAINT [DF_C_Balance_IsProvEst]  DEFAULT ((0)) FOR [IsProvEst]
+GO
+
+
+
+
+
+
+drop table bomtree
+
+GO
+
+/****** Object:  Table [dbo].[BomTree]    Script Date: 12/16/2011 12:03:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[BomTree](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Bom] [varchar](50) NULL,
+	[BomDesc] [varchar](255) NULL,
+	[Item] [varchar](50) NULL,
+	[ItemDesc] [varchar](255) NULL,
+	[RateQty] [decimal](18, 8) NULL,
+	[Uom] [varchar](50) NULL,
+	[BomLevel] [int] NULL,
+	[ItemCategoryCode] [varchar](50) NULL,
+	[ItemCategoryDesc] [varchar](50) NULL,
+	[AccumQty] [decimal](18, 8) NULL,
+	[CreateTime] [datetime] NULL,
+	[FG] [varchar](50) NULL,
+	[FGDesc] [varchar](255) NULL,
+	[FGUom] [varchar](50) NULL,
+	[FGCategory] [varchar](50) NULL,
+ CONSTRAINT [PK_BomTree] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_Bom]    Script Date: 12/16/2011 12:04:18 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_Bom](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Bom] [varchar](50) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[BomLevel] [int] NOT NULL,
+	[ItemCategory] [varchar](50) NOT NULL,
+	[AccumQty] [float] NOT NULL,
+	[InQty] [float] NOT NULL,
+	[ScraptQty] [float] NOT NULL,
+	[Cost] [float] NOT NULL,
+	[Allocation] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[IsProvEst] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+	[FGCategory] [varchar](50) NULL,
+ CONSTRAINT [PK_C_Bom] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_Bom] ADD  CONSTRAINT [DF_C_Bom_AccumQty]  DEFAULT ((0)) FOR [AccumQty]
+GO
+
+ALTER TABLE [dbo].[C_Bom] ADD  CONSTRAINT [DF_C_Bom_InQty]  DEFAULT ((0)) FOR [InQty]
+GO
+
+ALTER TABLE [dbo].[C_Bom] ADD  CONSTRAINT [DF_C_Bom_ScraptQty]  DEFAULT ((0)) FOR [ScraptQty]
+GO
+
+ALTER TABLE [dbo].[C_Bom] ADD  CONSTRAINT [DF_C_Bom_Cost]  DEFAULT ((0)) FOR [Cost]
+GO
+
+ALTER TABLE [dbo].[C_Bom] ADD  CONSTRAINT [DF_C_Bom_Allocation]  DEFAULT ((0)) FOR [Allocation]
+GO
+
+ALTER TABLE [dbo].[C_Bom] ADD  CONSTRAINT [DF_C_Bom_IsProvEst]  DEFAULT ((0)) FOR [IsProvEst]
+GO
+
+
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_Consume]    Script Date: 12/16/2011 12:05:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_Consume](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[TransType] [varchar](50) NOT NULL,
+	[ItemCategory] [varchar](50) NOT NULL,
+	[Qty] [float] NOT NULL,
+	[Amount] [float] NOT NULL,
+	[Cost] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[IsProvEst] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_Consume] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_Consume] ADD  CONSTRAINT [DF_C_Consume_IsProvEst]  DEFAULT ((0)) FOR [IsProvEst]
+GO
+
+
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_Diff]    Script Date: 12/16/2011 12:05:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_Diff](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[ItemCategory] [varchar](50) NOT NULL,
+	[Cost] [float] NOT NULL,
+	[Amount] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_Diff] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_Diff] ADD  CONSTRAINT [DF_C_Diff_Cost]  DEFAULT ((0)) FOR [Cost]
+GO
+
+ALTER TABLE [dbo].[C_Diff] ADD  CONSTRAINT [DF_C_Diff_Amount]  DEFAULT ((0)) FOR [Amount]
+GO
+
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_FgCost]    Script Date: 12/16/2011 12:05:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_FgCost](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[ItemCategory] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[Cost] [float] NOT NULL,
+	[Allocation] [float] NOT NULL,
+	[OutQty] [float] NOT NULL,
+	[Diff] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[IsProvEst] [bit] NOT NULL,
+	[CreateTime] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_FgCost] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_FgCost] ADD  CONSTRAINT [DF_C_FgCost_Cost]  DEFAULT ((0)) FOR [Cost]
+GO
+
+ALTER TABLE [dbo].[C_FgCost] ADD  CONSTRAINT [DF_C_FgCost_Allocation]  DEFAULT ((0)) FOR [Allocation]
+GO
+
+ALTER TABLE [dbo].[C_FgCost] ADD  CONSTRAINT [DF_C_FgCost_InQty]  DEFAULT ((0)) FOR [OutQty]
+GO
+
+ALTER TABLE [dbo].[C_FgCost] ADD  CONSTRAINT [DF_C_FgCost_Diff]  DEFAULT ((0)) FOR [Diff]
+GO
+
+ALTER TABLE [dbo].[C_FgCost] ADD  CONSTRAINT [DF_C_FgCost_IsProvEst]  DEFAULT ((0)) FOR [IsProvEst]
+GO
+
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_Purchase]    Script Date: 12/16/2011 12:05:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_Purchase](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[Supplier] [varchar](50) NOT NULL,
+	[Qty] [float] NOT NULL,
+	[Amount ] [float] NOT NULL,
+	[AvgPrice] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[IsProvEst] [bit] NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_Purchase] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_Purchase] ADD  CONSTRAINT [DF_C_Purchase_IsProvEst]  DEFAULT ((0)) FOR [IsProvEst]
+GO
+
+
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_RawIOB]    Script Date: 12/16/2011 12:06:20 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_RawIOB](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[StartQty] [float] NOT NULL,
+	[StartAmount] [float] NOT NULL,
+	[StartCost] [float] NOT NULL,
+	[InQty] [float] NOT NULL,
+	[InAmount] [float] NOT NULL,
+	[InCost] [float] NOT NULL,
+	[DiffAmount] [float] NOT NULL,
+	[DiffCost] [float] NOT NULL,
+	[EndQty] [float] NOT NULL,
+	[EndAmount] [float] NOT NULL,
+	[EndCost] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_IOB] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_StartQty]  DEFAULT ((0)) FOR [StartQty]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_StartAmount]  DEFAULT ((0)) FOR [StartAmount]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_StartCost]  DEFAULT ((0)) FOR [StartCost]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_InQty]  DEFAULT ((0)) FOR [InQty]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_InAmount]  DEFAULT ((0)) FOR [InAmount]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_InCost]  DEFAULT ((0)) FOR [InCost]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_DiffAmount]  DEFAULT ((0)) FOR [DiffAmount]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_DiffCost]  DEFAULT ((0)) FOR [DiffCost]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_EndQty]  DEFAULT ((0)) FOR [EndQty]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_EndAmount]  DEFAULT ((0)) FOR [EndAmount]
+GO
+
+ALTER TABLE [dbo].[C_RawIOB] ADD  CONSTRAINT [DF_C_RawIOB_EndCost]  DEFAULT ((0)) FOR [EndCost]
+GO
+
+
+
+GO
+
+/****** Object:  Table [dbo].[C_Sales]    Script Date: 12/16/2011 12:06:33 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[C_Sales](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Item] [varchar](50) NOT NULL,
+	[Uom] [varchar](5) NOT NULL,
+	[Customer] [varchar](50) NOT NULL,
+	[Qty] [float] NOT NULL,
+	[Amount] [float] NOT NULL,
+	[FinanceCalendar] [char](7) NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[CreateUser] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_C_Sales] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[GenCbom]    Script Date: 12/16/2011 12:06:49 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[GenCbom] 
+( 
+@fc char (7), 
+@userCode varchar (50), 
+@startTime datetime, 
+@endTime datetime
+) 
+AS 
+delete from C_Bom where FinanceCalendar = @fc
+
+insert into C_Bom
+select Fg,Item,Uom,BomLevel,ItemCategorycode,AccumQty,0 as InQty,0 as ScraptQty,0 as Cost,0 as Allocation,
+@fc as FinanceCalendar,0 as IsProvEst,getdate() as CreateDate,@userCode as CreateUser,FGCategory
+from bomtree 
+
+RETURN 
+
+
+GO
+
+
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[GenConsume]    Script Date: 12/16/2011 12:07:05 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[GenConsume] 
+( 
+@fc char (7), 
+@userCode varchar (50), 
+@startTime datetime, 
+@endTime datetime
+) 
+AS 
+delete from C_Consume where FinanceCalendar = @fc
+
+insert into C_Consume
+select Item, LocTrans.Uom,TransType,
+Item.Category as ItemCategory,
+sum(Qty) as Qty,0 as Balance,0  as Cost,
+@fc as FinanceCalendar,0 as IsprovEst, getdate() as CreateDate,@userCode as CreateUser
+from LocTrans 
+left join Location on Location.code = LocTrans.loc
+left join Item on Item.code = LocTrans.Item
+where Effdate>=@startTime and Effdate <=@endTime and 
+TransType in('ISS-UNP','RCT-UNP','CYC-CNT') and item.code is not null
+group by Item,LocTrans.Uom,Item.Category,TransType
+RETURN 
+
+GO
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[GenPurchase]    Script Date: 12/16/2011 12:07:22 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GenPurchase] 
+( 
+@fc char (7), 
+@userCode varchar (50), 
+@startTime datetime, 
+@endTime datetime
+) 
+AS 
+delete from C_Purchase where FinanceCalendar = @fc
+
+insert into dbo.C_Purchase
+select 
+item as Item,actbill.uom as Uom,party.code as Supplier,
+sum(BillQty) as Qty,
+sum(BillAmount) as Balance,
+case when sum(BillQty)<>0 then sum(BillAmount) / sum(BillQty) else 0 end as Cost,
+@fc as FinanceCalendar,IsprovEst as IsprovEst,getdate() as CreateDate,@userCode as CreateUser
+from actbill 
+left join partyaddr on partyaddr.code = actbill.billaddr
+left join party on partyaddr.partycode = party.code                         
+where transtype='PO' 
+and effdate>=@startTime and effdate <=@endTime
+group by party.code,party.name,item,actbill.uom,IsprovEst
+order by party.code
+RETURN 
+
+
+GO
+
+INSERT acc_menu VALUES ('Menu.MasterData.CustomerGoodsPriceList',1,'客供品价格单','~/Main.aspx?mid=MasterData.PriceList',1,'~/Images/Nav/CustomerGoodsPriceList.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.MasterData.CustomerGoodsPriceList','Menu.Procurement.Setup',3,136,1,getdate(),null,getdate(),null)
+INSERT ACC_Permission VALUES ('Menu.MasterData.CustomerGoodsPriceList','Menu','Procurement')
+
+INSERT acc_menu VALUES ('Menu.Cost.Report.FG',1,'成品报表','~/Main.aspx?mid=Cost.Report.FG',1,'~/Images/Nav/FG.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.Cost.Report.FG','Menu.Cost.Info',3,27,1,getdate(),null,getdate(),null)
+INSERT ACC_Permission VALUES ('Menu.Cost.Report.FG','Menu','Cost')
+
+INSERT acc_menu VALUES ('Menu.Cost.Report.RM',1,'原材料报表','~/Main.aspx?mid=Cost.Report.RM',1,'~/Images/Nav/RM.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.Cost.Report.RM','Menu.Cost.Info',3,28,1,getdate(),null,getdate(),null)
+INSERT ACC_Permission VALUES ('Menu.Cost.Report.RM','Menu','Cost')
+
+INSERT acc_menu VALUES ('Menu.Cost.Report.Scrap',1,'报废报表','~/Main.aspx?mid=Cost.Report.Scrap',1,'~/Images/Nav/Scrap.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.Cost.Report.Scrap','Menu.Cost.Info',3,29,1,getdate(),null,getdate(),null)
+INSERT ACC_Permission VALUES ('Menu.Cost.Report.Scrap','Menu','Cost')
+
+INSERT ACC_Permission VALUES ('Page_CostDiff','报废','MasterDataOperation')
+
+INSERT ACC_Permission VALUES ('Cost.Report.InvIOB','Menu','Cost')
+INSERT acc_menu VALUES ('Cost.Report.InvIOB',1,'金额收发存','~/Main.aspx?mid=Cost.Report.InvIOB',1,'~/Images/Nav/InvIOB.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Cost.Report.InvIOB','Menu.Cost.Info',3,30,1,getdate(),null,getdate(),null)
+
+
+INSERT ACC_Permission VALUES ('Menu.Cost.RawIOB','Menu','Cost')
+INSERT acc_menu VALUES ('Menu.Cost.RawIOB',1,'成本调整','~/Main.aspx?mid=Cost.RawIOB',1,'~/Images/Nav/RawIOB.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.Cost.RawIOB','Menu.Cost.Trans',3,110,1,getdate(),null,getdate(),null)
+
+update ACC_MenuCommon set isActive=0 where menu 
+in (
+'Menu.Cost.CostGroup',
+'Menu.Cost.CostElement',
+'Menu.Cost.StandardCost',
+'Menu.Cost.ExpenseElement',
+'Menu.Cost.CostAllocateMethod',
+'Menu.Cost.FinanceClose',
+'Menu.Cost.CostAllocateTrans')
+
+
+
+INSERT ACC_Permission VALUES ('Menu.Cost.BillPO','采购报表','Cost')
+INSERT acc_menu VALUES ('Menu.Cost.BillPO',1,'采购报表','~/Main.aspx?mid=Cost.Report.Bill__mp--ModuleType-PO',1,'~/Images/Nav/BillPO.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.Cost.BillPO','Menu.Cost.Info',3,25,1,getdate(),null,getdate(),null)
+
+INSERT ACC_Permission VALUES ('Menu.Cost.BillSO','销售报表','Cost')
+INSERT acc_menu VALUES ('Menu.Cost.BillSO',1,'销售报表','~/Main.aspx?mid=Cost.Report.Bill__mp--ModuleType-SO',1,'~/Images/Nav/BillSO.png',getdate(),null,getdate(),null,null)
+INSERT ACC_MenuCommon VALUES ('Menu.Cost.BillSO','Menu.Cost.Info',3,26,1,getdate(),null,getdate(),null)

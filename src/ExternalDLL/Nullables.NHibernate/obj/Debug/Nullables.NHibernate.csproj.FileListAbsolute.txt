@@ -1,0 +1,12 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\Nullables.NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\Nullables.NHibernate.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\Nullables.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\Iesi.Collections.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\log4net.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\Castle.DynamicProxy.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\NHibernate.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\bin\Debug\Nullables.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\obj\Debug\Nullables.NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Nullables.NHibernate\obj\Debug\Nullables.NHibernate.pdb

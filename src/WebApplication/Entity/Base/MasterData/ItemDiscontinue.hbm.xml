@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.ItemDiscontinue, com.Sconit.Entity" table="ItemDisCon" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      		<generator class="identity" />
+        </id>
+		<many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+		<many-to-one name="DiscontinueItem" column="DisconItem" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+        <many-to-one name="Bom" column="Bom" class="com.Sconit.Entity.MasterData.Bom, com.Sconit.Entity" cascade="none" />
+        <property name="UnitQty" column="UnitQty" type="Decimal"  />
+        <property name="Priority" column="Priority" type="Int32"  />	
+		<property name="StartDate" column="StartDate" type="DateTime"  />	
+		<property name="EndDate" column="EndDate" type="DateTime"  />	
+		<property name="CreateDate" column="CreateDate" type="DateTime"  />	
+		<property name="CreateUser" column="CreateUser" type="String" length="50" />	
+		<property name="LastModifyDate" column="LastModifyDate" type="DateTime"  />	
+		<property name="LastModifyUser" column="LastModifyUser" type="String" length="50" />	
+  	</class>
+</hibernate-mapping>

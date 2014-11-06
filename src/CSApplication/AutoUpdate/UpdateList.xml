@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="gb2312"?>
+<AutoUpdater>
+  <description>Application autoUpdate</description>
+  <Updater>
+    <Url>http://demo.sconit.com/CSClient/</Url>
+    <LastUpdateTime>2006-3-7</LastUpdateTime>
+  </Updater>
+  <Application applicationId="Sconit">
+    <EntryPoint>test.txt</EntryPoint>
+    <Location>.</Location>
+    <Version>1.0.0.1</Version>
+  </Application>
+  <Files>
+    <File Ver="1.0.0.1" Name="test.txt" />
+  </Files>
+</AutoUpdater>

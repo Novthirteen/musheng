@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.View.PickListResultView, com.Sconit.Entity" table="PickListResultView" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      		<generator class="assigned" />
+        </id>
+		<many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="PickList" column="PLNo" class="com.Sconit.Entity.MasterData.PickList, com.Sconit.Entity" cascade="none" />
+		<property name="Uom" column="Uom" type="String" length="5" />	
+		<property name="UnitCount" column="UC" type="Decimal"  />	
+		<property name="Location" column="Location" type="String" length="50" />	
+		<property name="actqty" column="actqty" type="Decimal"  />	
+		<property name="planqty" column="planqty" type="Decimal"  />	
+  	</class>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+    <class name="com.Sconit.Entity.MasterData.Party, com.Sconit.Entity" table="Party" lazy="false">
+        <id name="Code" column="Code" type="String" unsaved-value="null" >
+            <generator class="assigned" />
+        </id>
+        <!--<discriminator column="Type" type="String"/>-->
+        <property name="Name" column="Name" type="String" length="255" />
+        <property name="PaymentTerm" column="PaymentTerm" type="String" length="100" />
+        <property name="TradeTerm" column="TradeTerm" type="String" length="100" />
+        <property name="Country" column="Country" type="String" length="50" />
+        <many-to-one name="ParentParty" class="com.Sconit.Entity.MasterData.Party, com.Sconit.Entity" column="ParentCode" cascade="none" />
+        <property name="IsActive" column="IsActive" type="Boolean"  />
+        <property name="TextField1" column="TextField1" type="String" length="255" />
+        <property name="TextField2" column="TextField2" type="String" length="255" />
+        <property name="TextField3" column="TextField3" type="String" length="255" />
+        <property name="TextField4" column="TextField4" type="String" length="255" />
+        <property name="NumField1" column="NumField1" type="Decimal"  />
+        <property name="NumField2" column="NumField2" type="Decimal"  />
+        <property name="NumField3" column="NumField3" type="Decimal"  />
+        <property name="NumField4" column="NumField4" type="Decimal"  />
+        <property name="DateField1" column="DateField1" type="DateTime"  />
+        <property name="DateField2" column="DateField2" type="DateTime"  />
+        <property name="Aging" column="Aging" type="Int32"  />
+        <joined-subclass name="com.Sconit.Entity.MasterData.Customer, com.Sconit.Entity" table="Customer" lazy="false">
+            <key column="Code"/>
+        </joined-subclass>
+        <joined-subclass name="com.Sconit.Entity.MasterData.Supplier, com.Sconit.Entity" table="Supplier" lazy="false">
+            <key column="Code"/>
+        </joined-subclass>
+        <joined-subclass name="com.Sconit.Entity.MasterData.Region, com.Sconit.Entity" table="Region" lazy="false">
+            <key column="Code"/>
+            <property name="CostCenter" column="CostCenter" type="String" length="50" />
+            <property name="CostGroup" column="CostGroup" type="String" length="50" />
+            <property name="InspectLocation" column="InspectLoc" type="String" length="50" />
+            <property name="RejectLocation" column="RejectLoc" type="String" length="50" />
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

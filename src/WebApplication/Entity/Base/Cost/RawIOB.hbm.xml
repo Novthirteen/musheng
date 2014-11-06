@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.Cost.RawIOB, com.Sconit.Entity" table="C_RawIOB" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      		<generator class="identity" />
+        </id>
+		<property name="Item" column="Item" type="String" length="50" />	
+		<property name="Uom" column="Uom" type="String" length="5" />	
+		<property name="StartQty" column="StartQty" type="Double"  />	
+		<property name="StartAmount" column="StartAmount" type="Double"  />	
+		<property name="StartCost" column="StartCost" type="Double"  />	
+		<property name="InQty" column="InQty" type="Double"  />	
+		<property name="InAmount" column="InAmount" type="Double"  />	
+		<property name="InCost" column="InCost" type="Double"  />	
+		<property name="DiffAmount" column="DiffAmount" type="Double"  />	
+		<property name="DiffCost" column="DiffCost" type="Double"  />	
+		<property name="EndQty" column="EndQty" type="Double"  />	
+		<property name="EndAmount" column="EndAmount" type="Double"  />	
+		<property name="EndCost" column="EndCost" type="Double"  />	
+		<property name="FinanceCalendar" column="FinanceCalendar" type="String" length="7" />	
+		<property name="CreateTime" column="CreateTime" type="DateTime"  />	
+		<property name="CreateUser" column="CreateUser" type="String" length="50" />
+    <property name="LastModifyTime" column="LastModifyTime" type="DateTime"  />
+    <property name="LastModifyUser" column="LastModifyUser" type="String" length="50" />
+  </class>
+</hibernate-mapping>

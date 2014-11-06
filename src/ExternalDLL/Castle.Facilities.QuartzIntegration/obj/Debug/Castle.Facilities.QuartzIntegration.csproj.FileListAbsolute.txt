@@ -1,0 +1,8 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\bin\Debug\Castle.Facilities.QuartzIntegration.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\bin\Debug\Castle.Facilities.QuartzIntegration.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\bin\Debug\Castle.Core.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\bin\Debug\Castle.MicroKernel.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\bin\Debug\Quartz.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\obj\Debug\Castle.Facilities.QuartzIntegration.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.QuartzIntegration\obj\Debug\Castle.Facilities.QuartzIntegration.pdb

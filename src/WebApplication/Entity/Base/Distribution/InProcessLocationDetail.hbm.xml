@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Distribution.InProcessLocationDetail, com.Sconit.Entity" table="IpDet" lazy="false">
+    <id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+    <many-to-one name="InProcessLocation" column="IpNo" class="com.Sconit.Entity.Distribution.InProcessLocation, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="OrderLocationTransaction" column="OrderLocTransId" class="com.Sconit.Entity.MasterData.OrderLocationTransaction, com.Sconit.Entity" cascade="none" />
+    <property name="LotNo" column="LotNo" type="String" length="50" />
+    <property name="HuId" column="HuId" type="String" length="50" />
+    <property name="Qty" column="Qty" type="Decimal"  />
+    <property name="ReceivedQty" column="RecQty" type="Decimal"  />
+    <property name="IsConsignment" column="IsCS" type="Boolean"  />
+    <!--<many-to-one name="PlannedBill" column="PlanBillId" class="com.Sconit.Entity.MasterData.PlannedBill, com.Sconit.Entity" cascade="none" />-->
+    <property name="PlannedBill" column="PlanBillId" type="Int32"/>
+    <many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+    <property name="ReferenceItemCode" column="RefItemCode" type="String" length="50" />
+    <property name="CustomerItemCode" column="CustomerItemCode" type="String" length="50" />
+    <many-to-one name="Uom" column="Uom" class="com.Sconit.Entity.MasterData.Uom, com.Sconit.Entity" cascade="none" />
+    <property name="UnitCount" column="UC" type="Decimal" />
+    <many-to-one name="LocationFrom" column="LocFrom" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="LocationTo" column="LocTo" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+      <property name="TextField1" column="TextField1" type="String" length="255" />
+      <property name="TextField2" column="TextField2" type="String" length="255" />
+      <property name="TextField3" column="TextField3" type="String" length="255" />
+      <property name="TextField4" column="TextField4" type="String" length="255" />
+      <property name="NumField1" column="NumField1" type="Decimal"  />
+      <property name="NumField2" column="NumField2" type="Decimal"  />
+      <property name="NumField3" column="NumField3" type="Decimal"  />
+      <property name="NumField4" column="NumField4" type="Decimal"  />
+      <property name="DateField1" column="DateField1" type="DateTime"  />
+      <property name="DateField2" column="DateField2" type="DateTime"  />
+  </class>
+</hibernate-mapping>

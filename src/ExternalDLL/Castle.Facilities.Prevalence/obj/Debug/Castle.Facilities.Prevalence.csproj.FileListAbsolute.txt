@@ -1,0 +1,9 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\bin\Debug\Castle.Facilities.Prevalence.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\bin\Debug\Castle.Facilities.Prevalence.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\bin\Debug\Bamboo.Prevalence.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\bin\Debug\Bamboo.Prevalence.Util.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\bin\Debug\Castle.Core.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\bin\Debug\Castle.MicroKernel.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\obj\Debug\Castle.Facilities.Prevalence.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.Prevalence\obj\Debug\Castle.Facilities.Prevalence.pdb

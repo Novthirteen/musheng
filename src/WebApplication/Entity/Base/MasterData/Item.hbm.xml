@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" table="Item" lazy="false">
+    <id name="Code" column="Code" type="String" unsaved-value="null" >
+      <generator class="assigned" />
+    </id>
+    <property name="Type" column="Type" type="String" length="20" />
+    <property name="Desc1" column="Desc1" type="String" length="255" />
+    <property name="Desc2" column="Desc2" type="String" length="255" />
+    <many-to-one name="Uom" column="Uom" class="com.Sconit.Entity.MasterData.Uom, com.Sconit.Entity" cascade="none" />
+    <property name="UnitCount" column="UC" type="Decimal"  />
+    <many-to-one name="Location" column="Location" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+    <property name="ImageUrl" column="ImageUrl" type="String" length="255" />
+    <many-to-one name="Bom" column="Bom" class="com.Sconit.Entity.MasterData.Bom, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Routing" column="Routing" class="com.Sconit.Entity.MasterData.Routing, com.Sconit.Entity" cascade="none" />
+    <property name="IsActive" column="IsActive" type="Boolean"  />
+    <property name="Memo" column="Memo" type="String" length="50" />
+    <property name="LastModifyDate" column="LastModifyDate" type="DateTime"  />
+    <property name="LastModifyUser" column="LastModifyUser" type="String" length="50" />
+    <property name="ScrapPercentage" column="ScrapPct" type="Decimal"  />
+    <many-to-one name="Category1" column="Category1" class="com.Sconit.Entity.MasterData.ItemType, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Category2" column="Category2" class="com.Sconit.Entity.MasterData.ItemType, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Category3" column="Category3" class="com.Sconit.Entity.MasterData.ItemType, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Category4" column="Category4" class="com.Sconit.Entity.MasterData.ItemType, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Category5" column="Category5" class="com.Sconit.Entity.MasterData.ItemType, com.Sconit.Entity" cascade="none" />
+    <property name="SortLevel1From" column="SortLevel1From" type="String" length="10" />
+    <property name="SortLevel1To" column="SortLevel1To" type="String" length="10" />
+    <property name="ColorLevel1From" column="ColorLevel1From" type="String" length="10" />
+    <property name="ColorLevel1To" column="ColorLevel1To" type="String" length="10" />
+    <property name="SortLevel2From" column="SortLevel2From" type="String" length="10" />
+    <property name="SortLevel2To" column="SortLevel2To" type="String" length="10" />
+    <property name="ColorLevel2From" column="ColorLevel2From" type="String" length="10" />
+    <property name="ColorLevel2To" column="ColorLevel2To" type="String" length="10" />
+    <property name="ScrapBillAddress" column="ScrapBillAddr" type="String" length="50" />
+    <property name="SalesCost" column="SalesCost" type="Decimal"  />
+    <property name="PinNumber" column="PinNum" type="Decimal"  />
+    <property name="HistoryPrice" column="HistPrice" type="Decimal"  />
+    <property name="ScrapPrice" column="ScrapPrice" type="Decimal"  />
+    <property name="NeedInspect" column="NeedInspect" type="Boolean"  />
+    <property name="IsRunMrp" column="IsRunMrp" type="Boolean"  />
+    <property name="IsSortAndColor" column="IsSortAndColor" type="Boolean"  />
+    <property name="GoodsReceiptLotSize" column="OrderGrLotSize" type="Decimal" />
+    <property name="MrpLeadTime" column="MRPLeadTime" type="Decimal" />
+    <many-to-one name="ItemCategory" column="Category" class="com.Sconit.Entity.MasterData.ItemCategory, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="ItemBrand" column="Brand" class="com.Sconit.Entity.MasterData.ItemBrand, com.Sconit.Entity" cascade="none" />
+    <property name="Id" column="Id" type="Int32" update="false" insert="false" />
+    <property name="HuLotSize" column="HuLotSize" type="Int32" />
+    <!--<property name="DefaultFlow" column="DefaultFlow" type="String" length="50" />-->
+    <property name="DefaultSupplier" column="DefaultSupplier" type="String" length="50" />
+	  <property name="Msl" column="Msl" type="String" length="50" />
+	  <property name="Bin" column="Bin" type="String" length="50" />
+  </class>
+</hibernate-mapping>

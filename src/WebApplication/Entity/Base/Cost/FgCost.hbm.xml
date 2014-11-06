@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.Cost.FgCost, com.Sconit.Entity" table="C_FgCost" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      		<generator class="identity" />
+        </id>
+		<property name="Item" column="Item" type="String" length="50" />
+    <property name="Uom" column="Uom" type="String" length="5" />
+    <property name="ItemCategory" column="ItemCategory" type="String" length="50" />	
+		<property name="Cost" column="Cost" type="Double"  />	
+		<property name="ScrapCost" column="ScrapCost" type="Double"  />	
+		<property name="Allocation" column="Allocation" type="Double"  />	
+		<property name="OutQty" column="OutQty" type="Double"  />
+    <property name="Diff" column="Diff" type="Double"  />
+    <property name="FinanceCalendar" column="FinanceCalendar" type="String" length="7" />
+    <property name="IsProvEst" column="IsProvEst" type="Boolean"  />
+		<property name="CreateTime" column="CreateTime" type="DateTime"  />	
+		<property name="CreateUser" column="CreateUser" type="String"  />	
+  	</class>
+</hibernate-mapping>

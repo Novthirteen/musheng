@@ -1,0 +1,7 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\bin\Debug\Whidsoft.WebControls.OrgChart.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\bin\Debug\Whidsoft.WebControls.OrgChart.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\obj\Debug\Whidsoft.WebControls.Resources.Whidsoft.WebControls.OrgChart.resources
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\obj\Debug\Whidsoft.WebControls.OrgChart.csproj.GenerateResource.Cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\obj\Debug\Whidsoft.WebControls.OrgChart.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\OrgChartWebControlForVs2008\obj\Debug\Whidsoft.WebControls.OrgChart.pdb

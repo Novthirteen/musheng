@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.Customize.ProductLineFacility, com.Sconit.Entity" table="ProdLineFact" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="null" >
+      		<generator class="identity" />
+        </id>
+    <property name="Code" column="Code" type="String" length="50" />
+    <property name="ProductLine" column="ProdLine" type="String" length="50" />	
+		<property name="IsActive" column="IsActive" type="Boolean"  />
+    <many-to-one name="Routing" column="Routing" class="com.Sconit.Entity.MasterData.Routing, com.Sconit.Entity" cascade="none" />
+  	</class>
+</hibernate-mapping>

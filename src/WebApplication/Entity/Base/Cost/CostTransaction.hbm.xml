@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Cost.CostTransaction, com.Sconit.Entity" table="CostTrans" lazy="false">
+    <id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+    <property name="Item" column="Item" type="String" length="50" />
+    <property name="ItemCategory" column="ItemCategory" type="String" length="50" />
+    <property name="OrderNo" column="OrderNo" type="String" length="50" />
+    <property name="ReceiptNo" column="RecNo" type="String" length="50" />
+    <many-to-one name="CostGroup" column="CostGroup" class="com.Sconit.Entity.Cost.CostGroup, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="CostCenter" column="CostCenter" class="com.Sconit.Entity.Cost.CostCenter, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="CostElement" column="CostElement" class="com.Sconit.Entity.Cost.CostElement, com.Sconit.Entity" cascade="none" />
+    <property name="Currency" column="Currency" type="String" length="50" />
+    <property name="BaseCurrency" column="BaseCurrency" type="String" length="50" />
+    <property name="ExchangeRate" column="ExchangeRate" type="Decimal"  />
+    <property name="Qty" column="Qty" type="Decimal"  />
+    <property name="StandardAmount" column="StandardAmount" type="Decimal"  />
+    <property name="ActualAmount" column="ActualAmount" type="Decimal"  />
+    <property name="ReferenceItem" column="RefItem" type="String" length="50" />
+    <property name="ReferenceQty" column="RefQty" type="Decimal"  />
+    <property name="EffectiveDate" column="EffDate" type="DateTime"  />
+    <property name="CreateDate" column="CreateDate" type="DateTime"  />
+    <property name="CreateUser" column="CreateUser" type="String" length="50" />
+    <property name="CostAllocateTransaction" column="CostAllocateTrans" type="Int32"/>
+    <property name="ReferenceItemType" column="RefItemType" type="String" length="50" />
+  </class>
+</hibernate-mapping>

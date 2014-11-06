@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.MasterData.ItemBrand, com.Sconit.Entity" table="ItemBrand" lazy="false">
+    <id name="Code" column="Code" type="String" unsaved-value="null" >
+      <generator class="assigned" />
+    </id>
+    <property name="Description" column="Desc1" type="String" length="255" />
+    <many-to-one name="ParentBrand" column="Parent" class="com.Sconit.Entity.MasterData.ItemBrand, com.Sconit.Entity" cascade="none" />
+    <property name="Abbreviation" column="Abbreviation" type="String" length="50" />
+    <property name="ManufactureParty" column="ManufactureParty" type="String" length="50" />
+    <property name="Origin" column="Origin" type="String" length="50" />
+    <property name="ManufactureAddress" column="ManufactureAddr" type="String" length="255" />
+    <property name="IsActive" column="IsActive" type="Boolean"  />
+  </class>
+</hibernate-mapping>

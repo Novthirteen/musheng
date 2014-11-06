@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.MasterData.PickListDetail, com.Sconit.Entity" table="PickListDet" lazy="false">
+    <id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+    <many-to-one name="PickList" column="PLNo" class="com.Sconit.Entity.MasterData.PickList, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="OrderLocationTransaction" column="OrderLocTransId" class="com.Sconit.Entity.MasterData.OrderLocationTransaction, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Location" column="Location" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="StorageArea" column="Area" class="com.Sconit.Entity.MasterData.StorageArea, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="StorageBin" column="Bin" class="com.Sconit.Entity.MasterData.StorageBin, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Uom" column="Uom" class="com.Sconit.Entity.MasterData.Uom, com.Sconit.Entity" cascade="none" />
+    <property name="UnitCount" column="UC" type="Decimal" />
+    <property name="HuId" column="HuId" type="String" length="50" />
+    <property name="LotNo" column="LotNo" type="String" length="50" />
+    <property name="Qty" column="Qty" type="Decimal"  />
+    <property name="Memo" column="Memo" type="String" length="255" />
+    <property name="SortLevel1From" column="SortLevel1From" type="String" length="10" />
+    <property name="SortLevel1To" column="SortLevel1To" type="String" length="10" />
+    <property name="ColorLevel1From" column="ColorLevel1From" type="String" length="10" />
+    <property name="ColorLevel1To" column="ColorLevel1To" type="String" length="10" />
+    <property name="SortLevel2From" column="SortLevel2From" type="String" length="10" />
+    <property name="SortLevel2To" column="SortLevel2To" type="String" length="10" />
+    <property name="ColorLevel2From" column="ColorLevel2From" type="String" length="10" />
+    <property name="ColorLevel2To" column="ColorLevel2To" type="String" length="10" />
+    <!--<property name="ManufactureDate" column="ManufactureDate" type="DateTime"  />-->
+    <property name="NumField1" column="NumField1" type="Decimal"  />
+    <property name="NumField2" column="NumField2" type="Decimal"  />
+    <property name="NumField3" column="NumField3" type="Decimal"  />
+    <property name="NumField4" column="NumField4" type="Decimal"  />
+    <property name="DateField1" column="DateField1" type="DateTime"  />
+    <property name="DateField2" column="DateField2" type="DateTime"  />
+    <bag name="PickListResults" table="PickListResult" inverse="true" lazy="true">
+      <key column="PLDetId" />
+      <one-to-many class="com.Sconit.Entity.MasterData.PickListResult, com.Sconit.Entity" />
+    </bag>
+  </class>
+</hibernate-mapping>

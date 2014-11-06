@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://www.musheng.sh.cn:8080/WebService/SmartDeviceMgrWS.asmx?wsdl" docRef="http://www.musheng.sh.cn:8080/WebService/SmartDeviceMgrWS.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://www.musheng.sh.cn:8080/WebService/SmartDeviceMgrWS.asmx" xmlns:q1="http://com.Sconit.Webservice" binding="q1:SmartDeviceMgrWSSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://www.musheng.sh.cn:8080/WebService/SmartDeviceMgrWS.asmx" xmlns:q2="http://com.Sconit.Webservice" binding="q2:SmartDeviceMgrWSSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

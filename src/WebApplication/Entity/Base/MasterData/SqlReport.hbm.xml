@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.SqlReport, com.Sconit.Entity" table="SqlReport" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      		<generator class="identity" />
+        </id>
+		<property name="Sql" column="Sql" type="StringClob" />	
+		<property name="Description" column="Desc1" type="String" length="255" />	
+		<property name="Seq" column="Seq" type="Int32"  />	
+  	</class>
+</hibernate-mapping>

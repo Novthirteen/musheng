@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.MasterData.OrderDetail, com.Sconit.Entity" table="OrderDet" lazy="false">
+    <id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+    <many-to-one name="OrderHead" column="OrderNo" class="com.Sconit.Entity.MasterData.OrderHead, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+    <property name="ReferenceItemCode" column="RefItemCode" type="String" length="50" />
+    <property name="CustomerItemCode" column="CustomerItemCode" type="String" length="50" />
+    <many-to-one name="Uom" column="Uom" class="com.Sconit.Entity.MasterData.Uom, com.Sconit.Entity" cascade="none" />
+    <property name="UnitCount" column="UC" type="Decimal" />
+    <property name="Sequence" column="Seq" type="Int32"  />
+    <property name="RequiredQty" column="ReqQty" type="Decimal"  />
+    <property name="OrderedQty" column="OrderQty" type="Decimal"  />
+    <property name="ShippedQty" column="ShipQty" type="Decimal" />
+    <property name="ReceivedQty" column="RecQty" type="Decimal" />
+    <property name="RejectedQty" column="RejQty" type="Decimal" />
+    <property name="ScrapQty" column="ScrapQty" type="Decimal" />
+    <property name="GoodsReceiptLotSize" column="OrderGrLotSize" type="Decimal" />
+    <property name="Discount" column="Discount" type="Decimal" />
+    <property name="HeadDiscount" column="HeadDiscount" type="Decimal" />
+    <property name="BatchSize" column="BatchSize" type="Decimal" />
+    <property name="BillSettleTerm" column="BillSettleTerm" type="String" length="50" />
+    <property name="PackageVolumn" column="PackVol" type="Decimal" />
+    <property name="PackageType" column="PackType" type="String" length="50" />
+    <many-to-one name="LocationFrom" column="LocFrom" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="LocationTo" column="LocTo" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="BillAddress" column="BillAddr" class="com.Sconit.Entity.MasterData.BillAddress, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="Bom" column="Bom" class="com.Sconit.Entity.MasterData.Bom, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="PriceList" column="PriceList" class="com.Sconit.Entity.MasterData.PriceList, com.Sconit.Entity" cascade="none" />
+    <property name="UnitPrice" column="UnitPrice" type="Decimal" />
+    <property name="UnitPriceAfterDiscount" column="UnitPriceAfterDiscount" type="Decimal" />
+    <property name="IsIncludeTax" column="IsIncludeTax" type="Boolean"  />
+    <property name="TaxCode" column="TaxCode" type="String" length="50" />
+    <property name="IsProvisionalEstimate" column="IsProvEst" type="Boolean"  />
+    <property name="HuLotSize" column="HuLotSize" type="Int32" />
+    <many-to-one name="Customer" column="Customer" class="com.Sconit.Entity.MasterData.Customer, com.Sconit.Entity" cascade="none" />
+    <property name="NeedInspection" column="NeedInspect" type="Boolean"  />
+    <property name="IdMark" column="IdMark" type="String" length="50" />
+    <property name="BarCodeType" column="BarCodeType" type="String" length="50" />
+    <property name="ItemVersion" column="ItemVersion" type="String" length="50" />
+    <property name="OddShipOption" column="OddShipOpt" type="String" length="50" />
+    <property name="Remark" column="Remark" type="String" length="50" />
+    <property name="TextField1" column="TextField1" type="String" length="255" />
+    <property name="TextField2" column="TextField2" type="String" length="255" />
+    <property name="TextField3" column="TextField3" type="String" length="255" />
+    <property name="TextField4" column="TextField4" type="String" length="255" />
+    <property name="TextField5" column="TextField5" type="String" length="255" />
+    <property name="TextField6" column="TextField6" type="String" length="255" />
+    <property name="TextField7" column="TextField7" type="String" length="255" />
+    <property name="TextField8" column="TextField8" type="String" length="255" />
+    <property name="NumField1" column="NumField1" type="Decimal"  />
+    <property name="NumField2" column="NumField2" type="Decimal"  />
+    <property name="NumField3" column="NumField3" type="Decimal"  />
+    <property name="NumField4" column="NumField4" type="Decimal"  />
+    <property name="NumField5" column="NumField5" type="Decimal"  />
+    <property name="NumField6" column="NumField6" type="Decimal"  />
+    <property name="NumField7" column="NumField7" type="Decimal"  />
+    <property name="NumField8" column="NumField8" type="Decimal"  />
+    <property name="DateField1" column="DateField1" type="DateTime"  />
+    <property name="DateField2" column="DateField2" type="DateTime"  />
+    <property name="DateField3" column="DateField3" type="DateTime"  />
+    <property name="DateField4" column="DateField4" type="DateTime"  />
+    <property name="InspectLocationFrom" column="InspLocFrom" type="String" length="50" />
+    <property name="InspectLocationTo" column="InspLocTo" type="String" length="50" />
+    <property name="RejectLocationFrom" column="RejLocFrom" type="String" length="50" />
+    <property name="RejectLocationTo" column="RejLocTo" type="String" length="50" />
+    <property name="StorageBin" column="Bin" type="String" length="50" />
+    <property name="NeedRejectInspection" column="NeedRejInspect" type="Boolean"  />
+    <many-to-one name="Routing" column="Routing" class="com.Sconit.Entity.MasterData.Routing, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="ReturnRouting" column="ReturnRouting" class="com.Sconit.Entity.MasterData.Routing, com.Sconit.Entity" cascade="none" />
+    <bag name="OrderLocationTransactions" table="OrderLocTrans" inverse="true" lazy="true">
+      <key column="OrderDetId" />
+      <one-to-many class="com.Sconit.Entity.MasterData.OrderLocationTransaction, com.Sconit.Entity" />
+    </bag>
+  </class>
+</hibernate-mapping>

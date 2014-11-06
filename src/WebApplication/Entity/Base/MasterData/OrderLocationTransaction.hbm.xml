@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.OrderLocationTransaction, com.Sconit.Entity" table="OrderLocTrans" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      		<generator class="identity" />
+        </id>
+		<many-to-one name="OrderDetail" column="OrderDetId" class="com.Sconit.Entity.MasterData.OrderDetail, com.Sconit.Entity" cascade="none" />
+		<many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="ItemDiscontinue" column="ItemDiscontinue" class="com.Sconit.Entity.MasterData.ItemDiscontinue, com.Sconit.Entity" cascade="none" />
+    <many-to-one name="RawItem" column="RawItem" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+		<property name="ItemDescription" column="ItemDesc" type="String" length="255" />
+		<many-to-one name="BomDetail" column="BomDet" class="com.Sconit.Entity.MasterData.BomDetail, com.Sconit.Entity" cascade="none" />
+		<property name="IsAssemble" column="IsAssemble" type="Boolean" />
+		<many-to-one name="Uom" column="Uom" class="com.Sconit.Entity.MasterData.Uom, com.Sconit.Entity" cascade="none" />
+		<property name="Operation" column="Op" type="Int32" />	
+		<property name="IOType" column="IOType" type="String" length="50" />	
+		<property name="TransactionType" column="TransType" type="String" length="50" />	
+		<property name="UnitQty" column="UnitQty" type="Decimal"  />	
+		<property name="OrderedQty" column="OrderQty" type="Decimal"  />	
+		<property name="AccumulateQty" column="AccumQty" type="Decimal" />	
+		<property name="AccumulateRejectQty" column="AccumRejQty" type="Decimal" />
+		<property name="AccumulateScrapQty" column="AccumScrapQty" type="Decimal" />
+		<many-to-one name="Location" column="Loc" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
+    <property name="InspectLocation" column="InspLoc" type="String" length="50" />
+    <property name="RejectLocation" column="RejLoc" type="String" length="50" />
+		<property name="IsShipScanHu" column="IsShipScan" type="Boolean" />
+		<property name="HuLotSize" column="HuLotSize" type="Int32" />	
+		<property name="NeedPrint" column="NeedPrint" type="Boolean"  />
+    <property name="BackFlushMethod" column="BackFlushMethod" type="String" length="50" />
+    <property name="ItemVersion" column="ItemVersion" type="String" length="50" />
+    <!--<property name="PlannedBackFlushQty" column="PlanBackFlushQty" type="Decimal" />-->
+    <property name="SortLevel1From" column="SortLevel1From" type="String" length="10" />
+    <property name="SortLevel1To" column="SortLevel1To" type="String" length="10" />
+    <property name="ColorLevel1From" column="ColorLevel1From" type="String" length="10" />
+    <property name="ColorLevel1To" column="ColorLevel1To" type="String" length="10" />
+    <property name="SortLevel2From" column="SortLevel2From" type="String" length="10" />
+    <property name="SortLevel2To" column="SortLevel2To" type="String" length="10" />
+    <property name="ColorLevel2From" column="ColorLevel2From" type="String" length="10" />
+    <property name="ColorLevel2To" column="ColorLevel2To" type="String" length="10" />
+    <property name="MaterailNumber" column="MaterailNum" type="Int32" />
+  </class>
+</hibernate-mapping>

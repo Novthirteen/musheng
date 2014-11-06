@@ -1,0 +1,9 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\bin\Debug\Castle.Facilities.AutomaticTransactionManagement.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\bin\Debug\Castle.Facilities.AutomaticTransactionManagement.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\bin\Debug\Castle.Core.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\bin\Debug\Castle.MicroKernel.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\bin\Debug\Castle.Services.Transaction.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\bin\Debug\Castle.Services.Transaction.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\obj\Debug\Castle.Facilities.AutomaticTransactionManagement.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.AutomaticTransactionManagement\obj\Debug\Castle.Facilities.AutomaticTransactionManagement.pdb

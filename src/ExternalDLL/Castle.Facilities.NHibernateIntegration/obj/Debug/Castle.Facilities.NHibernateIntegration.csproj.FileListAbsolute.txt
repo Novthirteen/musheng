@@ -1,0 +1,16 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.Facilities.NHibernateIntegration.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.Facilities.NHibernateIntegration.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Antlr3.Runtime.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.Core.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.MicroKernel.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.Services.Transaction.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.Windsor.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Iesi.Collections.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\log4net.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.DynamicProxy.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\Castle.Services.Transaction.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\bin\Debug\NHibernate.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\obj\Debug\Castle.Facilities.NHibernateIntegration.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\Castle.Facilities.NHibernateIntegration\obj\Debug\Castle.Facilities.NHibernateIntegration.pdb

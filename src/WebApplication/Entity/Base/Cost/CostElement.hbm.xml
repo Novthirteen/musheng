@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.Cost.CostElement, com.Sconit.Entity" table="CostElement" lazy="false">
+		<id name="Code" column="Code" type="String" unsaved-value="null" >
+      		<generator class="assigned" />
+        </id>
+		<property name="Description" column="Desc1" type="String" length="255" />	
+		<property name="Category" column="Category" type="String" length="50" />	
+  	</class>
+</hibernate-mapping>

@@ -1,0 +1,12 @@
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\NHibernate.Caches.Prevalence.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\NHibernate.Caches.Prevalence.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\Bamboo.Prevalence.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\Bamboo.Prevalence.Util.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\log4net.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\NHibernate.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\Iesi.Collections.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\Castle.DynamicProxy.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\bin\Debug\NHibernate.pdb
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\obj\Debug\ResolveAssemblyReference.cache
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\obj\Debug\NHibernate.Caches.Prevalence.dll
+G:\Project\Sconit_New\Manufacture\branch\musheng\3.2.x\src\ExternalDLL\NHibernate.Caches.Prevalence\obj\Debug\NHibernate.Caches.Prevalence.pdb

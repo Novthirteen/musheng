@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.CurrencyExchange, com.Sconit.Entity" table="CurrencyExchange" lazy="false">
+		<id name="Id" column="Id" type="Int32" unsaved-value="0" >
+        <generator class="identity" />
+        </id>
+		<property name="BaseCurrency" column="BaseCurrency" type="String" length="50" />	
+		<property name="ExchangeCurrency" column="ExchangeCurrency" type="String" length="50" />	
+		<property name="BaseQty" column="BaseQty" type="Decimal"  />	
+		<property name="ExchangeQty" column="ExchangeQty" type="Decimal"  />	
+		<property name="StartDate" column="StartDate" type="DateTime"  />	
+		<property name="EndDate" column="EndDate" type="DateTime"  />	
+  	</class>
+</hibernate-mapping>

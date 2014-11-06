@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.ItemCategory, com.Sconit.Entity" table="ItemCategory" lazy="false">
+		<id name="Code" column="Code" type="String" unsaved-value="null" >
+      		<generator class="assigned" />
+        </id>
+		<property name="Description" column="Desc1" type="String" length="255" />
+		<property name="TextField1" column="TextField1" type="String" length="255" />
+		<property name="TextField2" column="TextField2" type="String" length="255" />
+		<property name="TextField3" column="TextField3" type="String" length="255" />
+		<property name="TextField4" column="TextField4" type="String" length="255" />
+		<property name="NumField1" column="NumField1" type="Decimal"  />
+		<property name="NumField2" column="NumField2" type="Decimal"  />
+		<property name="NumField3" column="NumField3" type="Decimal"  />
+		<property name="NumField4" column="NumField4" type="Decimal"  />
+		<property name="DateField1" column="DateField1" type="DateTime"  />
+		<property name="DateField2" column="DateField2" type="DateTime"  />
+		<property name="BitField1" column="BitField1" type="Boolean"  />
+		<property name="BitField2" column="BitField2" type="Boolean"  />
+    <many-to-one name="ParentCategory" column="Parent" class="com.Sconit.Entity.MasterData.ItemCategory, com.Sconit.Entity" cascade="none" />
+  	</class>
+</hibernate-mapping>

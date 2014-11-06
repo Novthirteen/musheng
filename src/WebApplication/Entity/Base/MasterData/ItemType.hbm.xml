@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.ItemType, com.Sconit.Entity" table="ItemType" lazy="false">
+		<id name="Code" column="Code" type="String" unsaved-value="null" >
+      		<generator class="assigned" />
+        </id>
+		<property name="Name" column="Name" type="String" length="50" />	
+		<property name="ShortName" column="ShortName" type="String" length="50" />	
+		<property name="Level" column="Level" type="Int32"  />	
+  	</class>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.Cost.BomTree, com.Sconit.Entity" table="BomTree" lazy="false">
+    <id name="Id" column="Id" type="Int32" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+		<property name="Bom" column="Bom" type="String" length="50" />	
+		<property name="BomDesc" column="BomDesc" type="String" length="255" />	
+		<property name="Item" column="Item" type="String" length="50" />	
+		<property name="ItemDesc" column="ItemDesc" type="String" length="255" />	
+		<property name="RateQty" column="RateQty" type="Decimal"  />	
+		<property name="Uom" column="Uom" type="String" length="50" />	
+		<property name="BomLevel" column="BomLevel" type="Int32"  />	
+		<property name="ItemCategoryCode" column="ItemCategoryCode" type="String" length="50" />	
+		<property name="ItemCategoryDesc" column="ItemCategoryDesc" type="String" length="50" />	
+		<property name="AccumQty" column="AccumQty" type="Decimal"  />	
+		<property name="CreateTime" column="CreateTime" type="DateTime"  />	
+		<property name="FG" column="FG" type="String" length="50" />	
+		<property name="FGDesc" column="FGDesc" type="String" length="255" />	
+		<property name="FGUom" column="FGUom" type="String" length="50" />	
+		<property name="FGCategory" column="FGCategory" type="String" length="50" />	
+  	</class>
+</hibernate-mapping>

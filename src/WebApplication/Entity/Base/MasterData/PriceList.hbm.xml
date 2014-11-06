@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.PriceList, com.Sconit.Entity" table="PriceListMstr" lazy="false">
+		<id name="Code" column="Code" type="String" unsaved-value="null" >
+      		<generator class="assigned" />
+        </id>
+		<discriminator column="Type" type="String" />
+		<property name="IsActive" column="IsActive" type="Boolean"  />
+		<many-to-one name="Party" class="com.Sconit.Entity.MasterData.Party, com.Sconit.Entity" column="Party" cascade="none" />
+    <property name="TextField1" column="TextField1" type="String" length="255" />
+		<property name="TextField2" column="TextField2" type="String" length="255" />
+		<property name="TextField3" column="TextField3" type="String" length="255" />
+		<property name="TextField4" column="TextField4" type="String" length="255" />
+		<property name="NumField1" column="NumField1" type="Decimal"  />
+		<property name="NumField2" column="NumField2" type="Decimal"  />
+		<property name="NumField3" column="NumField3" type="Decimal"  />
+		<property name="NumField4" column="NumField4" type="Decimal"  />
+		<property name="DateField1" column="DateField1" type="DateTime"  />
+		<property name="DateField2" column="DateField2" type="DateTime"  />
+		<bag name="PriceListDetails" table="PriceListDet" inverse="true" lazy="true">
+			<key column="PriceList" />
+			<one-to-many class="com.Sconit.Entity.MasterData.PriceListDetail, com.Sconit.Entity" />
+		</bag>
+		<subclass name="com.Sconit.Entity.Procurement.PurchasePriceList, com.Sconit.Entity" discriminator-value="Purchase" lazy="false"/>
+		<subclass name="com.Sconit.Entity.Distribution.SalesPriceList, com.Sconit.Entity" discriminator-value="Sales" lazy="false"/>
+    <subclass name="com.Sconit.Entity.MasterData.CustomerGoodsPriceList, com.Sconit.Entity" discriminator-value="CustomerGoods" lazy="false"/>
+  	</class>
+</hibernate-mapping>

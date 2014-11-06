@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" table="Location" lazy="false">
+		<id name="Code" column="Code" type="String" unsaved-value="null" >
+      		<generator class="assigned" />
+        </id>
+    <property name="AllowNegativeInventory" column="AllowNegaInv" type="Boolean"  />	
+		<property name="IsActive" column="IsActive" type="Boolean" />	
+		<property name="Name" column="Name" type="String" length="50" />
+    <property name="Type" column="Type" type="String" length="50" />
+    <many-to-one name="Region" column="Region" class="com.Sconit.Entity.MasterData.Region, com.Sconit.Entity" cascade="none" />		
+		<property name="Volume" column="Volume" type="Decimal" />
+        <property name="EnableAdvWM" column="EnableAdvWM" type="Boolean" />
+        <property name="TextField1" column="TextField1" type="String" length="255" />
+		<property name="TextField2" column="TextField2" type="String" length="255" />
+		<property name="TextField3" column="TextField3" type="String" length="255" />
+		<property name="TextField4" column="TextField4" type="String" length="255" />
+		<property name="NumField1" column="NumField1" type="Decimal"  />
+		<property name="NumField2" column="NumField2" type="Decimal"  />
+		<property name="NumField3" column="NumField3" type="Decimal"  />
+		<property name="NumField4" column="NumField4" type="Decimal"  />
+		<property name="DateField1" column="DateField1" type="DateTime"  />
+		<property name="DateField2" column="DateField2" type="DateTime"  />
+    <property name="IsSettleConsignment" column="IsSetCS" type="Boolean" />
+    <property name="IsMRP" column="IsMRP" type="Boolean" />
+  </class>
+</hibernate-mapping>

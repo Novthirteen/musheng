@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+ 	<class name="com.Sconit.Entity.MasterData.Menu, com.Sconit.Entity" table="ACC_Menu" lazy="false">
+		<id name="Id" column="Id" type="String" unsaved-value="null" >
+      		<generator class="assigned" />
+        </id>
+		<property name="Code" column="Code" type="String" length="255" />	
+		<property name="Version" column="Version" type="Int32"  />	
+		<property name="Title" column="Title" type="String" length="255" />	
+		<property name="Description" column="Description" type="String" length="255" />	
+		<property name="Desc" column="Desc_" type="String" length="255" />	
+		<property name="PageUrl" column="PageUrl" type="String" length="255" />	
+		<property name="IsActive" column="IsActive" type="Boolean"  />	
+		<property name="ImageUrl" column="ImageUrl" type="String" length="255" />	
+		<property name="CreateDate" column="CreateDate" type="DateTime"  />	
+		<many-to-one name="CreateUser" column="CreateUser" class="com.Sconit.Entity.MasterData.User, com.Sconit.Entity" cascade="none" />
+		<property name="LastModifyDate" column="LastModifyDate" type="DateTime"  />	
+		<many-to-one name="LastModifyUser" column="LastModifyUser" class="com.Sconit.Entity.MasterData.User, com.Sconit.Entity" cascade="none" />
+		<property name="Remark" column="Remark" type="String" length="255" />	
+  	</class>
+</hibernate-mapping>
