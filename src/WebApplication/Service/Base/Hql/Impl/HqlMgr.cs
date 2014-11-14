@@ -141,6 +141,81 @@ namespace com.Sconit.Service.Hql.Impl
         {
             return this.hqlDao.FindAll<T>(hqlString, param, types, firstRow, maxRows);
         }
+
+        public IList FindAllWithNativeSql(string sql)
+        {
+            return hqlDao.FindAllWithNativeSql(sql);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object value)
+        {
+            return hqlDao.FindAllWithNativeSql(sql, value);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object value, IType type)
+        {
+            return hqlDao.FindAllWithNativeSql(sql, value, type);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object[] values)
+        {
+            return hqlDao.FindAllWithNativeSql(sql, values);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object[] values, IType[] types)
+        {
+            return hqlDao.FindAllWithNativeSql(sql, values, types);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql)
+        {
+            return hqlDao.FindAllWithNativeSql<T>(sql);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object value)
+        {
+            return hqlDao.FindAllWithNativeSql<T>(sql, value);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object value, IType type)
+        {
+            return hqlDao.FindAllWithNativeSql<T>(sql, value, type);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values)
+        {
+            return hqlDao.FindAllWithNativeSql<T>(sql, values);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IType[] types)
+        {
+            return hqlDao.FindAllWithNativeSql<T>(sql, values, types);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql)
+        {
+            return hqlDao.FindEntityWithNativeSql<T>(sql);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object value)
+        {
+            return hqlDao.FindEntityWithNativeSql<T>(sql, value);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object value, IType type)
+        {
+            return hqlDao.FindEntityWithNativeSql<T>(sql, value, type);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object[] values)
+        {
+            return hqlDao.FindEntityWithNativeSql<T>(sql, values);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object[] values, IType[] types)
+        {
+            return hqlDao.FindEntityWithNativeSql<T>(sql, values, types);
+        }
     }
 }
 

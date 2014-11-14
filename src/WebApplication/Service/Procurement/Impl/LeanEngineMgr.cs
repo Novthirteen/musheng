@@ -16,6 +16,7 @@ using LeanEngine.Utility;
 using LeanEngine;
 using Castle.Services.Transaction;
 using NHibernate.Transform;
+using com.Sconit.Service.Ext.Hql;
 
 namespace com.Sconit.Service.Procurement.Impl
 {
@@ -31,6 +32,7 @@ namespace com.Sconit.Service.Procurement.Impl
         public IList<OrderLocTransView> _orderLocTransViews;
 
         public ICriteriaMgrE CriteriaMgrE { get; set; }
+        public IHqlMgrE hqlMgrE { get; set; }
         public IFlowMgrE FlowMgrE { get; set; }
         public IFlowDetailMgrE FlowDetailMgrE { get; set; }
         public IOrderMgrE OrderMgrE { get; set; }
@@ -630,7 +632,6 @@ namespace com.Sconit.Service.Procurement.Impl
 
         #endregion Public Methods
 
-
         #region Private Methods
         private List<string> GetDemandSource(string loc, string extraDmdSource)
         {
@@ -667,12 +668,13 @@ namespace com.Sconit.Service.Procurement.Impl
         }
         public IList<LocationDetail> GetLocationDetail(List<string> locList, List<string> itemList)
         {
-            DetachedCriteria criteria = DetachedCriteria.For(typeof(LocationDetail));
-            criteria.Add(Expression.Not(Expression.Eq("Qty", new decimal(0))));
-            this.SetInCriteria<string>(criteria, "Location.Code", locList);
-            this.SetInCriteria<string>(criteria, "Item.Code", itemList);
+            return this.hqlMgrE.FindEntityWithNativeSql<LocationDetail>("select * from LocationDet with(NOLOCK) where Qty <> 0");
+            //DetachedCriteria criteria = DetachedCriteria.For(typeof(LocationDetail));
+            //criteria.Add(Expression.Not(Expression.Eq("Qty", new decimal(0))));
+            //this.SetInCriteria<string>(criteria, "Location.Code", locList);
+            //this.SetInCriteria<string>(criteria, "Item.Code", itemList);
 
-            return CriteriaMgrE.FindAll<LocationDetail>(criteria);
+            //return CriteriaMgrE.FindAll<LocationDetail>(criteria);
         }
 
         public IList<InspectOrderDetail> GetInspectOrderDetail()
@@ -770,12 +772,13 @@ namespace com.Sconit.Service.Procurement.Impl
         }
         public IList<OrderLocTransView> GetOrderLocTransView(List<string> locList, List<string> itemList)
         {
-            DetachedCriteria criteria = DetachedCriteria.For(typeof(OrderLocTransView));
-            OrderHelper.SetOpenOrderStatusCriteria(criteria, "Status");
-            this.SetInCriteria<string>(criteria, "Location", locList);
-            this.SetInCriteria<string>(criteria, "Item.Code", itemList);
+            return hqlMgrE.FindEntityWithNativeSql<OrderLocTransView>("select * from OrderLocTransView with(NOLOCK) where Status in ('Submit', 'In-Process')");
+            //DetachedCriteria criteria = DetachedCriteria.For(typeof(OrderLocTransView));
+            //OrderHelper.SetOpenOrderStatusCriteria(criteria, "Status");
+            //this.SetInCriteria<string>(criteria, "Location", locList);
+            //this.SetInCriteria<string>(criteria, "Item.Code", itemList);
 
-            return CriteriaMgrE.FindAll<OrderLocTransView>(criteria);
+            //return CriteriaMgrE.FindAll<OrderLocTransView>(criteria);
         }
         #endregion
 

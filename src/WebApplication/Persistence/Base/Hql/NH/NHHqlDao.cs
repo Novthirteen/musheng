@@ -5,6 +5,7 @@ using System.Text;
 using NHibernate.Type;
 using System.Collections;
 using Castle.Facilities.NHibernateIntegration;
+using NHibernate;
 
 namespace com.Sconit.Persistence.Hql.NH
 {
@@ -128,6 +129,177 @@ namespace com.Sconit.Persistence.Hql.NH
         public virtual IList<T> FindAll<T>(string hqlString, IDictionary<string, object> param, IType[] types, int firstRow, int maxRows)
         {
             return FindAllWithCustomQuery<T>(hqlString, param, types, firstRow, maxRows);
+        }
+
+        public IList FindAllWithNativeSql(string sql)
+        {
+            return FindAllWithNativeSql(sql, (object[])null, (IType[])null);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object value)
+        {
+            return FindAllWithNativeSql(sql, new object[] { value }, (IType[])null);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object value, IType type)
+        {
+            return FindAllWithNativeSql(sql, new object[] { value }, new IType[] { type });
+
+        }
+
+        public IList FindAllWithNativeSql(string sql, object[] values)
+        {
+            return FindAllWithNativeSql(sql, values, (IType[])null);
+        }
+
+        public IList FindAllWithNativeSql(string sql, object[] values, IType[] types)
+        {
+            if (sql == null || sql.Length == 0) throw new ArgumentNullException("queryString");
+            if (values != null && types != null && types.Length != values.Length) throw new ArgumentException("Length of values array must match length of types array");
+
+            using (ISession session = GetSession())
+            {
+                try
+                {
+                    ISQLQuery query = session.CreateSQLQuery(sql);
+                    if (values != null)
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            if (types != null && types[i] != null)
+                            {
+                                query.SetParameter(i, values[i], types[i]);
+                            }
+                            else
+                            {
+                                query.SetParameter(i, values[i]);
+                            }
+                        }
+                    }
+
+                    IList result = query.List();
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new DataException("Could not perform Find for custom query : " + sql, ex);
+                }
+            }
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql)
+        {
+            return FindAllWithNativeSql<T>(sql, (object[])null, (IType[])null);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object value)
+        {
+            return FindAllWithNativeSql<T>(sql, new object[] { value }, (IType[])null);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object value, IType type)
+        {
+            return FindAllWithNativeSql<T>(sql, new object[] { value }, new IType[] { type });
+
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values)
+        {
+            return FindAllWithNativeSql<T>(sql, values, (IType[])null);
+        }
+
+        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IType[] types)
+        {
+            if (sql == null || sql.Length == 0) throw new ArgumentNullException("queryString");
+            if (values != null && types != null && types.Length != values.Length) throw new ArgumentException("Length of values array must match length of types array");
+
+            using (ISession session = GetSession())
+            {
+                try
+                {
+                    ISQLQuery query = session.CreateSQLQuery(sql);
+                    if (values != null)
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            if (types != null && types[i] != null)
+                            {
+                                query.SetParameter(i, values[i], types[i]);
+                            }
+                            else
+                            {
+                                query.SetParameter(i, values[i]);
+                            }
+                        }
+                    }
+
+                    IList<T> result = query.List<T>();
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new DataException("Could not perform Find for custom query : " + sql, ex);
+                }
+            }
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql)
+        {
+            return FindEntityWithNativeSql<T>(sql, (object[])null, (IType[])null);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object value)
+        {
+            return FindEntityWithNativeSql<T>(sql, new object[] { value }, (IType[])null);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object value, IType type)
+        {
+            return FindEntityWithNativeSql<T>(sql, new object[] { value }, new IType[] { type });
+
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object[] values)
+        {
+            return FindEntityWithNativeSql<T>(sql, values, (IType[])null);
+        }
+
+        public IList<T> FindEntityWithNativeSql<T>(string sql, object[] values, IType[] types)
+        {
+            if (sql == null || sql.Length == 0) throw new ArgumentNullException("queryString");
+            if (values != null && types != null && types.Length != values.Length) throw new ArgumentException("Length of values array must match length of types array");
+
+            using (ISession session = GetSession())
+            {
+                try
+                {
+                    ISQLQuery query = session.CreateSQLQuery(sql).AddEntity(typeof(T));
+                    if (values != null)
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            if (types != null && types[i] != null)
+                            {
+                                query.SetParameter(i, values[i], types[i]);
+                            }
+                            else
+                            {
+                                query.SetParameter(i, values[i]);
+                            }
+                        }
+                    }
+
+                    IList<T> result = query.List<T>();
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new DataException("Could not perform Find for custom query : " + sql, ex);
+                }
+            }
         }
     }
 }
