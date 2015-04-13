@@ -297,8 +297,12 @@ namespace com.Sconit.Utility
             string moduleSubType = (dic == null || !dic.ContainsKey("ModuleSubType")) ? null : dic["ModuleSubType"];
             string priority = (dic == null || !dic.ContainsKey("Priority")) ? null : dic["Priority"];
             string createUser = (dic == null || !dic.ContainsKey("CreateUser")) ? null : dic["CreateUser"];
-            string startDate = (dic == null || !dic.ContainsKey("StartDate")) ? null : dic["StartDate"];
-            string endDate = (dic == null || !dic.ContainsKey("EndDate")) ? null : dic["EndDate"];
+            //modify by ljz start
+            //string startDate = (dic == null || !dic.ContainsKey("StartDate")) ? null : dic["StartDate"];
+            //string endDate = (dic == null || !dic.ContainsKey("EndDate")) ? null : dic["EndDate"];
+            string ArriveStartDate = (dic == null || !dic.ContainsKey("ArriveStartDate")) ? null : dic["ArriveStartDate"];
+            string ArriveEndDate = (dic == null || !dic.ContainsKey("ArriveEndDate")) ? null : dic["ArriveEndDate"];
+            //modify by ljz end
             string currentUser = (dic == null || !dic.ContainsKey("CurrentUser")) ? null : dic["CurrentUser"];
 
             DetachedCriteria selectCriteria = DetachedCriteria.For(typeof(OrderHead));
@@ -394,18 +398,32 @@ namespace com.Sconit.Utility
                 selectCountCriteria.Add(Expression.Eq("CreateUser.Code", createUser));
             }
 
+            //modify by ljz start
             #region date
-            if (startDate != null && startDate != string.Empty)
+            //if (startDate != null && startDate != string.Empty)
+            //{
+            //    selectCriteria.Add(Expression.Ge("CreateDate", DateTime.Parse(startDate)));
+            //    selectCountCriteria.Add(Expression.Ge("CreateDate", DateTime.Parse(startDate)));
+            //}
+            //if (endDate != null && endDate != string.Empty)
+            //{
+            //    selectCriteria.Add(Expression.Lt("CreateDate", DateTime.Parse(endDate).AddDays(1)));
+            //    selectCountCriteria.Add(Expression.Lt("CreateDate", DateTime.Parse(endDate).AddDays(1)));
+            //}
+            #endregion
+            #region arrivedate
+            if (ArriveStartDate != null && ArriveStartDate != string.Empty)
             {
-                selectCriteria.Add(Expression.Ge("CreateDate", DateTime.Parse(startDate)));
-                selectCountCriteria.Add(Expression.Ge("CreateDate", DateTime.Parse(startDate)));
+                selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(ArriveStartDate)));
+                selectCountCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(ArriveStartDate)));
             }
-            if (endDate != null && endDate != string.Empty)
+            if (ArriveEndDate != null && ArriveEndDate != string.Empty)
             {
-                selectCriteria.Add(Expression.Lt("CreateDate", DateTime.Parse(endDate).AddDays(1)));
-                selectCountCriteria.Add(Expression.Lt("CreateDate", DateTime.Parse(endDate).AddDays(1)));
+                selectCriteria.Add(Expression.Lt("WindowTime", DateTime.Parse(ArriveEndDate).AddDays(1)));
+                selectCountCriteria.Add(Expression.Lt("WindowTime", DateTime.Parse(ArriveEndDate).AddDays(1)));
             }
             #endregion
+            //modify by ljz end
 
             #region status
             if (statusList != null && statusList.Count > 0)
@@ -429,8 +447,12 @@ namespace com.Sconit.Utility
             string moduleSubType = (dic == null || !dic.ContainsKey("ModuleSubType")) ? null : dic["ModuleSubType"];
             string priority = (dic == null || !dic.ContainsKey("Priority")) ? null : dic["Priority"];
             string createUser = (dic == null || !dic.ContainsKey("CreateUser")) ? null : dic["CreateUser"];
-            string startDate = (dic == null || !dic.ContainsKey("StartDate")) ? null : dic["StartDate"];
-            string endDate = (dic == null || !dic.ContainsKey("EndDate")) ? null : dic["EndDate"];
+            //modify by ljz start
+            //string startDate = (dic == null || !dic.ContainsKey("StartDate")) ? null : dic["StartDate"];
+            //string endDate = (dic == null || !dic.ContainsKey("EndDate")) ? null : dic["EndDate"];
+            string ArriveStartDate = (dic == null || !dic.ContainsKey("ArriveStartDate")) ? null : dic["ArriveStartDate"];
+            string ArriveEndDate = (dic == null || !dic.ContainsKey("ArriveEndDate")) ? null : dic["ArriveEndDate"];
+            //modify by ljz end 
             string currentUser = (dic == null || !dic.ContainsKey("CurrentUser")) ? null : dic["CurrentUser"];
             string item = (dic == null || !dic.ContainsKey("Item")) ? null : dic["Item"];
 
@@ -546,18 +568,32 @@ namespace com.Sconit.Utility
                 selectCountCriteria.Add(Expression.Eq("od.CreateUser.Code", createUser));
             }
 
+            //modify by ljz start
             #region date
-            if (startDate != null && startDate != string.Empty)
+            //if (startDate != null && startDate != string.Empty)
+            //{
+            //    selectCriteria.Add(Expression.Ge("od.CreateDate", DateTime.Parse(startDate)));
+            //    selectCountCriteria.Add(Expression.Ge("od.CreateDate", DateTime.Parse(startDate)));
+            //}
+            //if (endDate != null && endDate != string.Empty)
+            //{
+            //    selectCriteria.Add(Expression.Lt("od.CreateDate", DateTime.Parse(endDate).AddDays(1)));
+            //    selectCountCriteria.Add(Expression.Lt("od.CreateDate", DateTime.Parse(endDate).AddDays(1)));
+            //}
+            #endregion
+            #region arrivedate
+            if (ArriveStartDate != null && ArriveStartDate != string.Empty)
             {
-                selectCriteria.Add(Expression.Ge("od.CreateDate", DateTime.Parse(startDate)));
-                selectCountCriteria.Add(Expression.Ge("od.CreateDate", DateTime.Parse(startDate)));
+                selectCriteria.Add(Expression.Ge("od.WindowTime", DateTime.Parse(ArriveStartDate)));
+                selectCountCriteria.Add(Expression.Ge("od.WindowTime", DateTime.Parse(ArriveStartDate)));
             }
-            if (endDate != null && endDate != string.Empty)
+            if (ArriveEndDate != null && ArriveEndDate != string.Empty)
             {
-                selectCriteria.Add(Expression.Lt("od.CreateDate", DateTime.Parse(endDate).AddDays(1)));
-                selectCountCriteria.Add(Expression.Lt("od.CreateDate", DateTime.Parse(endDate).AddDays(1)));
+                selectCriteria.Add(Expression.Lt("od.WindowTime", DateTime.Parse(ArriveEndDate).AddDays(1)));
+                selectCountCriteria.Add(Expression.Lt("od.WindowTime", DateTime.Parse(ArriveEndDate).AddDays(1)));
             }
             #endregion
+            //modify by ljz end
 
             #region status
             if (statusList != null && statusList.Count > 0)
