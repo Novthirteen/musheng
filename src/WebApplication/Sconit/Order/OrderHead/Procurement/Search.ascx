@@ -90,8 +90,9 @@
                 <asp:DropDownList ID="ddlSubType" runat="server" DataTextField="Description" DataValueField="Value" />
             </td>
         </tr>
+        <%--modify by ljz start--%>
         <tr>
-            <td class="td01">
+            <%--<td class="td01">
                 <asp:Literal ID="ltlStartDate" runat="server" Text="${MasterData.PlannedBill.CreateDateFrom}:" />
             </td>
             <td class="td02">
@@ -102,9 +103,30 @@
             </td>
             <td class="td02">
                 <asp:TextBox ID="tbEndDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+            </td>--%>
+            <td class="td01">
+                <asp:Literal ID="ltlStartDate" runat="server" Text="${MasterData.PlannedBill.ArriveStartDate}:" />
+            </td>
+            <td class="td02">
+                <asp:TextBox ID="tbStartDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+            </td>
+            <td class="td01">
+                <asp:Literal ID="ltlEndDate" runat="server" Text="${MasterData.PlannedBill.ArriveEndDate}:" />
+            </td>
+            <td class="td02">
+                <asp:TextBox ID="tbEndDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
             </td>
         </tr>
+        <%--modify by ljz end--%>
         <tr>
+            <%--add by ljz start--%>
+            <%--<td class="td01">
+                <asp:Literal ID="ltlWindowTime" runat="server" Text="${MasterData.PlannedBill.WindowTime}:" />
+            </td>
+            <td class="td02">
+                <asp:TextBox ID="tbWindowTime" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+            </td>--%>
+            <%--add by ljz end--%>
             <td class="td01">
                 <asp:Literal ID="lblItem" runat="server" Text="${Common.Business.Item}:" />
             </td>
