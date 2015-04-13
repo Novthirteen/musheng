@@ -32,6 +32,8 @@ namespace com.Sconit.Service.MasterData
 
         int ReadFromXls(Stream inputStream, User user);
 
+        string GetCacheAllItemString();
+
         #endregion Customized Methods
     }
 }

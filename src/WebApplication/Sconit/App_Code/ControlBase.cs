@@ -30,6 +30,7 @@ using com.Sconit.Service.Ext.Hql;
 using com.Sconit.Service.Ext.Customize;
 using com.Sconit.Service.Ext.MRP;
 using com.Sconit.Service.Ext;
+using com.Sconit.Service;
 
 /// <summary>
 /// Summary description for ControlBase
@@ -332,6 +333,7 @@ namespace com.Sconit.Web
         protected IBalanceMgrE TheBalanceMgr { get { return GetService<IBalanceMgrE>("BalanceMgr.service"); } }
         protected IRawIOBMgrE TheRawIOBMgr { get { return GetService<IRawIOBMgrE>("RawIOBMgr.service"); } }
 
+        protected IGenericMgr TheGenericMgr { get { return GetService<IGenericMgr>("GenericMgr.service"); } }
 
 
         #endregion

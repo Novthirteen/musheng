@@ -141,6 +141,20 @@
                         <asp:TextBox ID="tbInvoiceDate" runat="server" Text='<%# Bind("InvoiceDate","{0:yyyy-MM-dd}") %>'
                             onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
                     </td>
+                </tr>
+                 <tr>
+                    <td class="td01">
+                        <asp:Literal ID="lblPaymentDate" runat="server" Text="${MasterData.Bill.PaymentDate}:" />
+                    </td>
+                    <td class="td02">
+                        <asp:TextBox ID="tbPaymentDate" runat="server" Text='<%# Bind("PaymentDate","{0:yyyy-MM-dd}") %>'
+                            onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                    </td>
+                    <td class="td01">
+                    </td>
+                    <td class="td02">
+                    </td>
+                </tr>
             </table>
         </EditItemTemplate>
     </asp:FormView>

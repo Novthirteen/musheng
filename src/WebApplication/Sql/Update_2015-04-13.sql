@@ -1,0 +1,1 @@
+alter table BillMstr add PaymentDate date null

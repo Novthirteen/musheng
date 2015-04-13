@@ -80,6 +80,13 @@ public partial class MasterData_FlowDetail_Search : SearchModuleBase
             DetachedCriteria selectCountCriteria = DetachedCriteria.For(typeof(FlowDetail))
                 .SetProjection(Projections.Count("Id"));
             selectCriteria.AddOrder(Order.Asc("Sequence"));
+
+            selectCriteria.Add(Expression.Ge("EndDate", DateTime.Now.Date));
+            selectCountCriteria.Add(Expression.Ge("EndDate", DateTime.Now.Date));
+
+            selectCriteria.Add(Expression.Gt("MRPWeight", 0));
+            selectCountCriteria.Add(Expression.Gt("MRPWeight", 0));
+
             if (flow.ReferenceFlow != null && flow.ReferenceFlow.Trim() != string.Empty)
             {
                 //添加零件组引用明细

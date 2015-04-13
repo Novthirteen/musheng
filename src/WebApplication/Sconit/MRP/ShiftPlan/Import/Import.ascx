@@ -75,7 +75,7 @@
             </td>
             <td class="td02">
                 <asp:HyperLink ID="hlTemplate" runat="server" Text="${Common.Business.ClickToDownload}"
-                    NavigateUrl="~/Reports/Templates/ExcelTemplates/ImportTemplates/PSModelSample.xls"></asp:HyperLink>
+                    NavigateUrl="~/Reports/Templates/ImportTemplates/PSModelSample.xls"></asp:HyperLink>
             </td>
         </tr>
         <tr>

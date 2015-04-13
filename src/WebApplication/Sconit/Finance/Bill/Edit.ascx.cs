@@ -283,6 +283,13 @@ public partial class Finance_Bill_Edit : ListModuleBase
         try
         {
             Bill bill = this.TheBillMgr.LoadBill(this.BillNo, true);
+
+            TextBox tbPaymentDate = this.FV_Bill.FindControl("tbPaymentDate") as TextBox;
+            if (tbPaymentDate.Text.Trim() != string.Empty)
+            {
+                bill.PaymentDate = DateTime.Parse(tbPaymentDate.Text.Trim());
+            }
+
             if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT)
             {
                 TextBox tbExternalBillNo = this.FV_Bill.FindControl("tbExternalBillNo") as TextBox;
@@ -314,6 +321,8 @@ public partial class Finance_Bill_Edit : ListModuleBase
                 {
                     bill.InvoiceDate = DateTime.Parse(tbInvoiceDate.Text.Trim());
                 }
+
+               
 
                 bill.LastModifyUser = this.CurrentUser;
                 bill.LastModifyDate = DateTime.Now;

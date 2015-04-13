@@ -381,6 +381,17 @@ namespace com.Sconit.Entity.MasterData
             }
         }
 
+        private DateTime? _paymentDate { get; set; }
+        public DateTime? PaymentDate
+        {
+            get {
+                return _paymentDate;
+            }
+            set {
+                _paymentDate = value;
+            }
+        }
+
         #endregion
 
 		public override int GetHashCode()

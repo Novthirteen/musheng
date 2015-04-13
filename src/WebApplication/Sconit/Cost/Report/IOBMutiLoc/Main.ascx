@@ -1,13 +1,183 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Main.ascx.cs" Inherits="Cost_Report_IOBMutiLoc_Main" %>
 <%@ Register Src="~/Controls/TextBox.ascx" TagName="textbox" TagPrefix="uc3" %>
+<style type="text/css">
+        .li_singula {
+            /*border: solid 2px red;*/
+            list-style-type:none; 
+            text-align:left;
+            border-bottom-width: 0px;
+            background-color:#D4D4D4;
+        }
+
+        .li_double {
+            /*border: solid 2px red;*/
+            list-style-type:none; 
+            text-align:left;
+            border-bottom-width: 0px;
+        }
+
+    .li_mouseOver {
+        list-style-type:none; 
+            text-align:left;
+            border-bottom-width: 0px;
+            background-color:#808AF4;
+    }
+
+
+
+    </style>
+
+<script type="text/javascript">
+
+    var onMouseover = 0;
+    var onFocus = 0;
+    function doMouseOver()
+    {
+        onMouseover = 1;
+     }
+
+
+
+    function onblurClick(e) {
+        onFocus = 0;
+        if (onMouseover == 0) {
+            $("#ctl01_demo").hide();
+        } 
+    }
+    function onMouse(e) {
+        onMouseover = 1;
+        $(e).attr("class", "li_mouseOver");
+    }
+    function outMouse_singula(e){
+        onMouseover = 1;
+        $(e).attr("class", "li_singula");
+    }
+
+    function outMouse_double(e){
+        $(e).attr("class", "li_double");
+    }
+
+    $(function () {
+        $("#ctl01_demo").hide();
+        $("body").click(function () {
+            var mouseOverLi = $(".li_mouseOver");
+                if (mouseOverLi.length == 0) {
+                    $("#ctl01_demo").hide();
+                }
+        });
+    });
+
+    function textChange(e)
+    {
+        onFocus = 1;
+        $("li").html("");
+        var s = document.getElementById('ctl01_ulList');
+        var checkName = $(e).attr("name");
+        var existsVal = $("#ctl01_tbLocation").val();
+        var valueArr = new Array();
+        if (existsVal != "" && existsVal!=undefined)
+        {
+            valueArr = existsVal.split(',');
+        }
+        Sys.Net.WebServiceProxy.invoke('Webservice/LocationMgr.asmx', 'GetLocationByLikeCode', false,
+              { "likeCode": $("#ctl01_valueText").val() },
+          function OnSucceeded(data, eventArgs) {
+              if (data == undefined || data == "" || data == null) {
+              } else {
+                  $("li").html("");
+                  var jsonvalue = eval(data);
+                  for (var i = 0; i < jsonvalue.length; i++) {
+                      var v = jsonvalue[i];
+                      var isexists = false;
+                      for (var j = 0; j < valueArr.length; j++) {
+                          var cValue = valueArr[j];
+                          if (cValue == v.Code) {
+                              isexists = true;
+                              break;
+                          }
+                      }
+                      if (i > 50) {
+                          break;
+                      }
+                      var li = "<li class='li_singula'><div  onmouseover='onMouse(this)' onmouseout='outMouse_singula(this)' ><input type='checkbox' name='" + checkName + "'  onclick='changeClick(this)' value=" + v.Code + " >" + v.Code + "[" + v.Name + "]</div></li>";
+                      if (isexists) {
+                          li = "<li class='li_singula' ><div onmouseover='onMouse(this)' onmouseout='outMouse_double(this)'><input type='checkbox'  name='" + checkName + "' onclick='changeClick(this)' checked='checked' value=" + v.Code + " >" + v.Code + "[" + v.Name + "]</div></li>";
+                      }
+                      if (i % 2 == 1) {
+                          li = "<li class='li_double' ><div onmouseover='onMouse(this)' onmouseout='outMouse_double(this)'><input type='checkbox'  name='" + checkName + "' onclick='changeClick(this)' value=" + v.Code + " >" + v.Code + "[" + v.Name + "]</div></li>";
+                          if (isexists) {
+                              li = "<li class='li_double' ><div onmouseover='onMouse(this)' onmouseout='outMouse_double(this)'><input type='checkbox'  name='" + checkName + "' onclick='changeClick(this)' checked='checked' value=" + v.Code + " >" + v.Code + "[" + v.Name + "]</div></li>";
+                          }
+                      }
+                      $(s).append(li);
+                  }
+              }
+              $("#ctl01_demo").show();
+          },
+          function OnFailed(error) {
+              alert(error.get_message());
+          });
+
+        
+    }
+
+    function changeClick(e) {
+        var checkboxName = $(e).attr("name");
+        var $checkRecords = $("input[name='" + checkboxName + "']:checked");
+
+        var existsVal = $("#ctl01_tbLocation").val();
+        var valueArr = new Array();
+        if (existsVal != "" && existsVal != undefined) {
+            valueArr = existsVal.split(',');
+        }
+        var checkedValues = existsVal;
+
+        for (var i = 0; i < $checkRecords.length; i++) {
+            if ($checkRecords[i].checked) {
+                var v = $checkRecords[i].value;
+                var isexists = false;
+                for (var j = 0; j < valueArr.length; j++) {
+                    var cValue = valueArr[j];
+                    if (cValue == v) {
+                        isexists = true;
+                        break;
+                    }
+                }
+                if (isexists)
+                {
+                    continue;
+                }
+                if (checkedValues == "") {
+                    checkedValues = v;
+                } else {
+                    checkedValues += "," + v;
+                }
+            }
+        }
+        $("#ctl01_tbLocation").val(checkedValues);
+    }
+
+</script>
 <fieldset>
     <table class="mtable">
-        <tr>
-            <td class="td01">
+         <tr>
+            <td class="td01" >
                 <asp:Literal ID="lblLocation" runat="server" Text="${Common.Business.Location}:" />
             </td>
+            <td class="td02" colspan="3" >
+                <asp:TextBox ID="tbLocation" runat="server" CssClass="inputRequired" Width="600" />
+            </td>
+        </tr>
+        <tr>
+            <td class="td01">
+                <asp:Literal ID="lblLocation1" runat="server" Text="${Common.Business.Location}:" />
+            </td>
             <td class="td02">
-                <asp:TextBox ID="tbLocation" runat="server" CssClass="inputRequired" Width="300" />
+                <input type="text" ID="valueText" name="checkboxName" runat="server" ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem"  onclick="textChange(this)"   onkeyup="textChange(this)" onfocus="textChange(this)" onblur="onblurClick(this)" />
+                <div id="demo" runat="server" style="width:180px;height:150px;background-color:white;border:1px solid black; display:none; z-index:0"  onmouseover="doMouseOver(this)" >
+                    <ul id="ulList" runat="server" style="height:100%;background-color:white; overflow:auto;margin:0;padding:0;border:0;" size=12>
+                    </ul>
+                </div>
             </td>
             <td class="td01">
                 <asp:Literal ID="lblItem" runat="server" Text="${Common.Business.ItemCode}:" />

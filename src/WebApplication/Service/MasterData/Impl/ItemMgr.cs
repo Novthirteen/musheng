@@ -14,6 +14,9 @@ using NPOI.SS.UserModel;
 using System.IO;
 using System.Linq;
 using com.Sconit.Utility;
+using System.Data;
+using System.Text;
+using com.Sconit.Persistence;
 
 //TODO: Add other using statements here.
 
@@ -24,6 +27,9 @@ namespace com.Sconit.Service.MasterData.Impl
     {
         private static IList<Item> cachedAllItem;
         private static DateTime cacheDateTime;
+        private static string cachedAllItemString;
+        private static long cachedAllItemCount;
+        private static long cachedAllItemId;
 
         public IItemKitMgrE itemKitMgrE { get; set; }
 
@@ -33,6 +39,7 @@ namespace com.Sconit.Service.MasterData.Impl
         public IItemBrandMgrE itemBrandMgrE { get; set; }
         //public IUomMgrE uomMgrE { get; set; }
         public IItemCategoryMgrE itemCategoryMgrE { get; set; }
+        public ISqlHelperDao sqlHelperDao { get; set; }
 
         #region Customized Methods
 
@@ -65,6 +72,58 @@ namespace com.Sconit.Service.MasterData.Impl
         public Item GetCatchItem(string itemCode)
         {
             return GetCacheAllItem().FirstOrDefault(p => string.Equals(itemCode.Trim(), p.Code.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        public string GetCacheAllItemString()
+        {
+            if (cachedAllItemString == null)
+            {
+                DoGetAllCacheItemString();
+            }
+            else
+            {
+                //检查Item大小是否发生变化
+                DataSet ds = sqlHelperDao.GetDatasetBySql("select COUNT(1) as c, SUM(Id) as s from Item where IsActive = 1", null);
+                long count = long.Parse(ds.Tables[0].Rows[0][0].ToString());
+                long sumId = long.Parse(ds.Tables[0].Rows[0][1].ToString());
+
+                if (count != cachedAllItemCount || sumId != cachedAllItemId)
+                {
+                    DoGetAllCacheItemString();
+                }
+            }
+
+            return cachedAllItemString;
+        }
+
+        private static object GetAllItemStringLock = new object();
+        private void DoGetAllCacheItemString()
+        {
+            lock (GetAllItemStringLock)
+            {
+                //检查Item大小是否发生变化
+                DataSet ds = sqlHelperDao.GetDatasetBySql("select COUNT(1) as c, SUM(Id) as s from Item where IsActive = 1", null);
+                long count = long.Parse(ds.Tables[0].Rows[0][0].ToString());
+                long sumId = long.Parse(ds.Tables[0].Rows[0][1].ToString());
+
+                if (count != cachedAllItemCount || sumId != cachedAllItemId)
+                {
+                    IList<Item> thisAllItem = GetAllItem();
+                    StringBuilder data = new StringBuilder("[");
+                    for (int i = 0; i < thisAllItem.Count; i++)
+                    {
+                        Item item = thisAllItem[i];
+                        string desc = item.Description1;
+                        desc = desc.Replace("'", "");
+                        data.Append(TextBoxHelper.GenSingleData(desc, item.Code) + (i < (thisAllItem.Count - 1) ? "," : string.Empty));
+                    }
+                    data.Append("]");
+
+                    cachedAllItemString = data.ToString();
+                    cachedAllItemCount = count;
+                    cachedAllItemId = sumId;
+                }
+            }
         }
 
         [Transaction(TransactionMode.Unspecified)]

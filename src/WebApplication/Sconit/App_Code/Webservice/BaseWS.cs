@@ -13,6 +13,9 @@ using com.Sconit.Service.Ext.Production;
 using com.Sconit.Utility;
 using com.Sconit.Service.Ext.Criteria;
 using com.Sconit.Service.Ext.View;
+using com.Sconit.Service;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
 
 /// <summary>
 /// Summary description for BaseWS
@@ -29,6 +32,15 @@ public class BaseWS : System.Web.Services.WebService
     protected T GetService<T>(string serviceName)
     {
         return ServiceLocator.GetService<T>(serviceName);
+    }
+
+    public static string JsonSerializer<T>(List<T> list)
+    {
+        JavaScriptSerializer jss = new JavaScriptSerializer();
+
+        //传一个对象过去 
+        String json = jss.Serialize(list);
+        return json.Replace("null", "''");
     }
 
     #region Services
@@ -131,6 +143,7 @@ public class BaseWS : System.Web.Services.WebService
     //protected IReportMgrE TheReportMgr { get { return GetService<IReportMgrE>("ReportMgr.service"); } }
     //protected IScanBarcodeMgrE TheScanBarcodeMgr { get { return GetService<IScanBarcodeMgrE>("ScanBarcodeMgr.service"); } }
     protected IMenuViewMgrE TheMenuViewMgr = ServiceLocator.GetService<IMenuViewMgrE>("MenuViewMgr.service");
+    protected IGenericMgr TheGenericMgr { get { return GetService<IGenericMgr>("GenericMgr.service"); } }
     #endregion
 
     #region 私有

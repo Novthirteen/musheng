@@ -19,6 +19,7 @@ using NHibernate.Expression;
 using com.Sconit.Utility;
 using Geekees.Common.Controls;
 using NHibernate.Transform;
+using System.Text;
 
 public partial class Order_OrderHead_Search : SearchModuleBase
 {
@@ -107,7 +108,12 @@ public partial class Order_OrderHead_Search : SearchModuleBase
             this.ddlSubType.DataBind();
 
             GenerateTree();
+
+            //this.demo.Visible = false;
+
         }
+
+
     }
 
     protected void btnImport_Click(object sender, EventArgs e)
@@ -199,6 +205,40 @@ public partial class Order_OrderHead_Search : SearchModuleBase
             DoSearch();
         }
     }
+
+    //protected void textBox_change(object sender, EventArgs e)
+    //{
+    //    if (!string.IsNullOrEmpty(this.txt.Text.Trim()))
+    //    {
+    //        IList<Item> cacheAllItem = TheItemMgr.GetCacheAllItem();
+    //        if (cacheAllItem != null && cacheAllItem.Count > 0)
+    //        {
+    //            //var returnItems=catcheAllItem.where
+    //            var getItems = (from c in cacheAllItem
+    //                               where c.Code.StartsWith(this.txt.Text.Trim())
+    //                               select c).ToList();
+
+    //            if (getItems != null && getItems.Count() > 0)
+    //            {
+    //                StringBuilder ulData = new StringBuilder();
+    //                ulData.Append("<ul id='ulList' runat='erver' style='width:200px;background-color:white' >");
+    //                foreach (var item in getItems)
+    //                {
+    //                    ulData.Append("<li>");
+    //                    ulData.Append(string.Format("<input type='checkbox' Id='{0}' />'{1}'", item.Code, item.Code + "[" + item.Description1 + "]"));
+    //                    ulData.Append("</li>");
+    //                }
+    //                ulData.Append("</ul>");
+    //                this.ulList.InnerHtml = ulData.ToString();
+    //                this.demo.Visible = true;
+    //            }
+    //            else
+    //            { 
+    //            }
+    //        }
+    //    }
+
+    //}
 
     protected override void DoSearch()
     {

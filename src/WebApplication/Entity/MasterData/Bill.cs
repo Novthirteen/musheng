@@ -61,6 +61,8 @@ namespace com.Sconit.Entity.MasterData
                 return (this.Discount.HasValue ? this.Discount.Value : 0) / (TotalBillDetailAmount == decimal.Zero ? decimal.One : TotalBillDetailAmount) * 100;
             }
         }
+
+        public decimal Amount { get; set; }
         #endregion
     }
 }
