@@ -295,8 +295,12 @@ public partial class Order_OrderHead_Search : SearchModuleBase
         this.parameter.Add("ModuleSubType", this.ModuleSubType);
         this.parameter.Add("Priority", this.ddlPriority.SelectedValue);
         this.parameter.Add("CreateUser", this.tbCreateUser.Text.Trim());
-        this.parameter.Add("StartDate", this.tbStartDate.Text.Trim());
-        this.parameter.Add("EndDate", this.tbEndDate.Text.Trim());
+        //modify by ljz start
+        //this.parameter.Add("StartDate", this.tbStartDate.Text.Trim());  
+        //this.parameter.Add("EndDate", this.tbEndDate.Text.Trim());  
+        this.parameter.Add("ArriveStartDate", this.tbStartDate.Text.Trim()); 
+        this.parameter.Add("ArriveEndDate", this.tbEndDate.Text.Trim());  
+        //modify by ljz end
         this.parameter.Add("CurrentUser", this.CurrentUser.Code);
         if (this.tbItem.Text.Trim() != string.Empty)
         {

@@ -95,7 +95,8 @@
             </td>
         </tr>
         <tr>
-            <td class="td01">
+            <%--modify by ljz start--%>
+            <%--<td class="td01">
                 <asp:Literal ID="ltlStartDate" runat="server" Text="${MasterData.PlannedBill.CreateDateFrom}:" />
             </td>
             <td class="td02">
@@ -106,7 +107,20 @@
             </td>
             <td class="td02">
                 <asp:TextBox ID="tbEndDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+            </td>--%>
+            <td class="td01">
+                <asp:Literal ID="ltlStartDate" runat="server" Text="${MasterData.PlannedBill.ArriveStartDate}:" />
             </td>
+            <td class="td02">
+                <asp:TextBox ID="tbStartDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+            </td>
+            <td class="td01">
+                <asp:Literal ID="ltlEndDate" runat="server" Text="${MasterData.PlannedBill.ArriveEndDate}:" />
+            </td>
+            <td class="td02">
+                <asp:TextBox ID="tbEndDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+            </td>
+            <%--modify by ljz end--%>
         </tr>
          <tr>
             <td class="td01">
