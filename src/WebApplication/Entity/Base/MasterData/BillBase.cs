@@ -361,7 +361,8 @@ namespace com.Sconit.Entity.MasterData
         {
             get
             {
-                return _invoiceDate == null ? this.CreateDate.AddDays(Convert.ToDouble(this.BillAddress.Party.Aging)) : _invoiceDate;
+                return _invoiceDate;
+                //return _invoiceDate == null ? this.CreateDate.AddDays(Convert.ToDouble(this.BillAddress.Party.Aging)) : _invoiceDate;
             }
             set
             {
@@ -385,7 +386,7 @@ namespace com.Sconit.Entity.MasterData
         public DateTime? PaymentDate
         {
             get {
-                return _paymentDate;
+                return _paymentDate == null ? this.CreateDate.AddDays(Convert.ToDouble(this.BillAddress.Party.Aging)) : _paymentDate;
             }
             set {
                 _paymentDate = value;

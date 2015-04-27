@@ -24,6 +24,9 @@ public partial class Cost_FinanceCalendar_Edit : EditModuleBase
 {
     public event EventHandler BackEvent;
 
+    public static bool isCBom_Click = false;
+    public static bool isRm_Click = false;
+
     protected Int32 Id
     {
         get
@@ -95,32 +98,50 @@ public partial class Cost_FinanceCalendar_Edit : EditModuleBase
 
     protected void btnCBom_Click(object sender, EventArgs e)
     {
-        try
+        if (isCBom_Click)
         {
-            FinanceCalendar fc = TheFinanceCalendarMgr.LoadFinanceCalendar(this.Id);
-            this.TheBalanceMgr.GenBomTree(fc, this.CurrentUser.Code);
-            this.TheBalanceMgr.GenCbom(fc, this.CurrentUser.Code);
-            ShowSuccessMessage("Cost.FinanceCalendar.Cbom.Successfully");
+            ShowErrorMessage("Cost.FinanceCalendar.Cbom.Occupy");
         }
-        catch (Exception ex)
+        else
         {
-            ShowErrorMessage("Cost.FinanceCalendar.Cbom.Failed" + ex.Message);
+            try
+            {
+                isCBom_Click = true;
+                FinanceCalendar fc = TheFinanceCalendarMgr.LoadFinanceCalendar(this.Id);
+                this.TheBalanceMgr.GenBomTree(fc, this.CurrentUser.Code);
+                this.TheBalanceMgr.GenCbom(fc, this.CurrentUser.Code);
+                ShowSuccessMessage("Cost.FinanceCalendar.Cbom.Successfully");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Cost.FinanceCalendar.Cbom.Failed" + ex.Message);
+            }
+            isCBom_Click = false;
         }
     }
 
     protected void btnRm_Click(object sender, EventArgs e)
     {
-        try
+        if (isRm_Click)
         {
-            FinanceCalendar fc = TheFinanceCalendarMgr.LoadFinanceCalendar(this.Id);
-            string financeCalendar = fc.FinanceYear.ToString() + "-" + fc.FinanceMonth.ToString();
-
-            this.TheBalanceMgr.GenBalance(fc, this.CurrentUser.Code, true, false);
-            ShowSuccessMessage("Cost.FinanceCalendar.CostRm.Successfully");
+            ShowErrorMessage("Cost.FinanceCalendar.CostRm.Occupy");
         }
-        catch (Exception ex)
+        else
         {
-            ShowErrorMessage("Cost.FinanceCalendar.CostRm.Failed" + ex.Message);
+            try
+            {
+                isRm_Click = true;
+                FinanceCalendar fc = TheFinanceCalendarMgr.LoadFinanceCalendar(this.Id);
+                string financeCalendar = fc.FinanceYear.ToString() + "-" + fc.FinanceMonth.ToString();
+
+                this.TheBalanceMgr.GenBalance(fc, this.CurrentUser.Code, true, false);
+                ShowSuccessMessage("Cost.FinanceCalendar.CostRm.Successfully");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Cost.FinanceCalendar.CostRm.Failed" + ex.Message);
+            }
+            isRm_Click = false;
         }
     }
 

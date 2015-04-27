@@ -103,6 +103,14 @@
             CalCulateRowAmount(obj, "tbUom_suggest", "BaseOnDiscountRate", "tbUnitPrice", "tbOrderQty", "tbDiscount", "tbDiscountRate", "tbPrice", '#<%= tbOrderDiscount.ClientID %>', '#<%= tbOrderDiscountRate.ClientID %>', '#<%= tbOrderDetailPrice.ClientID %>', '#<%= tbOrderPrice.ClientID %>', true);
         }
     }
+
+    $(function () {
+        //alert($(window).height());
+        //alert($(document).height());
+        //$(window).height();  //是获取当前也就是浏览器所能看到的页面的那部分的高度。
+        //$(document).height();  //是获取整个页面的高度
+        $(window).scrollTop($(document).height());
+    });
 </script>
 
 <fieldset runat="server" id="fdDetail">
@@ -356,3 +364,8 @@
     </table>
 </fieldset>
 <uc2:OrderTracer ID="ucOrderTracer" runat="server" Visible="false" />
+<div style="width:100%;height:200px;">
+
+</div>
+
+

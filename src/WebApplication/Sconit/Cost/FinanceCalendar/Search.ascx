@@ -26,6 +26,8 @@
                         CssClass="query" />
                     <asp:Button ID="btnNew" runat="server" Text="${Common.Button.New}" OnClick="btnNew_Click"
                         CssClass="add" />
+                    <asp:Button ID="btnUpBillPeriod" runat="server" Text="${Common.Button.UpBillPeriod}" OnClick="btnUpBillPeriod_Click"
+                        CssClass="add" />
                 </div>
             </td>
         </tr>

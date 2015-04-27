@@ -38,6 +38,8 @@ public partial class Cost_FinanceCalendar_Main : MainModuleBase
         this.ucNew.BackEvent += new System.EventHandler(this.NewBack_Render);
         this.ucNew.CreateEvent += new System.EventHandler(this.CreateBack_Render);
         this.ucEdit.BackEvent += new System.EventHandler(this.EditBack_Render);
+        this.ucSearch.UpUpBillPeriodEvent += new System.EventHandler(this.UpUpBillPeriod_Render);
+        this.ucUpBillPeriod.BackEvent += new System.EventHandler(this.UpBillPeriodBack_Render);
        
 
         if (!IsPostBack)
@@ -129,4 +131,21 @@ public partial class Cost_FinanceCalendar_Main : MainModuleBase
         this.ucList.Visible = true;
         this.ucList.UpdateView();
     }
+
+    void UpUpBillPeriod_Render(object sender, EventArgs e)
+    {
+        this.ucSearch.Visible = false;
+        this.ucList.Visible = false;
+        this.ucUpBillPeriod.Visible = true;
+    }
+
+    void UpBillPeriodBack_Render(object sender, EventArgs e)
+    {
+        this.ucUpBillPeriod.Visible = false;
+        this.ucSearch.Visible = true;
+        this.ucList.Visible = true;
+        this.ucList.UpdateView();
+    }
+
+    
 }

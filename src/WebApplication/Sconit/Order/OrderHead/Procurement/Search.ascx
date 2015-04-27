@@ -131,15 +131,15 @@
                 <asp:Literal ID="lblItem" runat="server" Text="${Common.Business.Item}:" />
             </td>
             <td class="td02">
-                <uc3:textbox ID="tbItem" runat="server" Visible="false" Width="250" MustMatch="false"
+                <uc3:textbox ID="tbItem" runat="server" Visible="true" Width="250" MustMatch="false"
                     DescField="Description" ValueField="Code" ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem" />
                 <%--<asp:TextBox ID="tbItem" runat="server" OnTextChanged="textBox_change"  onkeyup="SelectTip(0)" />--%>
                 <%--<input name="txt" style="width:100px" onkeyup="SelectTip(0)">--%> 
-                <asp:TextBox ID="valueText" name="checkboxName" runat="server" ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem"  onclick="textChange(this)"   onkeyup="textChange(this)" onfocus="textChange(this)" onblur="onblurClick(this)" />
+                <%--<asp:TextBox ID="valueText" name="checkboxName" runat="server" ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem"  onclick="textChange(this)"   onkeyup="textChange(this)" onfocus="textChange(this)" onblur="onblurClick(this)" />
                 <div id="demo" runat="server" style="width:180px;height:150px;background-color:white;border:1px solid black; display:none; z-index:0"  onmouseover="doMouseOver(this)" >
                     <ul id="ulList" runat="server" style="height:100%;background-color:white; overflow:auto;margin:0;padding:0;border:0;" size=12>
                     </ul>
-                </div>
+                </div>--%>
             </td>
             <td class="td01">
             </td>

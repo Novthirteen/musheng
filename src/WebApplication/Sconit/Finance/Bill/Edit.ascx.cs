@@ -92,7 +92,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
         //}
         Bill bill = null;
         IList<object> list = new List<object>();
-        if (isGroup)
+        if (this.rblListFormat.SelectedValue == "Group")
         {
             bill = this.TheBillMgr.LoadBill(this.BillNo, true, true);
             list.Add(bill);
@@ -106,7 +106,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
                 TheReportMgr.WriteToClient("BillSOGroup.xls", list, "BillSOGroup.xls");
             }
         }
-        else
+        else if (this.rblListFormat.SelectedValue == "Detail")
         {
             bill = this.TheBillMgr.LoadBill(this.BillNo);
             IList<BillDetail> billDetails = this.TheBillDetailMgr.GetBillDetailOrderByItem(this.BillNo);
@@ -121,6 +121,21 @@ public partial class Finance_Bill_Edit : ListModuleBase
                 TheReportMgr.WriteToClient("BillMarket.xls", list, "BillMarket.xls");
             }
         }
+        else if (this.rblListFormat.SelectedValue == "Certificate")
+        {
+            bill = this.TheBillMgr.LoadBill(this.BillNo, true, true);
+            list.Add(bill);
+            list.Add(bill.BillDetails);
+            if (bill.TransactionType == BusinessConstants.BILL_TRANS_TYPE_PO)
+            {
+                TheReportMgr.WriteToClient("BillPO.xls", list, "BillPO.xls");
+            }
+            else
+            {
+                TheReportMgr.WriteToClient("BillSOGroup.xls", list, "BillSOGroup.xls");
+            }
+
+        }
         this.ShowSuccessMessage("MasterData.Bill.Print.Successful");
 
     }
@@ -130,7 +145,9 @@ public partial class Finance_Bill_Edit : ListModuleBase
         Bill bill = null;
         IList<object> list = new List<object>();
         string barCodeUrl = string.Empty;
-        if (isGroup)
+
+
+        if (this.rblListFormat.SelectedValue == "Group")
         {
             bill = this.TheBillMgr.LoadBill(this.BillNo, true, true);
             list.Add(bill);
@@ -144,7 +161,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
                 barCodeUrl = TheReportMgr.WriteToFile("BillSOGroup.xls", list);
             }
         }
-        else
+        else if (this.rblListFormat.SelectedValue == "Detail")
         {
             bill = this.TheBillMgr.LoadBill(this.BillNo);
             IList<BillDetail> billDetails = this.TheBillDetailMgr.GetBillDetailOrderByItem(this.BillNo);
@@ -159,6 +176,21 @@ public partial class Finance_Bill_Edit : ListModuleBase
                 barCodeUrl = TheReportMgr.WriteToFile("BillMarket.xls", list);
             }
 
+        }
+        else if (this.rblListFormat.SelectedValue == "Certificate")
+        {
+            bill = this.TheBillMgr.LoadBill(this.BillNo, true, true);
+            list.Add(bill);
+            list.Add(bill.BillDetails);
+            if (bill.TransactionType == BusinessConstants.BILL_TRANS_TYPE_PO)
+            {
+                barCodeUrl = TheReportMgr.WriteToFile("BillPO.xls", list);
+            }
+            else
+            {
+                barCodeUrl = TheReportMgr.WriteToFile("BillSOGroup.xls", list);
+            }
+        
         }
         if (list.Count == 2)
         {

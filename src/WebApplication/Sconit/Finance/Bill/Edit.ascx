@@ -167,6 +167,7 @@
                     AutoPostBack="true" OnSelectedIndexChanged="rblListFormat_IndexChanged">
                     <asp:ListItem Text="${Common.ListFormat.Group}" Value="Group" Selected="True" />
                     <asp:ListItem Text="${Common.ListFormat.Detail}" Value="Detail"  />
+                    <asp:ListItem Text="${Common.ListFormat.Certificate}" Value="Certificate"  />
                 </asp:RadioButtonList>
             </td>
             <td class="td01">

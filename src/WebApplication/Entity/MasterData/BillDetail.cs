@@ -73,6 +73,13 @@ namespace com.Sconit.Entity.MasterData
             get;
             set;
         }
+
+        public decimal GroupAmountRound
+        {
+            get {
+                return Math.Round(GroupAmount*(decimal)1.17, 2);
+            }
+        }
         #endregion
     }
 }

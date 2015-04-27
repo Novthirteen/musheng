@@ -38,12 +38,23 @@ namespace com.Sconit.Service.MRP.Impl
         public IMrpReceivePlanMgrE mrpReceivePlanMgr { get; set; }
         public IExpectTransitInventoryMgrE expectTransitInventoryMgr { get; set; }
 
+        public static bool isRunMrp = false;
+
         private static log4net.ILog log = log4net.LogManager.GetLogger("Log.MRP");
 
         [Transaction(TransactionMode.Requires)]
         public void RunMrp(User user)
         {
-            RunMrp(DateTime.Now, user);
+            if (isRunMrp)
+            {
+                log.Info("run mrp.Occupy");
+            }
+            else
+            {
+                isRunMrp = true;
+                RunMrp(DateTime.Now, user);
+                isRunMrp = false;
+            }
         }
 
         [Transaction(TransactionMode.Requires)]

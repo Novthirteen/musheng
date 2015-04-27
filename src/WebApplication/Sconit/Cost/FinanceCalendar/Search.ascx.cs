@@ -21,6 +21,7 @@ public partial class Cost_FinanceCalendar_Search : SearchModuleBase
 {
     public event EventHandler SearchEvent;
     public event EventHandler NewEvent;
+    public event EventHandler UpUpBillPeriodEvent;
    
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,6 +31,14 @@ public partial class Cost_FinanceCalendar_Search : SearchModuleBase
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         DoSearch();
+    }
+
+    protected void btnUpBillPeriod_Click(object sender, EventArgs e)
+    {
+        if (UpUpBillPeriodEvent != null)
+        {
+            UpUpBillPeriodEvent(sender, e);
+        }
     }
 
     protected override void InitPageParameter(IDictionary<string, string> actionParameter)
