@@ -49,6 +49,15 @@ public partial class Distribution_OrderIssue_List : ModuleBase
     {
     }
 
+    //add by ljz start
+    public void GV_ListBindNull()
+    {
+        IList<OrderHead> orderList = new List<OrderHead>();
+        this.GV_List.DataSource = orderList;
+        this.GV_List.DataBind();
+    }
+    //add by ljz end
+
     public void InitPageParameter(string flowCode, string orderSubType)
     {
         this.ModuleSubType = orderSubType;
@@ -81,26 +90,75 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             this.OrderType = orderList[0].Type;
             this.InitialUI();
 
-          
+
         }
         this.GV_List.DataSource = orderList;
         this.GV_List.DataBind();
     }
 
+    //add by ljz start
+    public void InitPageParameterByItemCode(string ItemCode, string orderSubType)
+    {
+        DetachedCriteria selectCriteria = DetachedCriteria.For(typeof(OrderDetail));
+        selectCriteria.Add(Expression.Eq("Item.Code", ItemCode));
+        IList<OrderHead> orderList = new List<OrderHead>();
+        IList<OrderDetail> orderHeadList = TheCriteriaMgr.FindAll<OrderDetail>(selectCriteria);
+
+        this.ModuleSubType = orderSubType;
+        for (int i = 0; i < orderHeadList.Count; i++)
+        {
+            DetachedCriteria selectCriteriaOrderHead = DetachedCriteria.For(typeof(OrderHead));
+            selectCriteriaOrderHead.Add(Expression.Eq("OrderNo", orderHeadList[i].OrderHead.OrderNo))
+                .Add(Expression.Eq("Status", BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS))
+                .Add(Expression.Eq("SubType", this.ModuleSubType))
+                .AddOrder(Order.Asc("WindowTime"));
+            IList<OrderHead> orderHeadListOrderHead = TheCriteriaMgr.FindAll<OrderHead>(selectCriteriaOrderHead);
+
+            foreach (OrderHead orderHead in orderHeadListOrderHead)
+            {
+                IList<OrderDetail> orderDetailList = orderHead.OrderDetails;
+                if (orderHead.OrderDetails.Count > 0)
+                {
+                    foreach (OrderDetail orderDetail in orderHead.OrderDetails)
+                    {
+                        if (orderDetail.RemainShippedQty > 0)
+                        {
+                            orderList.Add(orderHead);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (orderList.Count > 0)
+        {
+            this.OrderType = orderList[0].Type;
+            this.InitialUI();
+        }
+        this.GV_List.DataSource = orderList;
+        this.GV_List.DataBind();
+    }
+    //add by ljz end
+
     protected void btnEditShipQty_Click(object sender, EventArgs e)
     {
         if (EditEvent != null)
         {
-            List<string> orderNoList = this.CollectOrderNoList();
-            if (orderNoList.Count > 0)
+            //modify by ljz start
+            //List<string> orderNoList = this.CollectOrderNoList();
+            List<string> orderNoListNew = orderNoList;
+            //modify by ljz end
+            if (orderNoListNew.Count > 0)
             {
-                EditEvent(new Object[] { orderNoList }, e);
+                EditEvent(new Object[] { orderNoListNew }, e);
             }
             else
             {
                 ShowWarningMessage("Common.Business.Warn.Empty");
             }
         }
+        orderNoList = null;
+        orderNoList = new List<string>();
     }
 
     protected void btnCreatePickList_Click(object sender, EventArgs e)
@@ -162,4 +220,52 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             this.btnCreatePickList.Visible = false;
         }
     }
+
+    static List<string> orderNoList = new List<string>();
+    protected void CheckBoxGroup_CheckedChanged(Object sender, EventArgs e)
+    {
+        CheckBox chk = (CheckBox)sender;
+
+        DataControlFieldCell dcf = (DataControlFieldCell)chk.Parent;    //这个对象的父类为cell  
+        GridViewRow gr = (GridViewRow)dcf.Parent;                       //cell对象的父类为row
+        string orderNo = ((Literal)gr.FindControl("ltlOrderNo")).Text;
+
+        if (chk.Checked)
+        {
+            if (!orderNoList.Contains(orderNo))
+            {
+                orderNoList.Add(orderNo);
+            }
+        }
+        else
+        {
+            orderNoList.Remove(orderNo);
+        }
+    }
+    protected void CheckAll_CheckedChanged(Object sender, EventArgs e)
+    {
+        CheckBox chk = (CheckBox)sender;
+
+        if (chk.Checked)
+        {
+            foreach (GridViewRow gvr in GV_List.Rows)
+            {
+                CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
+                string orderNo = ((Literal)gvr.FindControl("ltlOrderNo")).Text;
+                orderNoList.Add(orderNo);
+
+            }
+        }
+        else
+        {
+            foreach (GridViewRow gvr in GV_List.Rows)
+            {
+                CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
+                string orderNo = ((Literal)gvr.FindControl("ltlOrderNo")).Text;
+                orderNoList.Remove(orderNo);
+
+            }
+        }
+    }
+    
 }

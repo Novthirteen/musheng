@@ -73,7 +73,16 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucViewShipList.BackEvent += new EventHandler(this.ViewBack_Render);
         this.ucPickListInfo.BackEvent += new EventHandler(this.PickListInfoBack_Render);
         this.ucPickListInfo.DeleteEvent += new EventHandler(this.PickListInfoBack_Render);
+
+        this.ucSearch.SearchEventByNull += new System.EventHandler(this.Search_RenderNull); //add by ljz 
     }
+
+    //add by ljz start
+    void Search_RenderNull(object sender, EventArgs e)
+    {
+        this.ucList.GV_ListBindNull();
+    }
+    //add by ljz end
 
     //The event handler when user click button "Search" button
     void Search_Render(object sender, EventArgs e)
@@ -89,7 +98,17 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         {
             this.ucSupplierList.Visible = false;
             this.ucList.Visible = true;
-            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            //modify by ljz start
+            //this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            if (((string)((object[])sender)[2]) == "Flow")
+            {
+                this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            }
+            else if (((string)((object[])sender)[2]) == "ItemCode")
+            {
+                this.ucList.InitPageParameterByItemCode((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            }
+            //modify by ljz end
         }
     }
 

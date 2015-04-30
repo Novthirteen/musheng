@@ -22,11 +22,11 @@
                 <asp:TemplateField>
                     <HeaderTemplate>
                         <div onclick="GVCheckClick()">
-                            <asp:CheckBox ID="CheckAll" runat="server" />
+                            <asp:CheckBox ID="CheckAll" OnCheckedChanged="CheckAll_CheckedChanged" AutoPostBack="true" runat="server" />
                         </div>
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <asp:CheckBox ID="CheckBoxGroup" name="CheckBoxGroup" runat="server" />
+                        <asp:CheckBox ID="CheckBoxGroup" OnCheckedChanged="CheckBoxGroup_CheckedChanged" AutoPostBack="true" name="CheckBoxGroup" runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.OrderNo.Distribution}"

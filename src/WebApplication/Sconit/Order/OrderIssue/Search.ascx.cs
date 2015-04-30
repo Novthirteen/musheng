@@ -24,6 +24,7 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
 {
 
     public event EventHandler SearchEvent;
+    public event EventHandler SearchEventByNull;//add by ljz
 
     public string ModuleType
     {
@@ -109,16 +110,40 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
 
     protected void tbFlow_TextChanged(Object sender, EventArgs e)
     {
-       
         DoSearch();
     }
 
+    //add by ljz start
+    protected void tbItemCode_TextChanged(Object sender, EventArgs e)
+    {
+        string isItemCode = "ItemCode";
+        if (this.tbItemCode != null && this.tbItemCode.Text.Trim() != string.Empty)
+        {
+            SearchEvent((new object[] { this.tbItemCode.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, isItemCode}), null);
+        }
+        else
+        {
+            SearchEventByNull(null, null);
+        }
+    }
+    //add by ljz end
+
     protected override void DoSearch()
     {
+        string isFlow = "Flow"; //add by ljz
         if (this.tbFlow != null && this.tbFlow.Text.Trim() != string.Empty)
         {
-            SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML }), null);
+            //modify by ljz start
+            //SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML }), null);
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, isFlow }), null);
+            //modify by ljz end
         }
+        //add by ljz start
+        else
+        {
+            SearchEventByNull(null,null);
+        }
+        //add by ljz end
     }
 
     protected override void InitPageParameter(IDictionary<string, string> actionParameter)
