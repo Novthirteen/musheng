@@ -164,4 +164,37 @@ public partial class Finance_Bill_NewList : ListModuleBase
             }
         }
     }
+
+    //add by ljz start
+    protected void CheckBoxGroup_CheckedChanged(Object sender, EventArgs e)
+    {
+        CheckBox chk = (CheckBox)sender;
+
+        DataControlFieldCell dcf = (DataControlFieldCell)chk.Parent;    //这个对象的父类为cell  
+        GridViewRow gr = (GridViewRow)dcf.Parent;                       //cell对象的父类为row
+        string tbQty = ((TextBox)gr.FindControl("tbQty")).Text;
+        string tbAmount = ((TextBox)gr.FindControl("tbAmount")).Text;
+
+        if (chk.Checked)
+        {
+            ltlCurrentBillQtyTotal1.Text = (int.Parse(ltlCurrentBillQtyTotal1.Text) + int.Parse(tbQty)).ToString();
+            ltlAmountTotal1.Text = (double.Parse(ltlAmountTotal1.Text) + double.Parse(tbAmount)).ToString();
+        }
+        else
+        {
+            ltlCurrentBillQtyTotal1.Text = (int.Parse(ltlCurrentBillQtyTotal1.Text) - int.Parse(tbQty)).ToString();
+            ltlAmountTotal1.Text = (double.Parse(ltlAmountTotal1.Text) - double.Parse(tbAmount)).ToString();
+        }
+    }
+    protected void CheckAll_CheckedChanged(Object sender, EventArgs e)
+    {
+        
+    }
+
+    public void InitializationTotal()
+    {
+        ltlAmountTotal1.Text = "0";
+        ltlCurrentBillQtyTotal1.Text = "0";
+    }
+    //add by ljz end
 }

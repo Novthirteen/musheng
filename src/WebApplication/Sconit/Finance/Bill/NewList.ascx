@@ -16,6 +16,12 @@
 </script>
 
 <fieldset>
+    <div>
+        <asp:Literal ID="ltlCurrentBillQtyTotal" runat="server" Text="${MasterData.ActingBill.CurrentBillQtyTotal}:" />
+        <asp:Literal ID="ltlCurrentBillQtyTotal1" runat="server" Text="0" />
+        <asp:Literal ID="ltlAmountTotal" runat="server" Text="${MasterData.ActingBill.AmountTotal}:" />
+        <asp:Literal ID="ltlAmountTotal1" runat="server" Text="0" />
+    </div>
     <div class="GridView">
         <asp:GridView ID="GV_List" runat="server" AllowPaging="False" DataKeyNames="Id" AllowSorting="False"
             AutoGenerateColumns="False" OnRowDataBound="GV_List_RowDataBound">
@@ -23,12 +29,15 @@
                 <asp:TemplateField>
                     <HeaderTemplate>
                         <div onclick="GVCheckClick()">
-                            <asp:CheckBox ID="CheckAll" runat="server" />
+                            <asp:CheckBox ID="CheckAll" runat="server" OnCheckedChanged="CheckAll_CheckedChanged" AutoPostBack="true" />
                         </div>
                     </HeaderTemplate>
                     <ItemTemplate>
                         <asp:HiddenField ID="hfId" runat="server" Value='<%# Bind("Id") %>' />
-                        <asp:CheckBox ID="CheckBoxGroup" name="CheckBoxGroup" runat="server" />
+                        <%--modify by ljz start--%>
+                        <%--<asp:CheckBox ID="CheckBoxGroup" name="CheckBoxGroup" runat="server" />--%>
+                        <asp:CheckBox ID="CheckBoxGroup" name="CheckBoxGroup" runat="server" OnCheckedChanged="CheckBoxGroup_CheckedChanged" AutoPostBack="true" />
+                        <%--modify by ljz end--%>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText=" ${MasterData.ActingBill.Supplier}" SortExpression="BillAddress.Party.Name">

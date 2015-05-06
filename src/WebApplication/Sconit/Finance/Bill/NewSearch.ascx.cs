@@ -158,6 +158,9 @@ public partial class Finance_Bill_NewSearch : SearchModuleBase
 
         this.ucNewList.BindDataSource(actingBillList != null && actingBillList.Count > 0 ? actingBillList : null);
         this.ucNewList.Visible = true;
+
+        this.ucNewList.InitializationTotal(); //add by ljz
+        
     }
 
     protected void btnConfirm_Click(object sender, EventArgs e)
