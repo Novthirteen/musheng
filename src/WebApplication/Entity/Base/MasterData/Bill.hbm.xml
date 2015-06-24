@@ -33,6 +33,7 @@
 		<property name="InvoiceDate" column="DateField1" type="DateTime"  />
 		<property name="DateField2" column="DateField2" type="DateTime"  />
     <property name="PaymentDate" column="PaymentDate" type="DateTime"  />
+    <property name="TaxAmount" column="TaxAmount" type="Decimal"  />
     <bag name="BillDetails" table="BillDet" inverse="true" lazy="true">
 			<key column="BillNo" />
 			<one-to-many class="com.Sconit.Entity.MasterData.BillDetail, com.Sconit.Entity" />

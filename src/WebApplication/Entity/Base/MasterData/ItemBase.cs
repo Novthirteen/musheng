@@ -427,6 +427,7 @@ namespace com.Sconit.Entity.MasterData
         }
         public string Msl { get; set; }
         public string Bin { get; set; }
+        //public int ItemPoint { get; set; }
         #endregion
 
         public override int GetHashCode()

@@ -72,6 +72,18 @@ namespace com.Sconit.Entity.Customize
             }
         }
 
+        private decimal? _pointTime;
+        public decimal? PointTime
+        {
+            get
+            {
+                return _pointTime;
+            }
+            set
+            {
+                _pointTime = value;
+            }
+        }
         #endregion
 
 		public override int GetHashCode()

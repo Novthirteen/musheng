@@ -98,7 +98,9 @@ namespace com.Sconit.Persistence
             {
                 try
                 {
-                    return session.Save(instance);
+                    //object obj = session.Save(instance);
+                    //session.Flush();
+                    return session.Save(instance); 
                 }
                 catch (Exception ex)
                 {

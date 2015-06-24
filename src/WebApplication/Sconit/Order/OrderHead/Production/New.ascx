@@ -39,7 +39,7 @@
             <td class="td02">
                 <uc3:textbox ID="tbItemCode" runat="server" Width="250" DescField="Description" ValueField="Code"
                     ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem" CssClass="inputRequired"
-                    InputWidth="150" MustMatch="true" TabIndex="1" />
+                    InputWidth="150" MustMatch="true" TabIndex="1" AutoPostBack="true" />
                 <asp:RequiredFieldValidator ID="rfvItemCode" runat="server" ErrorMessage="${MasterData.Order.OrderDetail.ItemCode.Required}"
                     Display="Dynamic" ControlToValidate="tbItemCode" ValidationGroup="vgCreate" />
             </td>

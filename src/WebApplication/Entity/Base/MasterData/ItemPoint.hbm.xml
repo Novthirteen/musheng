@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.MasterData.ItemPoint, com.Sconit.Entity" table="ItemPoint" lazy="false">
+    <id name="Item" column="Item" type="String" unsaved-value="null" >
+      <generator class="assigned" />
+    </id>
+    <property name="Flow" column="Flow" type="String" length="50" />
+    <property name="Fact" column="Fact" type="String" length="50" />
+    <property name="Model" column="Model" type="String" length="50" />
+    <property name="Point" column="Point" type="Int32"  />
+    <property name="TransferTime" column="TransferTime" type="Int32"  />
+    <property name="EquipmentTime" column="EquipmentTime" type="Decimal" />
+    <property name="PCBNumber" column="PCBNumber" type="Int32" />
+  </class>
+</hibernate-mapping>
+

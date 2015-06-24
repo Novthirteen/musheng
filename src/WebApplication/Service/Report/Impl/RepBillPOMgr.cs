@@ -148,7 +148,7 @@ namespace com.Sconit.Service.Report.Impl
             //摘要:
             this.SetRowCell(43, 1, "货款#"+bill.ExternalBillNo);
             //金额:
-            this.SetRowCell(43, 3, bill.Amount.ToString("c"));
+            this.SetRowCell(43, 3, bill.TaxAmount.ToString("c"));
             //备注:付款时间
             //this.SetRowCell(44, 5, bill.PaymentDate.HasValue ? bill.PaymentDate.Value.ToLongDateString() : "");
             //this.SetRowCell(44, 5, bill.BillAddress.Party.Aging.ToString() + "天");
@@ -185,11 +185,11 @@ namespace com.Sconit.Service.Report.Impl
             this.SetRowCell(44, 5, fridayDate.ToShortDateString());
 
             //金额: (大小写)+ "         (小写)" + (bill.Amount * (decimal)1.17).ToString("0.00")
-            string bigAmount = ConvertToChinese((double)bill.Amount );
+            string bigAmount = ConvertToChinese((double)bill.TaxAmount );
             this.SetRowCell(46, 1, "（大写）" + bigAmount);
 
             //金额:
-            this.SetRowCell(46, 5, bill.Amount.ToString("c")); 
+            this.SetRowCell(46, 5, bill.TaxAmount.ToString("c")); 
 
         }
 

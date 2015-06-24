@@ -419,7 +419,22 @@ namespace com.Sconit.Entity.MasterData
             {
             	return (this.BillNo == another.BillNo);
             }
-        } 
+        }
+
+        //add by ljz start
+        private Decimal _taxAmount;
+        public Decimal TaxAmount
+        {
+            get
+            {
+                return _taxAmount;
+            }
+            set
+            {
+                _taxAmount = value;
+            }
+        }
+        //add by ljz end
     }
 	
 }

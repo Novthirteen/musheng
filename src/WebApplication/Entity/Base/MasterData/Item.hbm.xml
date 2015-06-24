@@ -49,5 +49,6 @@
     <property name="DefaultSupplier" column="DefaultSupplier" type="String" length="50" />
 	  <property name="Msl" column="Msl" type="String" length="50" />
 	  <property name="Bin" column="Bin" type="String" length="50" />
+    <!--<property name="ItemPoint" column="ItemPoint" type="Int32" />-->
   </class>
 </hibernate-mapping>

@@ -63,6 +63,16 @@ namespace com.Sconit.Entity.MasterData
         }
 
         public decimal Amount { get; set; }
+
+        //add by ljz start
+        public decimal TotalAfterTaxAmount
+        {
+            get 
+            {
+                return this.TotalBillAmount * (decimal)1.17;
+            }
+        }
+        //add by ljz end
         #endregion
     }
 }

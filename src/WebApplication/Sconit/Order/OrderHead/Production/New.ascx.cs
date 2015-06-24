@@ -102,6 +102,8 @@ public partial class Order_OrderHead_New : NewModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        //this.tbFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:false,bool:false,bool:false,bool:true,bool:false,bool:false,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_BOTH;
+        this.tbFlow.ServiceParameter = "string:" + this.tbItemCode.Text;
         List<Flow> flowList = new List<Flow>();
 
         string userLanguage = this.CurrentUser.UserLanguage;

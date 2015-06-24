@@ -30,11 +30,11 @@
             CalCulateRowAmountBase(obj, "tbDiscountRate", "BaseOnDiscountRate", "hfUnitPrice", "tbQty", "tbDiscount", "tbDiscountRate", "tbAmount", "tbAmountAfterDiscount", '#<%= tbTotalDiscount.ClientID %>', '#<%= tbTotalDiscountRate.ClientID %>', '#<%= tbTotalDetailAmount.ClientID %>', '#<%= tbTotalAmount.ClientID %>', false);
         }
         function orderDiscountChanged(obj) {
-            CalCulateTotalAmount("BaseOnDiscount", '#<%= tbTotalDiscount.ClientID %>', '#<%= tbTotalDiscountRate.ClientID %>', '#<%= tbTotalDetailAmount.ClientID %>', '#<%= tbTotalAmount.ClientID %>', 0);
+            CalCulateTotalAmount("BaseOnDiscount", '#<%= tbTotalDiscount.ClientID %>', '#<%= tbTotalDiscountRate.ClientID %>', '#<%= tbTotalDetailAmount.ClientID %>', '#<%= tbTotalAmount.ClientID %>', 0, '#<%= txtTaxAmount.ClientID %>');
         }
 
         function orderDiscountRateChanged(obj) {
-            CalCulateTotalAmount("BaseOnDiscountRate", '#<%= tbTotalDiscount.ClientID %>', '#<%= tbTotalDiscountRate.ClientID %>', '#<%= tbTotalDetailAmount.ClientID %>', '#<%= tbTotalAmount.ClientID %>', 0);
+            CalCulateTotalAmount("BaseOnDiscountRate", '#<%= tbTotalDiscount.ClientID %>', '#<%= tbTotalDiscountRate.ClientID %>', '#<%= tbTotalDetailAmount.ClientID %>', '#<%= tbTotalAmount.ClientID %>', 0, '#<%= txtTaxAmount.ClientID %>');
         }
     </script>
 
@@ -403,6 +403,21 @@
                         Width="150px" />
                 </td>
             </tr>
+            <%--add by ljz start--%>
+            <tr>
+                <td class="td02">
+                </td>
+                <td class="td02">
+                </td>
+                <td class="td01">
+                    <asp:Literal ID="ltlTaxAmount" runat="server" Text="${MasterData.Bill.TaxAmount}:" />
+                </td>
+                <td class="td02">
+                    <asp:TextBox ID="txtTaxAmount" runat="server" Visible="true"
+                        Width="150px" />
+                </td>
+            </tr>
+            <%--add by ljz end--%>
         </table>
     </div>
 </fieldset>

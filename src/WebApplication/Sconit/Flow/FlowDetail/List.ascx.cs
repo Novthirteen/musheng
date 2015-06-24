@@ -56,7 +56,14 @@ public partial class MasterData_FlowDetail_List : ListModuleBase
     public override void UpdateView()
     {
         this.GV_List.Execute();
-
+        if (GV_List.Rows.Count != 0)
+        {
+            gp.Visible = false;
+        }
+        else
+        {
+            gp.Visible = true;
+        }
         HideFields();
     }
 

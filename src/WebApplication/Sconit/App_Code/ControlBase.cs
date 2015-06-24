@@ -335,6 +335,7 @@ namespace com.Sconit.Web
 
         protected IGenericMgr TheGenericMgr { get { return GetService<IGenericMgr>("GenericMgr.service"); } }
 
+        protected IOrderProductionPlanMgrE TheOrderProductionPlanMgr { get { return ServiceLocator.GetService<IOrderProductionPlanMgrE>("OrderProductionPlanMgr.service"); } }
 
         #endregion
     }

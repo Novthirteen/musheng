@@ -514,7 +514,12 @@ namespace com.Sconit.Service.MasterData.Impl
         [Transaction(TransactionMode.Requires)]
         public void ReleaseBill(string billNo, User user)
         {
-            Bill oldBill = this.CheckAndLoadBill(billNo);
+            //modify by ljz start
+            //Bill oldBill = this.CheckAndLoadBill(billNo);
+            string[] group = billNo.Split(',');
+            string billno = group[0];
+            decimal taxamount = decimal.Parse(group[1]);
+            Bill oldBill = this.CheckAndLoadBill(billno);
 
             #region ¼ì²é×´Ì¬
             if (oldBill.Status != BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE)
@@ -540,6 +545,7 @@ namespace com.Sconit.Service.MasterData.Impl
             oldBill.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT;
             oldBill.LastModifyUser = user;
             oldBill.LastModifyDate = DateTime.Now;
+            oldBill.TaxAmount = taxamount; //add by ljz
 
             this.UpdateBill(oldBill);
 

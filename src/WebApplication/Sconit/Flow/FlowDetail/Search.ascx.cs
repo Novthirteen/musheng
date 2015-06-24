@@ -81,8 +81,9 @@ public partial class MasterData_FlowDetail_Search : SearchModuleBase
                 .SetProjection(Projections.Count("Id"));
             selectCriteria.AddOrder(Order.Asc("Sequence"));
 
-            selectCriteria.Add(Expression.Ge("EndDate", DateTime.Now.Date));
-            selectCountCriteria.Add(Expression.Ge("EndDate", DateTime.Now.Date));
+            selectCriteria.Add(Expression.Disjunction().Add(Expression.Ge("EndDate", DateTime.Now.Date)).Add(Expression.IsNull("EndDate")));
+            selectCountCriteria.Add(Expression.Disjunction().Add(Expression.Ge("EndDate", DateTime.Now.Date)).Add(Expression.IsNull("EndDate")));
+            //selectCriteria.Add(Expression.Disjunction() .Add(Expression.IsNull("EndDate")));
 
             selectCriteria.Add(Expression.Gt("MRPWeight", 0));
             selectCountCriteria.Add(Expression.Gt("MRPWeight", 0));

@@ -16,6 +16,11 @@
                 </asp:TemplateField>
                 <asp:CheckBoxField DataField="IsActive" HeaderText="${Common.Business.IsActive}"
                     SortExpression="IsActive" />
+                <asp:TemplateField HeaderText="${Menu.MasterData.PointTime}">
+                    <ItemTemplate>
+                        <%# Eval("PointTime") %>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:TemplateField HeaderText="${Common.GridView.Action}">
                     <ItemTemplate>
                         <asp:LinkButton ID="lbtnEdit" runat="server" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "Id") %>'

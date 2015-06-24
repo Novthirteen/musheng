@@ -8,5 +8,6 @@
     <property name="ProductLine" column="ProdLine" type="String" length="50" />	
 		<property name="IsActive" column="IsActive" type="Boolean"  />
     <many-to-one name="Routing" column="Routing" class="com.Sconit.Entity.MasterData.Routing, com.Sconit.Entity" cascade="none" />
+    <property name="PointTime" column="PointTime" type="Decimal"  />
   	</class>
 </hibernate-mapping>

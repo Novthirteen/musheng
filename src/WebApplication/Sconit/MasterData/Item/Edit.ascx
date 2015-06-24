@@ -336,7 +336,14 @@
                             <asp:CheckBox ID="cbIsRunMrp" runat="server" Checked='<%# Bind("IsRunMrp") %>' />
                         </td>
                     </tr>
-                   
+                    <tr>
+                        <td></td>
+                        <td class="td01">
+                            <asp:Literal ID="Literal1" runat="server" Text="${MasterData.Item.ItemPoint}:" />
+                        </td>
+                        <td class="td02">
+                        </td>
+                    </tr>
                     <tr>
                         <td class="td01" style="width: 150px">
                             &nbsp;

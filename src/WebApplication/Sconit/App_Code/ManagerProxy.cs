@@ -30,6 +30,7 @@ using com.Sconit.Service.Ext.Cost;
 using com.Sconit.Entity.Cost;
 using com.Sconit.Entity.Customize;
 using com.Sconit.Service.Ext.Customize;
+using com.Sconit.Service.Ext.MRP;
 
 /// <summary>
 /// Summary description for ManagerProxy
@@ -1064,6 +1065,35 @@ namespace com.Sconit.Web
         public void DeleteLocation(Location location)
         {
             LocationMgr.DeleteLocation(location);
+        }
+    }
+
+    public class ItemPointMgrProxy
+    {
+        private IOrderProductionPlanMgrE ItemPointMgr
+        {
+            get
+            {
+                return ServiceLocator.GetService<IOrderProductionPlanMgrE>("OrderProductionPlanMgr.service");
+            }
+        }
+        public ItemPointMgrProxy()
+        {
+        }
+
+        public IList<ItemPoint> LoadItemPoint(string Item)
+        {
+            return ItemPointMgr.GetItemPoint(Item);
+        }
+
+        public void UpdateItemPoint(ItemPoint ItemPoint)
+        {
+            ItemPointMgr.UpdateItemPoint(ItemPoint);
+        }
+
+        public void DeleteItemPoint(ItemPoint ItemPoint)
+        {
+            ItemPointMgr.DeleteItemPoint(ItemPoint);
         }
     }
 

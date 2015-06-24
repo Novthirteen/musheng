@@ -423,7 +423,10 @@ public partial class Finance_Bill_Edit : ListModuleBase
         this.btnSave_Click(sender, e);
         try
         {
-            this.TheBillMgr.ReleaseBill(this.BillNo, this.CurrentUser);
+            //modify by ljz start
+            //this.TheBillMgr.ReleaseBill(this.BillNo, this.CurrentUser);
+            this.TheBillMgr.ReleaseBill(this.BillNo+","+this.txtTaxAmount.Text, this.CurrentUser);
+            //modify by ljz end
             this.ShowSuccessMessage("MasterData.Bill.ReleaseSuccessfully", this.BillNo);
             this.FV_Bill.DataBind();
         }
@@ -541,7 +544,13 @@ public partial class Finance_Bill_Edit : ListModuleBase
             this.btnVoid.Visible = false;
             this.btnAddDetail.Visible = true;
             this.btnDeleteDetail.Visible = true;
-            this.btnPrint.Visible = true;
+            //modify by ljz start
+            //this.btnPrint.Visible = true;
+            this.btnPrint.Visible = false;
+            this.btnExport.Visible = false;
+            this.txtTaxAmount.ReadOnly = false;
+            //modify by ljz end
+
 
         }
         else if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT)
@@ -555,6 +564,8 @@ public partial class Finance_Bill_Edit : ListModuleBase
             this.btnAddDetail.Visible = false;
             this.btnDeleteDetail.Visible = false;
             this.btnPrint.Visible = true;
+
+            this.txtTaxAmount.Attributes.Add("onfocus","this.blur();"); //add by ljz
         }
         else if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CANCEL)
         {
@@ -679,6 +690,18 @@ public partial class Finance_Bill_Edit : ListModuleBase
         this.tbTotalAmount.Text = bill.TotalBillAmount.ToString("F2");
         this.tbTotalDiscount.Text = (bill.Discount.HasValue ? bill.Discount.Value : 0).ToString("F2");
         this.tbTotalDiscountRate.Text = bill.TotalBillDiscountRate.ToString("F2");
+
+        if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT)
+        {
+            this.txtTaxAmount.Text = bill.TaxAmount.ToString("F2");
+        }
+        else
+        {
+            if (this.txtTaxAmount.Text == "")
+            {
+                this.txtTaxAmount.Text = bill.TotalAfterTaxAmount.ToString("F2");
+            }
+        }
         #endregion
 
         #region 初始化弹出窗口

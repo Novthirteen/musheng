@@ -41,6 +41,18 @@
                             <asp:Literal ID="lDescription" runat="server" />
                         </td>
                     </tr>
+                    <tr>
+                        <td class="td01">
+                            <asp:Literal ID="lblPointTime" runat="server" Text="${Menu.MasterData.PointTime}:" />
+                        </td>
+                        <td class="td02">
+                            <asp:TextBox ID="txtPointTime" runat="server" Text='<% #Bind("PointTime") %>' />
+                        </td>
+                        <td class="td01">
+                        </td>
+                        <td class="td02">
+                        </td>
+                    </tr>
                 </table>
             </fieldset>
             <div class="tablefooter">
