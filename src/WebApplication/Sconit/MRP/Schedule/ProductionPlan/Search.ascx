@@ -191,3 +191,8 @@
         Visible="false" />
         <%--<asp:Button ID="btnTransToOrder" runat="server" OnClick="btnTransToOrder_Click" Text="${Common.Button.TransToOrder}"/>--%>
 </fieldset> 
+<div>
+    <span style="color:Red;">
+        <asp:Literal ID="ltStock" runat="server" Visible="false" Text="test"></asp:Literal>
+    </span>
+</div>

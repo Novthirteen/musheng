@@ -9,6 +9,7 @@ using com.Sconit.Entity.MRP;
 using com.Sconit.Web;
 using com.Sconit.Entity.MasterData;
 using System.Data;
+using System.Data.SqlClient;
 
 public partial class MRP_Schedule_ProductionPlan_Search : ListModuleBase
 {
@@ -600,8 +601,34 @@ public partial class MRP_Schedule_ProductionPlan_Search : ListModuleBase
     }
     protected void btnTransToOrder_Click(object sender, EventArgs e)
     {
+        ltStock.Visible = false;
+
         string OrderPlanNo = ((LinkButton)sender).CommandArgument;
         OrderProductionPlan opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(OrderPlanNo, null, null, null, null)[0];
+
+        Flow flow = TheFlowMgr.LoadFlow(opp.Flow);
+        DataTable dt = TheSqlHelperMgr.GetDatasetByStoredProcedure("IsLackMaterial", new SqlParameter[] { new SqlParameter("@Location", flow.LocationFrom.Code), new SqlParameter("@Item", opp.Item), new SqlParameter("@InputQty", opp.OrderQty), new SqlParameter("@EffDate", DateTime.Now) }).Tables[0];
+        if (dt.Rows.Count > 0)
+        {
+            string Stock = string.Empty;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                decimal qty = (decimal)dt.Rows[i]["Qty"];
+                string item = (string)dt.Rows[i]["Item"];
+                if (qty < 0)
+                {
+                    Stock += item + " : " + qty + "<br/>";
+                }
+            }
+            if (Stock != string.Empty && Stock != "")
+            {
+                ShowWarningMessage("MasterData.OrderPlan.NoStock");
+                ltStock.Visible = true;
+                ltStock.Text = "以下物料库存不足:<br/>" + Stock;
+                return;
+            }
+        }
+
         if (opp.Status != "C")
         {
             //IList<OrderProductionPlan> oppList = TheOrderProductionPlanMgr.GetOrderProductionPlan(null, tbProductLineFacility.Text, tbFlow.Text, null, null);
