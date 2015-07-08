@@ -316,6 +316,17 @@ public partial class Finance_Bill_Edit : ListModuleBase
         {
             Bill bill = this.TheBillMgr.LoadBill(this.BillNo, true);
 
+            //add by ljz start
+            decimal TaxAmount;
+            bool IsDecimal = decimal.TryParse(this.txtTaxAmount.Text, out TaxAmount);
+            if (!IsDecimal)
+            {
+                ShowWarningMessage("MasterData.Bill.ErrorTaxAmount");
+                return;
+            }
+            bill.TaxAmount = TaxAmount;
+            //add by ljz end
+
             TextBox tbPaymentDate = this.FV_Bill.FindControl("tbPaymentDate") as TextBox;
             if (tbPaymentDate.Text.Trim() != string.Empty)
             {
@@ -565,7 +576,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
             this.btnDeleteDetail.Visible = false;
             this.btnPrint.Visible = true;
 
-            this.txtTaxAmount.Attributes.Add("onfocus","this.blur();"); //add by ljz
+            //this.txtTaxAmount.Attributes.Add("onfocus","this.blur();"); //add by ljz
         }
         else if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CANCEL)
         {
