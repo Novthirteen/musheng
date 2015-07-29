@@ -256,6 +256,15 @@ public partial class Finance_Bill_Edit : ListModuleBase
         {
             this.ucNewSearch.ModuleType = this.ModuleType;
         }
+        //IList<Role> role = TheUserRoleMgr.GetRolesByUserCode(CurrentUser.Code);
+        //for (int i = 0; i < role.Count; i++)
+        //{
+        //    if (role[0].Code == "VD")
+        //    {
+        //        ltlTaxAmount.Visible = false;
+        //        txtTaxAmount.Visible = false;
+        //    }
+        //}
     }
 
     protected void FV_Bill_DataBound(object sender, EventArgs e)
@@ -544,6 +553,17 @@ public partial class Finance_Bill_Edit : ListModuleBase
 
     private void UpdateView(Bill bill)
     {
+
+        IList<Role> role = TheUserRoleMgr.GetRolesByUserCode(CurrentUser.Code);
+        for (int i = 0; i < role.Count; i++)
+        {
+            if (role[0].Code == "VD")
+            {
+                ltlTaxAmount.Visible = false;
+                txtTaxAmount.Visible = false;
+            }
+        }
+
         #region 根据状态显示按钮
         if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE)
         {
@@ -557,9 +577,9 @@ public partial class Finance_Bill_Edit : ListModuleBase
             this.btnDeleteDetail.Visible = true;
             //modify by ljz start
             //this.btnPrint.Visible = true;
-            this.btnPrint.Visible = false;
-            this.btnExport.Visible = false;
-            this.txtTaxAmount.ReadOnly = false;
+            //this.btnPrint.Visible = false;
+            //this.btnExport.Visible = false;
+            //this.txtTaxAmount.ReadOnly = false;
             //modify by ljz end
 
 

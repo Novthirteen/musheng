@@ -692,7 +692,17 @@ namespace com.Sconit.Service.MasterData.Impl
                         if (itemList != null && itemList.Count > 0)
                         {
                             criteria.CreateAlias("Item", "item");
-                            criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                            //add by ljz start
+                            if (itemList.Count == 1)
+                            {
+                                criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                            }
+                            else
+                            {
+                                criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                            }
+                            //add by ljz end
+                            //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                         }
 
                         IList<object[]> shorageList = this.criteriaMgrE.FindAll<object[]>(criteria);
@@ -742,7 +752,17 @@ namespace com.Sconit.Service.MasterData.Impl
                         if (itemList != null && itemList.Count > 0)
                         {
                             criteria.CreateAlias("Item", "item");
-                            criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                            //add by ljz start
+                            if (itemList.Count == 1)
+                            {
+                                criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                            }
+                            else
+                            {
+                                criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                            }
+                            //add by ljz end
+                            //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                         }
 
                         IList<object[]> profitList = this.criteriaMgrE.FindAll<object[]>(criteria);
@@ -793,7 +813,17 @@ namespace com.Sconit.Service.MasterData.Impl
                         if (itemList != null && itemList.Count > 0)
                         {
                             criteria.CreateAlias("Item", "item");
-                            criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                            //add by ljz start
+                            if (itemList.Count == 1)
+                            {
+                                criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                            }
+                            else
+                            {
+                                criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                            }
+                            //add by ljz end
+                            //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                         }
 
                         IList<object[]> equalList = this.criteriaMgrE.FindAll<object[]>(criteria);
@@ -1130,7 +1160,17 @@ namespace com.Sconit.Service.MasterData.Impl
 
                 if (itemList != null && itemList.Count > 0)
                 {
-                    criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    //add by ljz start
+                    if (itemList.Count == 1)
+                    {
+                        criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                    }
+                    else
+                    {
+                        criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    }
+                    //add by ljz end
+                    //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                 }
                 else if (cycleCount.Items != null && cycleCount.Items.Trim() != string.Empty)
                 {
@@ -1165,7 +1205,17 @@ namespace com.Sconit.Service.MasterData.Impl
                 if (itemList != null && itemList.Count > 0)
                 {
                     criteria.CreateAlias("Item", "item");
-                    criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    //add by ljz start
+                    if (itemList.Count == 1)
+                    {
+                        criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                    }
+                    else
+                    {
+                        criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    }
+                    //add by ljz end
+                    //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                 }
 
                 IList<object[]> cycDetList = this.criteriaMgrE.FindAll<object[]>(criteria);
@@ -1564,7 +1614,17 @@ namespace com.Sconit.Service.MasterData.Impl
 
                 if (itemList != null && itemList.Count > 0)
                 {
-                    criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    //add by ljz start
+                    if (itemList.Count == 1)
+                    {
+                        criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                    }
+                    else
+                    {
+                        criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    }
+                    //add by ljz end
+                    //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                 }
                 else if (cycleCount.Items != null && cycleCount.Items.Trim() != string.Empty)
                 {
@@ -1590,7 +1650,17 @@ namespace com.Sconit.Service.MasterData.Impl
                 if (itemList != null && itemList.Count > 0)
                 {
                     criteria.CreateAlias("Item", "item");
-                    criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    //add by ljz start
+                    if (itemList.Count == 1)
+                    {
+                        criteria.Add(Expression.Like("item.Code", itemList[0], MatchMode.Anywhere));
+                    }
+                    else
+                    {
+                        criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                    }
+                    //add by ljz end
+                    //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
                 }
 
                 IList<object[]> cycDetList = this.criteriaMgrE.FindAll<object[]>(criteria);
@@ -1870,7 +1940,17 @@ namespace com.Sconit.Service.MasterData.Impl
 
             if (itemList != null && itemList.Count > 0)
             {
-                criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                //add by ljz start
+                if (itemList.Count == 1)
+                {
+                    criteria.Add(Expression.Like("item.Code", itemList[0],MatchMode.Anywhere));
+                }
+                else
+                {
+                    criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
+                }
+                //add by ljz end
+                //criteria.Add(Expression.In("item.Code", itemList.ToArray<string>()));
             }
 
             criteria.AddOrder(Order.Asc("item.Code"));

@@ -177,12 +177,12 @@ public partial class Finance_Bill_NewList : ListModuleBase
 
         if (chk.Checked)
         {
-            ltlCurrentBillQtyTotal1.Text = (int.Parse(ltlCurrentBillQtyTotal1.Text) + int.Parse(tbQty)).ToString();
+            ltlCurrentBillQtyTotal1.Text = (double.Parse(ltlCurrentBillQtyTotal1.Text) + double.Parse(tbQty)).ToString();
             ltlAmountTotal1.Text = (double.Parse(ltlAmountTotal1.Text) + double.Parse(tbAmount)).ToString();
         }
         else
         {
-            ltlCurrentBillQtyTotal1.Text = (int.Parse(ltlCurrentBillQtyTotal1.Text) - int.Parse(tbQty)).ToString();
+            ltlCurrentBillQtyTotal1.Text = (double.Parse(ltlCurrentBillQtyTotal1.Text) - double.Parse(tbQty)).ToString();
             ltlAmountTotal1.Text = (double.Parse(ltlAmountTotal1.Text) - double.Parse(tbAmount)).ToString();
         }
     }
