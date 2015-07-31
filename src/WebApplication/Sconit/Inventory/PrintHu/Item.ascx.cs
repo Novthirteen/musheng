@@ -28,7 +28,7 @@ public partial class Inventory_PrintHu_Item : ModuleBase
 
     public void InitPageParameter(Flow flow)
     {
-
+        
     }
 
     protected void Page_Load(object sender, EventArgs e)
