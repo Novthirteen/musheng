@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
   <class name="com.Sconit.Entity.MasterData.ItemMap, com.Sconit.Entity" table="ItemMap" lazy="false">
-    <id name="Id" column="Id" type="Int32" unsaved-value="0" >
-      <generator class="identity" />
+    <id name="Item" column="Item" type="String" unsaved-value="null" >
+      <generator class="assigned" />
     </id>
-    <many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
-    <many-to-one name="MapItem" column="MapItem" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
+    <property name="MapItem" column="MapItem" type="String" />
+    <property name="Id" column="Id" type="Int32"  />
     <property name="StartDate" column="StartDate" type="DateTime"  />
     <property name="EndDate" column="EndDate" type="DateTime"  />
     <property name="CreateDate" column="CreateDate" type="DateTime"  />

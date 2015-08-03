@@ -21,8 +21,8 @@ namespace com.Sconit.Entity.MasterData
             }
         }
 
-        private com.Sconit.Entity.MasterData.Item _item;
-        public com.Sconit.Entity.MasterData.Item Item
+        private String _item;
+        public String Item
         {
             get
             {
@@ -34,8 +34,8 @@ namespace com.Sconit.Entity.MasterData
             }
         }
 
-        private com.Sconit.Entity.MasterData.Item _mapItem;
-        public com.Sconit.Entity.MasterData.Item MapItem
+        private String _mapItem;
+        public String MapItem
         {
             get
             {
