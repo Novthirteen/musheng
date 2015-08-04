@@ -11,6 +11,7 @@ public partial class MasterData_ItemMap_Search : System.Web.UI.UserControl
 {
 
     public event EventHandler SearchEvent;
+    public event EventHandler NewEvent;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -31,14 +32,14 @@ public partial class MasterData_ItemMap_Search : System.Web.UI.UserControl
         DetachedCriteria selectCountCriteria = DetachedCriteria.For(typeof(ItemMap)).SetProjection(Projections.Count("Id"));
         if (item != string.Empty)
         {
-            selectCriteria.Add(Expression.Like("Item.Code", item, MatchMode.Anywhere));
-            selectCountCriteria.Add(Expression.Like("Item.Code", item, MatchMode.Anywhere));
+            selectCriteria.Add(Expression.Like("Item", item, MatchMode.Anywhere));
+            selectCountCriteria.Add(Expression.Like("Item", item, MatchMode.Anywhere));
         }
 
         if (disConItem != string.Empty)
         {
-            selectCriteria.Add(Expression.Like("MapItem.Code", disConItem, MatchMode.Anywhere));
-            selectCountCriteria.Add(Expression.Like("MapItem.Code", disConItem, MatchMode.Anywhere));
+            selectCriteria.Add(Expression.Like("MapItem", disConItem, MatchMode.Anywhere));
+            selectCountCriteria.Add(Expression.Like("MapItem", disConItem, MatchMode.Anywhere));
         }
 
 
@@ -62,6 +63,11 @@ public partial class MasterData_ItemMap_Search : System.Web.UI.UserControl
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         DoSearch();
+    }
+
+    protected void btnNew_Click(object sender, EventArgs e)
+    {
+        NewEvent(sender, e);
     }
 
     protected void DoSearch()

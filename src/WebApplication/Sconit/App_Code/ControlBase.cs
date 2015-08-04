@@ -211,6 +211,9 @@ namespace com.Sconit.Web
         protected IItemMgrE TheItemMgr { get { return GetService<IItemMgrE>("ItemMgr.service"); } }
         protected IItemCategoryMgrE TheItemCategoryMgr { get { return GetService<IItemCategoryMgrE>("ItemCategoryMgr.service"); } }
         protected IItemDiscontinueMgrE TheItemDiscontinueMgr { get { return GetService<IItemDiscontinueMgrE>("ItemDiscontinueMgr.service"); } }
+        //add by ljz start
+        protected IItemMapMgrE TheItemMapMgr { get { return GetService<IItemMapMgrE>("ItemMapMgr.service"); } }
+        //add by ljz end
         protected IItemBrandMgrE TheItemBrandMgr { get { return GetService<IItemBrandMgrE>("ItemBrandMgr.service"); } }
         protected IItemReferenceMgrE TheItemReferenceMgr { get { return GetService<IItemReferenceMgrE>("ItemReferenceMgr.service"); } }
         protected IItemKitMgrE TheItemKitMgr { get { return GetService<IItemKitMgrE>("ItemKitMgr.service"); } }
