@@ -34,7 +34,6 @@ public partial class MasterData_ItemMap_List : ListModuleBase
         string id = ((LinkButton)sender).CommandArgument;
         try
         {
-            TheItemMapMgr.DeleteItemMap(id);
             string hql = "delete from ItemMap where Item = @Item";
             TheSqlHelperMgr.Delete(hql, new System.Data.SqlClient.SqlParameter[] { new SqlParameter("@Item", id) });
             ShowSuccessMessage("MasterData.ItemMap.DeleteItemMap.Successfully", id);

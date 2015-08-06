@@ -48,7 +48,7 @@ public partial class MasterData_ItemMap_Edit : EditModuleBase
                 new SqlParameter("@Item",tdItem.Text),
                 new SqlParameter("@MapItem",tdMapItem.Text),
                 new SqlParameter("@StartDate",DateTime.Parse(tbStartDate.Text)),
-                new SqlParameter("@EndDate",DateTime.Parse(tbEndDate.Text)),
+                new SqlParameter("@EndDate",tbEndDate.Text == "" ? null : tbEndDate.Text),
                 new SqlParameter("@LastModifyDate",DateTime.Now),
                 new SqlParameter("@LastModifyUser",CurrentUser.Code),
                 new SqlParameter("@Id",itemMap.Id)
@@ -56,7 +56,7 @@ public partial class MasterData_ItemMap_Edit : EditModuleBase
             TheSqlHelperMgr.Update(sql, sps);
             ShowSuccessMessage("MasterData.ItemMap.UpdateItemMap.Successfully");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ShowErrorMessage("MasterData.ItemMap.UpdateItemMap.Fail");
         }

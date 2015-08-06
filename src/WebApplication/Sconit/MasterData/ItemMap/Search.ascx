@@ -4,6 +4,7 @@
 <%@ Register Src="~/Controls/TextBox.ascx" TagName="textbox" TagPrefix="uc3" %>
 
 <fieldset>
+    <legend>${MasterData.ItemMap.Map}</legend>
     <table class="mtable">
         <tr>
             <td class="td01">

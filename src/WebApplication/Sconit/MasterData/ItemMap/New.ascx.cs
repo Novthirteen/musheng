@@ -32,7 +32,10 @@ public partial class MasterData_ItemMap_New : NewModuleBase
             itemMap.Item = tdItem.Text;
             itemMap.MapItem = tdMapItem.Text;
             itemMap.StartDate = DateTime.Parse(tbStartDate.Text);
-            itemMap.EndDate = DateTime.Parse(tbEndDate.Text);
+            if (tbEndDate.Text != "" && tbEndDate.Text != null)
+            {
+                itemMap.EndDate = DateTime.Parse(tbEndDate.Text);
+            }
             itemMap.CreateDate = DateTime.Now;
             itemMap.CreateUser = CurrentUser.Code;
             itemMap.LastModifyDate = DateTime.Now;
