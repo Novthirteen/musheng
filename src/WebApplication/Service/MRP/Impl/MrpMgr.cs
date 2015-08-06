@@ -343,6 +343,15 @@ namespace com.Sconit.Service.MRP.Impl
             IList<ItemDiscontinue> itemDiscontinueList = this.criteriaMgr.FindAll<ItemDiscontinue>(criteria);
             #endregion
 
+            #region 获取所有Map物料
+            criteria = DetachedCriteria.For<ItemMap>();
+
+            criteria.Add(Expression.Le("StartDate", effectiveDate));
+            criteria.Add(Expression.Or(Expression.IsNull("EndDate"), Expression.Ge("EndDate", effectiveDate)));
+
+            IList<ItemMap> itemMapList = this.criteriaMgr.FindAll<ItemMap>(criteria);
+            #endregion
+
             
 
             #region 根据客户需求/销售订单生成发货计划
@@ -636,7 +645,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                             log.Debug("Create receive plan for safe stock, location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "]");
 
-                            CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                            CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
                         }
                         #endregion
                     }
@@ -653,7 +662,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                 foreach (MrpShipPlan mrpShipPlan in sortedMrpShipPlanList)
                 {
-                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
                 }
             }
             #endregion
@@ -882,7 +891,7 @@ namespace com.Sconit.Service.MRP.Impl
             return mrpShipPlanList;
         }
 
-        private void NestCalculateMrpShipPlanAndReceivePlan(MrpShipPlan mrpShipPlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private void NestCalculateMrpShipPlanAndReceivePlan(MrpShipPlan mrpShipPlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, IList<ItemMap> itemMapList, DateTime effectiveDate, DateTime dateTimeNow, User user)
         {
             //if (mrpShipPlan.IsExpire)
             //{
@@ -1083,6 +1092,30 @@ namespace com.Sconit.Service.MRP.Impl
                                 }
                             }
                             #endregion
+
+                            #region 消耗Map物料
+                            if (itemMapList != null && itemMapList.Count > 0 && mrpReceivePlan.Qty > 0)
+                            {
+                                var imList = from itemDis in itemMapList
+                                                           where itemDis.MapItem == mrpReceivePlan.Item
+                                                           select itemDis;
+
+                                if (imList != null && imList.Count() > 0)
+                                {
+                                    foreach (ItemMap im in imList)
+                                    {
+                                        //回冲库存
+                                        BackFlushInventory(mrpReceivePlan, im.Item, 1, inventoryBalanceList);
+
+                                        //回冲在途
+                                        if (im.EndDate >= mrpReceivePlan.ReceiveTime)
+                                        {
+                                            BackFlushTransitInventory(mrpReceivePlan, im.Item, 1, transitInventoryList);
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
                             #endregion
 
                             mrpReceivePlan.ReceiveTime = mrpShipPlan.StartTime;
@@ -1114,13 +1147,13 @@ namespace com.Sconit.Service.MRP.Impl
                 foreach (MrpReceivePlan mrpReceivePlan in currMrpReceivePlanList)
                 {
                     log.Debug("Transfer ship plan flow[" + mrpShipPlan.Flow + "], qty[" + mrpShipPlan.Qty + "] to receive plan location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "]");
-                    CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                    CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
                 }
                 #endregion
             }
         }
 
-        private void CalculateNextShipPlan(MrpReceivePlan mrpReceivePlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private void CalculateNextShipPlan(MrpReceivePlan mrpReceivePlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, IList<ItemMap> itemMapList, DateTime effectiveDate, DateTime dateTimeNow, User user)
         {
             if (mrpReceivePlan.ReceiveTime < effectiveDate)
             {
@@ -1239,7 +1272,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                     log.Debug("Transfer receive plan location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "] to ship plan flow[" + mrpShipPlan.Flow + "], qty[" + mrpShipPlan.Qty + "]");
 
-                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
                 }
             }
             else
