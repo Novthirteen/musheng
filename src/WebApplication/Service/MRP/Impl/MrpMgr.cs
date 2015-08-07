@@ -86,7 +86,7 @@ namespace com.Sconit.Service.MRP.Impl
             #region 获取实时库存和在途
             #region 查询
             #region 订单待收
-            string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, ISNULL(im.MapItem, olt.Item), olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
+            string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, CONVERT(varchar, ISNULL(im.MapItem, olt.Item)), olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
@@ -115,7 +115,7 @@ namespace com.Sconit.Service.MRP.Impl
             #endregion
 
             #region 实时库存
-            sql = @"select l.Code, ISNULL(im.MapItem, lld.Item), sum(lld.Qty) 
+            sql = @"select l.Code, CONVERT(varchar, ISNULL(im.MapItem, lld.Item)), sum(lld.Qty) 
                     from LocationLotDet as lld 
                     inner join Location as l on lld.Location = l.Code
                     left join ItemMap as im on lld.Item = im.Item
@@ -126,7 +126,7 @@ namespace com.Sconit.Service.MRP.Impl
 
             #region 发运在途
 
-            sql = @"select od.LocTo, ISNULL(im.MapItem, olt.Item), SUM(ipd.Qty), SUM(ipd.RecQty), ip.ArriveTime, om.LocTo
+            sql = @"select od.LocTo, CONVERT(varchar, ISNULL(im.MapItem, olt.Item)), SUM(ipd.Qty), SUM(ipd.RecQty), ip.ArriveTime, om.LocTo
                     from IpDet as ipd inner join IpMstr as ip on ipd.IpNo = ip.IpNo
                     inner join OrderLocTrans as olt on ipd.OrderLocTransId = olt.Id
                     inner join OrderDet as od on olt.OrderDetId = od.Id
@@ -145,7 +145,7 @@ namespace com.Sconit.Service.MRP.Impl
             #endregion
 
             #region 检验在途
-            sql = @"select iod.LocTo, ISNULL(im.MapItem, lld.Item), SUM(lld.Qty), io.EstInspectDate 
+            sql = @"select iod.LocTo, CONVERT(varchar, ISNULL(im.MapItem, lld.Item)), SUM(lld.Qty), io.EstInspectDate 
                     from InspectDet as iod 
                     inner join InspectMstr as io on iod.InspNo = io.InspNo
                     inner join LocationLotdet as lld on iod.LocLotDetId = lld.Id
