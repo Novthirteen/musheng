@@ -180,7 +180,7 @@ namespace com.Sconit.Service.MRP.Impl
                     inner join InspectMstr as io on iod.InspNo = io.InspNo
                     inner join LocationLotdet as lld on iod.LocLotDetId = lld.Id
                     left join ItemMap as im on lld.Item = im.Item
-                    where io.IsSeperated = 0 and io.Status = ?
+                    where io.IsSeperated = ? and io.Status = ?
                     group by iod.LocTo, im.MapItem, lld.Item, io.EstInspectDate";
 
             columns = new Dictionary<String, IType>();
