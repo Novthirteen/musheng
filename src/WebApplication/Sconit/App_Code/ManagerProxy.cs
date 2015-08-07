@@ -1067,7 +1067,27 @@ namespace com.Sconit.Web
             LocationMgr.DeleteLocation(location);
         }
     }
+    //add by ljz start
+    public class ItemMapMgrProxy
+    {
+        public ItemMapMgrProxy()
+        {
+        }
 
+        private IItemMapMgrE ItemMapMgr
+        {
+            get
+            {
+                return ServiceLocator.GetService<IItemMapMgrE>("ItemMapMgr.service");
+            }
+        }
+
+        public ItemMap LoadItemMap(string item)
+        {
+            return ItemMapMgr.LoadItemMap(item);
+        }
+    }
+    //add by ljz end
     public class ItemPointMgrProxy
     {
         private IOrderProductionPlanMgrE ItemPointMgr

@@ -10,22 +10,22 @@
             <Columns>
                 <asp:TemplateField HeaderText="${MasterData.ItemMap.Item}" SortExpression="Item">
                     <ItemTemplate>
-                        <%# DataBinder.Eval(Container.DataItem, "Item.Code")%>
+                        <%# DataBinder.Eval(Container.DataItem, "Item")%>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="${MasterData.ItemMap.MapItem}" SortExpression="DiscontinueItem">
                     <ItemTemplate>
-                        <%# DataBinder.Eval(Container.DataItem, "DiscontinueItem.Code")%>
+                        <%# DataBinder.Eval(Container.DataItem, "MapItem")%>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField DataField="StartDate" HeaderText="${MasterData.ItemMap.StartDate}" SortExpression="StartDate" />
                 <asp:BoundField DataField="EndDate" HeaderText="${MasterData.ItemMap.EndDate}" SortExpression="EndDate" />  
                 <asp:TemplateField HeaderText="${Common.GridView.Action}">
                     <ItemTemplate>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "Id") %>'
+                        <asp:LinkButton ID="lbtnEdit" runat="server" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "Item") %>'
                             Text="${Common.Button.Edit}" OnClick="lbtnEdit_Click" />
                             
-                        <cc1:LinkButton ID="lbtnDelete" runat="server" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "Id") %>' FunctionId="DeleteItemDisContinue"
+                        <cc1:LinkButton ID="lbtnDelete" runat="server" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "Item") %>' FunctionId="DeleteItemDisContinue"
                             Text="${Common.Button.Delete}" OnClick="lbtnDelete_Click" OnClientClick="return confirm('${Common.Button.Delete.Confirm}')" />
 
                     </ItemTemplate>
