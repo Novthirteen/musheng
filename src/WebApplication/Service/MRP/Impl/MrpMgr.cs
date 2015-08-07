@@ -86,12 +86,27 @@ namespace com.Sconit.Service.MRP.Impl
             #region 获取实时库存和在途
             #region 查询
             #region 订单待收
-            string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, CONVERT(varchar, ISNULL(im.MapItem, olt.Item)), olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
+            string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
                     left join ItemMap as im on im.Item = olt.Item
                     where oh.Status in (?, ?) and oh.SubType = ? and not oh.Type = ? and olt.IOType = ?";
+
+            IDictionary<String, IType> columns = new Dictionary<String, IType>();
+            columns.Add("OrderNo", NHibernateUtil.String);
+            columns.Add("Type", NHibernateUtil.String);
+            columns.Add("Flow", NHibernateUtil.String);
+            columns.Add("Item", NHibernateUtil.String);
+            columns.Add("Uom", NHibernateUtil.String);
+            columns.Add("UC", NHibernateUtil.Decimal);
+            columns.Add("StartTime", NHibernateUtil.DateTime);
+            columns.Add("WindowTime", NHibernateUtil.DateTime);
+            columns.Add("OrderQty", NHibernateUtil.Decimal);
+            columns.Add("ShipQty", NHibernateUtil.Decimal);
+            columns.Add("RecQty", NHibernateUtil.Decimal);
+            columns.Add("UnitQty", NHibernateUtil.Decimal);
+
 
             IList<object[]> expectTransitInvList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
                 new Object[] {
@@ -100,7 +115,7 @@ namespace com.Sconit.Service.MRP.Impl
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_DISTRIBUTION,
                     BusinessConstants.IO_TYPE_IN
-                });
+                }, columns);
             #endregion
 
             #region 安全库存
@@ -115,18 +130,25 @@ namespace com.Sconit.Service.MRP.Impl
             #endregion
 
             #region 实时库存
-            sql = @"select l.Code, CONVERT(varchar, ISNULL(im.MapItem, lld.Item)), sum(lld.Qty) 
+            sql = @"select l.Code, ISNULL(im.MapItem, lld.Item) as Item, sum(lld.Qty) as Qty
                     from LocationLotDet as lld 
                     inner join Location as l on lld.Location = l.Code
                     left join ItemMap as im on lld.Item = im.Item
                     where lld.Qty <> 0 and l.Type = ? and l.IsMRP = 1
                     group by l.Code, im.MapItem, lld.Item";
-            IList<object[]> invList = hqlMgr.FindAllWithNativeSql<object[]>(sql, BusinessConstants.CODE_MASTER_LOCATION_TYPE_VALUE_NORMAL);
+
+            columns = new Dictionary<String, IType>();
+            columns.Add("Code", NHibernateUtil.String);
+            columns.Add("Item", NHibernateUtil.String);
+            columns.Add("Qty", NHibernateUtil.Decimal);
+
+            IList<object[]> invList = hqlMgr.FindAllWithNativeSql<object[]>(
+                sql, BusinessConstants.CODE_MASTER_LOCATION_TYPE_VALUE_NORMAL, columns);
             #endregion
 
             #region 发运在途
 
-            sql = @"select od.LocTo, CONVERT(varchar, ISNULL(im.MapItem, olt.Item)), SUM(ipd.Qty), SUM(ipd.RecQty), ip.ArriveTime, om.LocTo
+            sql = @"select od.LocTo, ISNULL(im.MapItem, olt.Item) as Item, SUM(ipd.Qty) as Qty, SUM(ipd.RecQty) as RecQty, ip.ArriveTime, om.LocTo as MLocTo
                     from IpDet as ipd inner join IpMstr as ip on ipd.IpNo = ip.IpNo
                     inner join OrderLocTrans as olt on ipd.OrderLocTransId = olt.Id
                     inner join OrderDet as od on olt.OrderDetId = od.Id
@@ -135,28 +157,43 @@ namespace com.Sconit.Service.MRP.Impl
                     where ip.Status = ? and om.SubType = ? and ip.OrderType in (?, ?)
                     group by od.LocTo, im.MapItem, olt.Item, ip.ArriveTime, om.LocTo";
 
+            columns = new Dictionary<String, IType>();
+            columns.Add("LocTo", NHibernateUtil.String);
+            columns.Add("Item", NHibernateUtil.String);
+            columns.Add("Qty", NHibernateUtil.Decimal);
+            columns.Add("RecQty", NHibernateUtil.Decimal);
+            columns.Add("ArriveTime", NHibernateUtil.DateTime);
+            columns.Add("MLocTo", NHibernateUtil.String);
+
             IList<object[]> ipDetList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
                 new Object[] {
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE, 
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_SUBCONCTRACTING, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_TRANSFER
-                });
+                }, columns);
             #endregion
 
             #region 检验在途
-            sql = @"select iod.LocTo, CONVERT(varchar, ISNULL(im.MapItem, lld.Item)), SUM(lld.Qty), io.EstInspectDate 
+            sql = @"select iod.LocTo, ISNULL(im.MapItem, lld.Item) as Item, SUM(lld.Qty) as Qty, io.EstInspectDate 
                     from InspectDet as iod 
                     inner join InspectMstr as io on iod.InspNo = io.InspNo
                     inner join LocationLotdet as lld on iod.LocLotDetId = lld.Id
                     left join ItemMap as im on lld.Item = im.Item
                     where io.IsSeperated = 0 and io.Status = ?
                     group by iod.LocTo, im.MapItem, lld.Item, io.EstInspectDate";
+
+            columns = new Dictionary<String, IType>();
+            columns.Add("LocTo", NHibernateUtil.String);
+            columns.Add("Item", NHibernateUtil.String);
+            columns.Add("Qty", NHibernateUtil.Decimal);
+            columns.Add("EstInspectDate", NHibernateUtil.DateTime);
+
             IList<object[]> inspLocList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
                 new Object[] {
                     false, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE
-                });
+                }, columns);
             #endregion
             #endregion
 

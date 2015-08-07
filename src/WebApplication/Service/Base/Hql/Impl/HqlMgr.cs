@@ -142,54 +142,54 @@ namespace com.Sconit.Service.Hql.Impl
             return this.hqlDao.FindAll<T>(hqlString, param, types, firstRow, maxRows);
         }
 
-        public IList FindAllWithNativeSql(string sql)
+        public IList FindAllWithNativeSql(string sql, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql(sql);
+            return hqlDao.FindAllWithNativeSql(sql, columns);
         }
 
-        public IList FindAllWithNativeSql(string sql, object value)
+        public IList FindAllWithNativeSql(string sql, object value, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql(sql, value);
+            return hqlDao.FindAllWithNativeSql(sql, value, columns);
         }
 
-        public IList FindAllWithNativeSql(string sql, object value, IType type)
+        public IList FindAllWithNativeSql(string sql, object value, IType type, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql(sql, value, type);
+            return hqlDao.FindAllWithNativeSql(sql, value, type, columns);
         }
 
-        public IList FindAllWithNativeSql(string sql, object[] values)
+        public IList FindAllWithNativeSql(string sql, object[] values, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql(sql, values);
+            return hqlDao.FindAllWithNativeSql(sql, values, columns);
         }
 
-        public IList FindAllWithNativeSql(string sql, object[] values, IType[] types)
+        public IList FindAllWithNativeSql(string sql, object[] values, IType[] types, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql(sql, values, types);
+            return hqlDao.FindAllWithNativeSql(sql, values, types, columns);
         }
 
-        public IList<T> FindAllWithNativeSql<T>(string sql)
+        public IList<T> FindAllWithNativeSql<T>(string sql, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql<T>(sql);
+            return hqlDao.FindAllWithNativeSql<T>(sql, columns);
         }
 
-        public IList<T> FindAllWithNativeSql<T>(string sql, object value)
+        public IList<T> FindAllWithNativeSql<T>(string sql, object value, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql<T>(sql, value);
+            return hqlDao.FindAllWithNativeSql<T>(sql, value, columns);
         }
 
-        public IList<T> FindAllWithNativeSql<T>(string sql, object value, IType type)
+        public IList<T> FindAllWithNativeSql<T>(string sql, object value, IType type, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql<T>(sql, value, type);
+            return hqlDao.FindAllWithNativeSql<T>(sql, value, type, columns);
         }
 
-        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values)
+        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql<T>(sql, values);
+            return hqlDao.FindAllWithNativeSql<T>(sql, values, columns);
         }
 
-        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IType[] types)
+        public IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IType[] types, IDictionary<String, IType> columns)
         {
-            return hqlDao.FindAllWithNativeSql<T>(sql, values, types);
+            return hqlDao.FindAllWithNativeSql<T>(sql, values, types, columns);
         }
 
         public IList<T> FindEntityWithNativeSql<T>(string sql)
