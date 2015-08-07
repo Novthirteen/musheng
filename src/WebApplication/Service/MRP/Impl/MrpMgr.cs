@@ -86,13 +86,14 @@ namespace com.Sconit.Service.MRP.Impl
             #region 获取实时库存和在途
             #region 查询
             #region 订单待收
-            hql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Location.Code, olt.Item.Code, olt.Uom.Code, od.UnitCount, oh.StartTime, oh.WindowTime, od.OrderedQty, od.ShippedQty, od.ReceivedQty, olt.UnitQty
-                    from OrderLocationTransaction as olt 
-                    join olt.OrderDetail as od
-                    join od.OrderHead as oh
+            string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, ISNULL(im.MapItem, olt.Item), olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
+                    from OrderLocTrans as olt 
+                    inner join OrderDet as od on olt.OrderDetId = od.Id
+                    inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
+                    left join ItemMap as im on im.Item = olt.Item
                     where oh.Status in (?, ?) and oh.SubType = ? and not oh.Type = ? and olt.IOType = ?";
 
-            IList<object[]> expectTransitInvList = hqlMgr.FindAll<object[]>(hql,
+            IList<object[]> expectTransitInvList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
                 new Object[] {
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS, 
@@ -114,64 +115,48 @@ namespace com.Sconit.Service.MRP.Impl
             #endregion
 
             #region 实时库存
-            hql = @"select l.Code, i.Code, sum(lld.Qty) from LocationLotDetail as lld
-                    join lld.Location as l
-                    join lld.Item as i
-                    where not lld.Qty = 0 and l.Type = ? and l.IsMRP = 1
-                    group by l.Code, i.Code";
-            IList<object[]> invList = hqlMgr.FindAll<object[]>(hql, BusinessConstants.CODE_MASTER_LOCATION_TYPE_VALUE_NORMAL);
+            sql = @"select l.Code, ISNULL(im.MapItem, lld.Item), sum(lld.Qty) 
+                    from LocationLotDet as lld 
+                    inner join Location as l on lld.Location = l.Code
+                    left join ItemMap as im on lld.Item = im.Item
+                    where lld.Qty <> 0 and l.Type = ? and l.IsMRP = 1
+                    group by l.Code, im.MapItem, lld.Item";
+            IList<object[]> invList = hqlMgr.FindAllWithNativeSql<object[]>(sql, BusinessConstants.CODE_MASTER_LOCATION_TYPE_VALUE_NORMAL);
             #endregion
 
             #region 发运在途
-            DetachedCriteria criteria = DetachedCriteria.For<InProcessLocationDetail>();
 
-            //criteria.CreateAlias("LocationTo", "lt");
-            criteria.CreateAlias("InProcessLocation", "ip");
-            criteria.CreateAlias("OrderLocationTransaction", "olt");
-            criteria.CreateAlias("olt.OrderDetail", "od");
-            criteria.CreateAlias("od.OrderHead", "oh");
-            criteria.CreateAlias("olt.Item", "i");
-            criteria.CreateAlias("od.LocationTo", "lt", JoinType.LeftOuterJoin);
-            criteria.CreateAlias("oh.LocationTo", "ohlt", JoinType.LeftOuterJoin);
+            sql = @"select od.LocTo, ISNULL(im.MapItem, olt.Item), SUM(ipd.Qty), SUM(ipd.RecQty), ip.ArriveTime, om.LocTo
+                    from IpDet as ipd inner join IpMstr as ip on ipd.IpNo = ip.IpNo
+                    inner join OrderLocTrans as olt on ipd.OrderLocTransId = olt.Id
+                    inner join OrderDet as od on olt.OrderDetId = od.Id
+                    inner join OrderMstr as om on od.OrderNo = om.OrderNo
+                    left join ItemMap as im on olt.Item = im.Item
+                    where ip.Status = ? and om.SubType = ? and ip.OrderType in (?, ?)
+                    group by od.LocTo, im.MapItem, olt.Item, ip.ArriveTime, om.LocTo";
 
-            criteria.Add(Expression.Eq("ip.Status", BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE));
-            criteria.Add(Expression.Eq("oh.SubType", BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML));
-            criteria.Add(Expression.In("ip.OrderType", new string[] { 
-                            //BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_CUSTOMERGOODS, 
-                            //BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT,    不考虑采购在途
-                            BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_SUBCONCTRACTING, 
-                            BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_TRANSFER }));
-
-            criteria.SetProjection(Projections.ProjectionList()
-              .Add(Projections.GroupProperty("od.LocationTo"))
-              .Add(Projections.GroupProperty("i.Code"))
-              .Add(Projections.Sum("Qty"))
-              .Add(Projections.Sum("ReceivedQty"))
-              .Add(Projections.GroupProperty("ip.ArriveTime"))
-              .Add(Projections.GroupProperty("oh.LocationTo"))
-              );
-            IList<object[]> ipDetList = this.criteriaMgr.FindAll<object[]>(criteria);
+            IList<object[]> ipDetList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
+                new Object[] {
+                    BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE, 
+                    BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
+                    BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_SUBCONCTRACTING, 
+                    BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_TRANSFER
+                });
             #endregion
 
             #region 检验在途
-            criteria = DetachedCriteria.For<InspectOrderDetail>();
-
-            criteria.CreateAlias("InspectOrder", "io");
-            criteria.CreateAlias("LocationTo", "lt");
-            criteria.CreateAlias("LocationLotDetail", "lld");
-            criteria.CreateAlias("lld.Item", "i");
-
-            criteria.Add(Expression.Eq("io.IsSeperated", false));
-            criteria.Add(Expression.Eq("io.Status", BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE));
-
-            criteria.SetProjection(Projections.ProjectionList()
-               .Add(Projections.GroupProperty("lt.Code").As("Location"))
-               .Add(Projections.GroupProperty("i.Code").As("Item"))
-               .Add(Projections.Sum("lld.Qty"))
-               .Add(Projections.GroupProperty("io.EstimateInspectDate"))
-               );
-
-            IList<object[]> inspLocList = this.criteriaMgr.FindAll<object[]>(criteria);
+            sql = @"select iod.LocTo, ISNULL(im.MapItem, lld.Item), SUM(lld.Qty), io.EstInspectDate 
+                    from InspectDet as iod 
+                    inner join InspectMstr as io on iod.InspNo = io.InspNo
+                    inner join LocationLotdet as lld on iod.LocLotDetId = lld.Id
+                    left join ItemMap as im on lld.Item = im.Item
+                    where io.IsSeperated = 0 and io.Status = ?
+                    group by iod.LocTo, im.MapItem, lld.Item, io.EstInspectDate";
+            IList<object[]> inspLocList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
+                new Object[] {
+                    false, 
+                    BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE
+                });
             #endregion
             #endregion
 
@@ -335,24 +320,13 @@ namespace com.Sconit.Service.MRP.Impl
 
 
             #region 获取所有替代物料
-            criteria = DetachedCriteria.For<ItemDiscontinue>();
+            DetachedCriteria criteria = DetachedCriteria.For<ItemDiscontinue>();
 
             criteria.Add(Expression.Le("StartDate", effectiveDate));
             criteria.Add(Expression.Or(Expression.IsNull("EndDate"), Expression.Ge("EndDate", effectiveDate)));
 
             IList<ItemDiscontinue> itemDiscontinueList = this.criteriaMgr.FindAll<ItemDiscontinue>(criteria);
             #endregion
-
-            #region 获取所有Map物料
-            criteria = DetachedCriteria.For<ItemMap>();
-
-            criteria.Add(Expression.Le("StartDate", effectiveDate));
-            criteria.Add(Expression.Or(Expression.IsNull("EndDate"), Expression.Ge("EndDate", effectiveDate)));
-
-            IList<ItemMap> itemMapList = this.criteriaMgr.FindAll<ItemMap>(criteria);
-            #endregion
-
-            
 
             #region 根据客户需求/销售订单生成发货计划
 
@@ -645,7 +619,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                             log.Debug("Create receive plan for safe stock, location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "]");
 
-                            CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
+                            CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
                         }
                         #endregion
                     }
@@ -662,7 +636,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                 foreach (MrpShipPlan mrpShipPlan in sortedMrpShipPlanList)
                 {
-                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
+                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
                 }
             }
             #endregion
@@ -891,7 +865,7 @@ namespace com.Sconit.Service.MRP.Impl
             return mrpShipPlanList;
         }
 
-        private void NestCalculateMrpShipPlanAndReceivePlan(MrpShipPlan mrpShipPlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, IList<ItemMap> itemMapList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private void NestCalculateMrpShipPlanAndReceivePlan(MrpShipPlan mrpShipPlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user)
         {
             //if (mrpShipPlan.IsExpire)
             //{
@@ -1092,30 +1066,6 @@ namespace com.Sconit.Service.MRP.Impl
                                 }
                             }
                             #endregion
-
-                            #region 消耗Map物料
-                            if (itemMapList != null && itemMapList.Count > 0 && mrpReceivePlan.Qty > 0)
-                            {
-                                var imList = from itemDis in itemMapList
-                                                           where itemDis.MapItem == mrpReceivePlan.Item
-                                                           select itemDis;
-
-                                if (imList != null && imList.Count() > 0)
-                                {
-                                    foreach (ItemMap im in imList)
-                                    {
-                                        //回冲库存
-                                        BackFlushInventory(mrpReceivePlan, im.Item, 1, inventoryBalanceList);
-
-                                        //回冲在途
-                                        if (im.EndDate >= mrpReceivePlan.ReceiveTime)
-                                        {
-                                            BackFlushTransitInventory(mrpReceivePlan, im.Item, 1, transitInventoryList);
-                                        }
-                                    }
-                                }
-                            }
-                            #endregion
                             #endregion
 
                             mrpReceivePlan.ReceiveTime = mrpShipPlan.StartTime;
@@ -1147,13 +1097,13 @@ namespace com.Sconit.Service.MRP.Impl
                 foreach (MrpReceivePlan mrpReceivePlan in currMrpReceivePlanList)
                 {
                     log.Debug("Transfer ship plan flow[" + mrpShipPlan.Flow + "], qty[" + mrpShipPlan.Qty + "] to receive plan location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "]");
-                    CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
+                    CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
                 }
                 #endregion
             }
         }
 
-        private void CalculateNextShipPlan(MrpReceivePlan mrpReceivePlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, IList<ItemMap> itemMapList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private void CalculateNextShipPlan(MrpReceivePlan mrpReceivePlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user)
         {
             if (mrpReceivePlan.ReceiveTime < effectiveDate)
             {
@@ -1272,7 +1222,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                     log.Debug("Transfer receive plan location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "] to ship plan flow[" + mrpShipPlan.Flow + "], qty[" + mrpShipPlan.Qty + "]");
 
-                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, itemMapList, effectiveDate, dateTimeNow, user);
+                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
                 }
             }
             else
