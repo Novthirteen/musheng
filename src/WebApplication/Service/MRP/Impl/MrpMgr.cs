@@ -86,6 +86,7 @@ namespace com.Sconit.Service.MRP.Impl
             #region 获取实时库存和在途
             #region 查询
             #region 订单待收
+
             string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id
@@ -97,6 +98,7 @@ namespace com.Sconit.Service.MRP.Impl
             columns.Add("OrderNo", NHibernateUtil.String);
             columns.Add("Type", NHibernateUtil.String);
             columns.Add("Flow", NHibernateUtil.String);
+            columns.Add("Loc", NHibernateUtil.String);
             columns.Add("Item", NHibernateUtil.String);
             columns.Add("Uom", NHibernateUtil.String);
             columns.Add("UC", NHibernateUtil.Decimal);
@@ -325,7 +327,9 @@ namespace com.Sconit.Service.MRP.Impl
             #region Snapshot 订单待收
             if (expectTransitInvList != null)
             {
-                var expTransInvListSnapShot = from inv in expectTransitInvList
+                //            select oh.OrderNo, oh.Type, oh.Flow, olt.Location.Code, olt.Item.Code, olt.Uom.Code, od.UnitCount, oh.StartTime, oh.WindowTime, od.OrderedQty, od.ShippedQty, od.ReceivedQty, olt.UnitQty
+                //select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
+                                var expTransInvListSnapShot = from inv in expectTransitInvList
                                               select new ExpectTransitInventory
                                               {
                                                   OrderNo = (string)inv[0],
