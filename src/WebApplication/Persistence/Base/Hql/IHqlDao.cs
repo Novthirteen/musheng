@@ -62,25 +62,25 @@ namespace com.Sconit.Persistence.Hql
         IList<T> FindAll<T>(string hqlString, IDictionary<string, object> param, IType[] type, int firstRow, int maxRows);
 
 
-        IList FindAllWithNativeSql(string sql);
+        IList FindAllWithNativeSql(string sql, IDictionary<String, IType> columns);
 
-        IList FindAllWithNativeSql(string sql, object value);
+        IList FindAllWithNativeSql(string sql, object value, IDictionary<String, IType> columns);
 
-        IList FindAllWithNativeSql(string sql, object value, IType type);
+        IList FindAllWithNativeSql(string sql, object value, IType type, IDictionary<String, IType> columns);
 
-        IList FindAllWithNativeSql(string sql, object[] values);
+        IList FindAllWithNativeSql(string sql, object[] values, IDictionary<String, IType> columns);
 
-        IList FindAllWithNativeSql(string sql, object[] values, IType[] types);
+        IList FindAllWithNativeSql(string sql, object[] values, IType[] types, IDictionary<String, IType> columns);
 
-        IList<T> FindAllWithNativeSql<T>(string sql);
+        IList<T> FindAllWithNativeSql<T>(string sql, IDictionary<String, IType> columns);
 
-        IList<T> FindAllWithNativeSql<T>(string sql, object value);
+        IList<T> FindAllWithNativeSql<T>(string sql, object value, IDictionary<String, IType> columns);
 
-        IList<T> FindAllWithNativeSql<T>(string sql, object value, IType type);
+        IList<T> FindAllWithNativeSql<T>(string sql, object value, IType type, IDictionary<String, IType> columns);
 
-        IList<T> FindAllWithNativeSql<T>(string sql, object[] values);
+        IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IDictionary<String, IType> columns);
 
-        IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IType[] types);
+        IList<T> FindAllWithNativeSql<T>(string sql, object[] values, IType[] types, IDictionary<String, IType> columns);
 
         IList<T> FindEntityWithNativeSql<T>(string sql);
 

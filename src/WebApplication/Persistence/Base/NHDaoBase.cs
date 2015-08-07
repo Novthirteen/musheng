@@ -42,7 +42,6 @@ namespace com.Sconit.Persistence
             set { sessionFactoryAlias = value; }
         }
 
-
         #region IDAOBase Members
 
         public virtual IList<T> FindAll<T>()
