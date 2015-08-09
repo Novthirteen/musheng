@@ -359,7 +359,6 @@ namespace com.Sconit.Service.MRP.Impl
             #endregion
             #endregion
 
-
             #region 获取所有替代物料
             DetachedCriteria criteria = DetachedCriteria.For<ItemDiscontinue>();
 
@@ -367,6 +366,15 @@ namespace com.Sconit.Service.MRP.Impl
             criteria.Add(Expression.Or(Expression.IsNull("EndDate"), Expression.Ge("EndDate", effectiveDate)));
 
             IList<ItemDiscontinue> itemDiscontinueList = this.criteriaMgr.FindAll<ItemDiscontinue>(criteria);
+            #endregion
+
+            #region 获取所有映射物料
+            criteria = DetachedCriteria.For<ItemMap>();
+
+            criteria.Add(Expression.Le("StartDate", effectiveDate));
+            criteria.Add(Expression.Or(Expression.IsNull("EndDate"), Expression.Ge("EndDate", effectiveDate)));
+
+            IList<ItemMap> itemMapList = this.criteriaMgr.FindAll<ItemMap>(criteria);
             #endregion
 
             #region 根据客户需求/销售订单生成发货计划
@@ -433,7 +441,7 @@ namespace com.Sconit.Service.MRP.Impl
                     {
                         IListHelper.AddRange(mrpShipPlanList, TransferSalesOrderAndCustomerPlan2ShipPlan(targetSalesOrderDetailList != null ? targetSalesOrderDetailList.ToList() : null,
                             targetCustomerScheduleDetailList != null ? targetCustomerScheduleDetailList.ToList() : null,
-                            effectiveDate, dateTimeNow, user));
+                            effectiveDate, dateTimeNow, user, itemMapList));
                     }
                     else if (mrpOption == BusinessConstants.CODE_MASTER_MRP_OPTION_VALUE_PLAN_ONLY)
                     {
@@ -441,7 +449,7 @@ namespace com.Sconit.Service.MRP.Impl
                     }
                     else if (mrpOption == BusinessConstants.CODE_MASTER_MRP_OPTION_VALUE_ORDER_ONLY)
                     {
-                        IListHelper.AddRange(mrpShipPlanList, TransferSalesOrder2ShipPlan(targetSalesOrderDetailList != null ? targetSalesOrderDetailList.ToList() : null, effectiveDate, dateTimeNow, user));
+                        IListHelper.AddRange(mrpShipPlanList, TransferSalesOrder2ShipPlan(targetSalesOrderDetailList != null ? targetSalesOrderDetailList.ToList() : null, effectiveDate, dateTimeNow, user, itemMapList));
                     }
                     else
                     {
@@ -723,7 +731,7 @@ namespace com.Sconit.Service.MRP.Impl
             }
         }
 
-        private IList<MrpShipPlan> TransferSalesOrder2ShipPlan(IList<OrderDetail> salesOrderDetailList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private IList<MrpShipPlan> TransferSalesOrder2ShipPlan(IList<OrderDetail> salesOrderDetailList, DateTime effectiveDate, DateTime dateTimeNow, User user, IList<ItemMap> itemMapList)
         {
             IList<MrpShipPlan> mrpShipPlanList = new List<MrpShipPlan>();
 
@@ -733,6 +741,9 @@ namespace com.Sconit.Service.MRP.Impl
                 {
                     OrderHead orderHead = salesOrderDetail.OrderHead;
                     MrpShipPlan mrpShipPlan = new MrpShipPlan();
+
+                    string itemCode = itemMapList != null && itemMapList.Where(i=>i.Item == salesOrderDetail.Item.Code).Count() > 0 ? 
+                        itemMapList.Where(i=>i.Item == salesOrderDetail.Item.Code).First().Item : salesOrderDetail.Item.Code;
 
                     if (salesOrderDetail.OrderHead.StartTime < effectiveDate)
                     {
@@ -745,7 +756,7 @@ namespace com.Sconit.Service.MRP.Impl
                     }
                     mrpShipPlan.Flow = salesOrderDetail.OrderHead.Flow;
                     mrpShipPlan.FlowType = BusinessConstants.CODE_MASTER_FLOW_TYPE_VALUE_DISTRIBUTION;
-                    mrpShipPlan.Item = salesOrderDetail.Item.Code;
+                    mrpShipPlan.Item = itemCode;
                     mrpShipPlan.ItemDescription = salesOrderDetail.Item.Description;
                     if (mrpShipPlan.IsExpire)
                     {
@@ -768,7 +779,7 @@ namespace com.Sconit.Service.MRP.Impl
                     mrpShipPlan.SourceDateType = BusinessConstants.CODE_MASTER_TIME_PERIOD_TYPE_VALUE_DAY;
                     mrpShipPlan.SourceId = salesOrderDetail.OrderHead.OrderNo;
                     mrpShipPlan.SourceUnitQty = 1;
-                    mrpShipPlan.SourceItemCode = salesOrderDetail.Item.Code;
+                    mrpShipPlan.SourceItemCode = itemCode;
                     mrpShipPlan.SourceItemDescription = salesOrderDetail.Item.Description1;
                     mrpShipPlan.EffectiveDate = effectiveDate;
                     mrpShipPlan.Qty = (salesOrderDetail.OrderedQty - (salesOrderDetail.ShippedQty.HasValue ? salesOrderDetail.ShippedQty.Value : 0)); ;
@@ -847,9 +858,9 @@ namespace com.Sconit.Service.MRP.Impl
             return mrpShipPlanList;
         }
 
-        private IList<MrpShipPlan> TransferSalesOrderAndCustomerPlan2ShipPlan(IList<OrderDetail> salesOrderDetailList, IList<CustomerScheduleDetail> customerScheduleDetaillList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private IList<MrpShipPlan> TransferSalesOrderAndCustomerPlan2ShipPlan(IList<OrderDetail> salesOrderDetailList, IList<CustomerScheduleDetail> customerScheduleDetaillList, DateTime effectiveDate, DateTime dateTimeNow, User user, IList<ItemMap> itemMapList)
         {
-            IList<MrpShipPlan> mrpShipPlanList = TransferSalesOrder2ShipPlan(salesOrderDetailList, effectiveDate, dateTimeNow, user);
+            IList<MrpShipPlan> mrpShipPlanList = TransferSalesOrder2ShipPlan(salesOrderDetailList, effectiveDate, dateTimeNow, user, itemMapList);
 
             IList<CustomerScheduleDetail> newDetails = new List<CustomerScheduleDetail>();
 
