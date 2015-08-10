@@ -668,7 +668,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                             log.Debug("Create receive plan for safe stock, location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "]");
 
-                            CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                            CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user, itemMapList);
                         }
                         #endregion
                     }
@@ -685,7 +685,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                 foreach (MrpShipPlan mrpShipPlan in sortedMrpShipPlanList)
                 {
-                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user, itemMapList);
                 }
             }
             #endregion
@@ -743,7 +743,7 @@ namespace com.Sconit.Service.MRP.Impl
                     MrpShipPlan mrpShipPlan = new MrpShipPlan();
 
                     string itemCode = itemMapList != null && itemMapList.Where(i=>i.Item == salesOrderDetail.Item.Code).Count() > 0 ? 
-                        itemMapList.Where(i=>i.Item == salesOrderDetail.Item.Code).First().Item : salesOrderDetail.Item.Code;
+                        itemMapList.Where(i=>i.Item == salesOrderDetail.Item.Code).First().MapItem : salesOrderDetail.Item.Code;
 
                     if (salesOrderDetail.OrderHead.StartTime < effectiveDate)
                     {
@@ -917,7 +917,7 @@ namespace com.Sconit.Service.MRP.Impl
             return mrpShipPlanList;
         }
 
-        private void NestCalculateMrpShipPlanAndReceivePlan(MrpShipPlan mrpShipPlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private void NestCalculateMrpShipPlanAndReceivePlan(MrpShipPlan mrpShipPlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user, IList<ItemMap> itemMapList)
         {
             //if (mrpShipPlan.IsExpire)
             //{
@@ -1035,7 +1035,7 @@ namespace com.Sconit.Service.MRP.Impl
                             MrpReceivePlan mrpReceivePlan = new MrpReceivePlan();
                             mrpReceivePlan.IsExpire = mrpShipPlan.IsExpire;
                             mrpReceivePlan.ExpireStartTime = mrpShipPlan.ExpireStartTime;
-                            mrpReceivePlan.Item = bomDetail.Item.Code;
+                            mrpReceivePlan.Item = itemMapList.Where(i=>i.Item == bomDetail.Item.Code).Count() > 0 ? itemMapList.Where(i=>i.Item == bomDetail.Item.Code).First().MapItem : bomDetail.Item.Code;
                             mrpReceivePlan.UnitCount = bomDetail.Item.UnitCount;
                             mrpReceivePlan.ItemDescription = bomDetail.Item.Description;
                             #region 取库位
@@ -1149,13 +1149,13 @@ namespace com.Sconit.Service.MRP.Impl
                 foreach (MrpReceivePlan mrpReceivePlan in currMrpReceivePlanList)
                 {
                     log.Debug("Transfer ship plan flow[" + mrpShipPlan.Flow + "], qty[" + mrpShipPlan.Qty + "] to receive plan location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "]");
-                    CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                    CalculateNextShipPlan(mrpReceivePlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user, itemMapList);
                 }
                 #endregion
             }
         }
 
-        private void CalculateNextShipPlan(MrpReceivePlan mrpReceivePlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user)
+        private void CalculateNextShipPlan(MrpReceivePlan mrpReceivePlan, IList<MrpLocationLotDetail> inventoryBalanceList, IList<TransitInventory> transitInventoryList, IList<FlowDetailSnapShot> flowDetailSnapShotList, IList<ItemDiscontinue> itemDiscontinueList, DateTime effectiveDate, DateTime dateTimeNow, User user, IList<ItemMap> itemMapList)
         {
             if (mrpReceivePlan.ReceiveTime < effectiveDate)
             {
@@ -1274,7 +1274,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                     log.Debug("Transfer receive plan location[" + mrpReceivePlan.Location + "], item[" + mrpReceivePlan.Item + "], qty[" + mrpReceivePlan.Qty + "], sourceType[" + mrpReceivePlan.SourceType + "], sourceId[" + (mrpReceivePlan.SourceId != null ? mrpReceivePlan.SourceId : string.Empty) + "] to ship plan flow[" + mrpShipPlan.Flow + "], qty[" + mrpShipPlan.Qty + "]");
 
-                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user);
+                    NestCalculateMrpShipPlanAndReceivePlan(mrpShipPlan, inventoryBalanceList, transitInventoryList, flowDetailSnapShotList, itemDiscontinueList, effectiveDate, dateTimeNow, user, itemMapList);
                 }
             }
             else
