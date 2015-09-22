@@ -24,6 +24,8 @@ namespace com.Sconit.Service.MRP
         IList<OrderProductionPlan> GetOrderProductionPlanByRow(int Row, int Id, string ProductionLineCode, string Flow);
         IList<OrderProductionPlan> GetOrderProductionPlanByID(int Id);
         IList<OrderProductionPlan> GetOrderProductionPlanByBetween(int NewId, int OldId, string ProductionLineCode, string Flow);
+        IList<OrderProductionPlan> GetOrderProductionPlans(string Flow, string ProductionLineCode, DateTime? PStartDate, DateTime? PEndDate, List<string> Status);
+        IList<OrderProductionPlan> GetOrderProductionPlanByOrderNo(string OrderNo);
     }
 }
 
