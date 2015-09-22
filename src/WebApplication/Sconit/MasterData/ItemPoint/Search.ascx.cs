@@ -25,11 +25,13 @@ public partial class MasterData_ItemPoint_Search : ListModuleBase
         GV_ItemPoint.Visible = true;
         if (GV_ItemPoint.Rows.Count == 0)
         {
+            fldGV.Visible = true;
             lblResult.Visible = true;
         }
         else
-        { 
-            lblResult.Visible = false; 
+        {
+            fldGV.Visible = true;
+            lblResult.Visible = false;
         }
     }
 

@@ -29,7 +29,7 @@
     </table>
 </fieldset>
 <%----------------------------------------------------------------------------------%>
-<fieldset id="fldGV" runat="server" >
+<fieldset id="fldGV" runat="server" visible="false" >
     <asp:GridView ID="GV_ItemPoint" runat="server" AutoGenerateColumns="False" DataSourceID="ODS_GV_ItemPoint"
         DataKeyNames="Item" AllowPaging="True" PageSize="10" visible="false">
         <Columns>
