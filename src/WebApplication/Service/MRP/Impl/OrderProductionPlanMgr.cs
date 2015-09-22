@@ -50,6 +50,46 @@ namespace com.Sconit.Service.MRP.Impl
         }
 
         [Transaction(TransactionMode.Requires)]
+        public IList<OrderProductionPlan> GetOrderProductionPlans(string Flow, string ProductionLineCode, DateTime? PStartDate, DateTime? PEndDate, List<string> Status)
+        {
+            DetachedCriteria criteria = DetachedCriteria.For(typeof(OrderProductionPlan));
+            if (Flow != null && Flow.Trim() != string.Empty)
+            {
+                criteria.Add(Expression.Eq("Flow", Flow));
+            }
+            if (ProductionLineCode != null && ProductionLineCode.Trim() != string.Empty)
+            {
+                criteria.Add(Expression.Eq("ProductionLineCode", ProductionLineCode));
+            }
+            if (PStartDate == null && PEndDate == null)
+            {
+                criteria.Add(Expression.Ge("StartTime", DateTime.Now.AddHours(-12)));
+            }
+            if (PStartDate != null)
+            {
+                criteria.Add(Expression.Ge("StartTime", PStartDate));
+            }
+            if (PEndDate != null)
+            {
+                criteria.Add(Expression.Le("StartTime", PEndDate));
+            }
+            if (Status != null && Status.Count > 0)
+            {
+                criteria.Add(Expression.In("Status", Status));
+            }
+            criteria.AddOrder(Order.Asc("StartTime"));
+            return criteriaMgr.FindAll<OrderProductionPlan>(criteria);
+        }
+
+        [Transaction(TransactionMode.Requires)]
+        public IList<OrderProductionPlan> GetOrderProductionPlanByOrderNo(string OrderNo)
+        {
+            DetachedCriteria criteria = DetachedCriteria.For(typeof(OrderProductionPlan));
+            criteria.Add(Expression.Eq("OrderNo", OrderNo));
+            return criteriaMgr.FindAll<OrderProductionPlan>(criteria);
+        }
+
+        [Transaction(TransactionMode.Requires)]
         public override void CreatOrderProductionPlan(OrderProductionPlan orderProductionPlan)
         {
             //DetachedCriteria criteria = DetachedCriteria.For(typeof(OrderProductionPlan));
@@ -62,7 +102,7 @@ namespace com.Sconit.Service.MRP.Impl
             DetachedCriteria criteria = DetachedCriteria.For(typeof(ItemPoint));
             if (Item != null && Item.Trim() != string.Empty)
             {
-                criteria.Add(Expression.Eq("Item", Item));
+                criteria.Add(Expression.Like("Item", Item,MatchMode.Anywhere));
             }
             return criteriaMgr.FindAll<ItemPoint>(criteria);
         }
