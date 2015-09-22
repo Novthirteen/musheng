@@ -19,33 +19,31 @@ public partial class MRP_Schedule_ProductionPlan_New : ListModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //this.tbFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:false,bool:false,bool:false,bool:true,bool:false,bool:false,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_BOTH;
-        IList<OrderProductionPlan> opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(null, null, null, null, null);
-        if (opp.Count > 0)
+        
+    }
+
+    public void InitPageParameter(string orderPlanNo)
+    {
+        //string[] arg = Id.Split(',');
+        //id = int.Parse(arg[1]);
+        //ONo = arg[0];
+        //OrderProductionPlan opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(ONo, null, null, null, null)[0];
+        //tbFlow.Text = opp.Flow;
+        //txProductLineFacility.Text = opp.ProductionLineCode;
+
+        ONo = orderPlanNo;
+        if(orderPlanNo == "")
         {
-            if (opp[opp.Count - 1].EndTime == null)
-            {
-                txtStartTime.Enabled = true;
-            }
-            else
-            {
-                txtStartTime.Enabled = false;
-            }
+            //
+            txtStartTime.Enabled = true;
         }
         else
         {
-            txtStartTime.Enabled = true;
+            OrderProductionPlan opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(ONo, null, null, null, null)[0];
+            tbFlow.Text = opp.Flow;
+            txProductLineFacility.Text = opp.ProductionLineCode;
+            txtStartTime.Enabled = false;
         }
-    }
-
-    public void InitPageParameter(string Id)
-    {
-        string[] arg = Id.Split(',');
-        id = int.Parse(arg[1]);
-        ONo = arg[0];
-        OrderProductionPlan opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(ONo, null, null, null, null)[0];
-        tbFlow.Text = opp.Flow;
-        txProductLineFacility.Text = opp.ProductionLineCode;
     }
 
     protected void btnBack_Click(object sender, EventArgs e)
@@ -64,47 +62,124 @@ public partial class MRP_Schedule_ProductionPlan_New : ListModuleBase
             return;
         }
 
-        int row = id;
-        IList<OrderProductionPlan> oppList = TheOrderProductionPlanMgr.GetOrderProductionPlan(null, txProductLineFacility.Text, tbFlow.Text, null, null);
-
-        OrderProductionPlan opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(ONo, null, null, null, null)[0];
-
-        OrderProductionPlan orderProductionPlan = new OrderProductionPlan();
-        orderProductionPlan.OrderPlanNo = TheNumberControlMgr.GenerateNumber("ORDP");
-        orderProductionPlan.Flow = this.tbFlow.Text.Trim();
-        orderProductionPlan.Item = this.tbItemCode.Text.Trim();
-        orderProductionPlan.OrderQty = Int32.Parse(this.tbOrderQty.Text.Trim());
-        orderProductionPlan.PlanInTime = DateTime.Parse(this.tbPlanInTime.Text);
-        orderProductionPlan.StartTime = ((DateTime)(opp.EndTime)).AddDays((double)ItemPoint[0].TransferTime / 1440);
-        orderProductionPlan.PlanOrderHours = decimal.Parse(this.tbOrderQty.Text.Trim()) * ItemPoint[0].EquipmentTime / 3600;
-        orderProductionPlan.PlanEndTime = ((DateTime)orderProductionPlan.StartTime).AddDays((double)(orderProductionPlan.PlanOrderHours * 60 / 1440));
-        orderProductionPlan.WindowTime = DateTime.Now;
-        orderProductionPlan.EndTime = orderProductionPlan.PlanEndTime;
-        orderProductionPlan.Status = "S";
-        orderProductionPlan.CreateUser = this.CurrentUser.Code;
-        orderProductionPlan.OrderNum = ItemPoint[0].Point * decimal.Parse(this.tbOrderQty.Text.Trim());
-        orderProductionPlan.ProductionLineCode = this.txProductLineFacility.Text.Trim();
-        TheOrderProductionPlanMgr.CreatOrderProductionPlan(orderProductionPlan);
-
-        //OrderProductionPlan oppNew = TheOrderProductionPlanMgr.GetOrderProductionPlan(orderProductionPlan.OrderPlanNo, null, null, null, null)[0];
-        
-        for (int i = row + 1; i < oppList.Count; i++)
+        //int row = id;
+        if (ONo != "")
         {
-            ItemPoint itemPointD = TheOrderProductionPlanMgr.GetItemPoint(oppList[i].Item)[0];
-            if (i == row + 1)
+            IList<OrderProductionPlan> oppList = TheOrderProductionPlanMgr.GetOrderProductionPlan(null, txProductLineFacility.Text, tbFlow.Text, null, null);
+
+            OrderProductionPlan opp = TheOrderProductionPlanMgr.GetOrderProductionPlan(ONo, null, null, null, null)[0];
+
+            OrderProductionPlan orderProductionPlan = new OrderProductionPlan();
+            orderProductionPlan.OrderPlanNo = TheNumberControlMgr.GenerateNumber("ORDP");
+            orderProductionPlan.Flow = this.tbFlow.Text.Trim();
+            orderProductionPlan.Item = this.tbItemCode.Text.Trim();
+            orderProductionPlan.OrderQty = Int32.Parse(this.tbOrderQty.Text.Trim());
+            orderProductionPlan.PlanInTime = DateTime.Parse(this.tbPlanInTime.Text);
+            orderProductionPlan.StartTime = ((DateTime)(opp.PlanEndTime)).AddDays((double)ItemPoint[0].TransferTime / 1440);
+            orderProductionPlan.PlanOrderHours = decimal.Parse(this.tbOrderQty.Text.Trim()) * ItemPoint[0].EquipmentTime / 3600;
+            orderProductionPlan.PlanEndTime = ((DateTime)orderProductionPlan.StartTime).AddDays((double)(orderProductionPlan.PlanOrderHours * 60 / 1440));
+            orderProductionPlan.WindowTime = DateTime.Now;
+            orderProductionPlan.EndTime = DateTime.Parse(this.tbPlanInTime.Text);
+            orderProductionPlan.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE;
+            orderProductionPlan.CreateUser = this.CurrentUser.Code;
+            orderProductionPlan.OrderNum = ItemPoint[0].Point * decimal.Parse(this.tbOrderQty.Text.Trim());
+            orderProductionPlan.ProductionLineCode = this.txProductLineFacility.Text.Trim();
+            TheOrderProductionPlanMgr.CreatOrderProductionPlan(orderProductionPlan);
+            if (ONo != oppList[oppList.Count - 1].OrderPlanNo)
             {
-                oppList[i].StartTime = ((DateTime)orderProductionPlan.EndTime).AddDays((double)itemPointD.TransferTime / 1440);
-                oppList[i].PlanEndTime = ((DateTime)oppList[i].StartTime).AddDays((double)oppList[i].PlanOrderHours * 60 / 1400);
-                oppList[i].EndTime = oppList[i].PlanEndTime;
+                int num = 0;
+                foreach (OrderProductionPlan oppNum in oppList)
+                {
+                    num++;
+                    if (ONo == oppNum.OrderPlanNo)
+                    {
+                        break;
+                    }
+                }
+                for (int i = num; i < oppList.Count; i++)
+                {
+                    ItemPoint itemPointD = TheOrderProductionPlanMgr.GetItemPoint(oppList[i].Item)[0];
+                    if (i == num)
+                    {
+                        oppList[i].StartTime = ((DateTime)orderProductionPlan.PlanEndTime).AddDays((double)itemPointD.TransferTime / 1440);
+                        oppList[i].PlanEndTime = ((DateTime)oppList[i].StartTime).AddDays((double)oppList[i].PlanOrderHours * 60 / 1400);
+                        oppList[i].EndTime = oppList[i].PlanEndTime;
+                    }
+                    else
+                    {
+                        oppList[i].StartTime = ((DateTime)oppList[i - 1].PlanEndTime).AddDays((double)itemPointD.TransferTime / 1440);
+                        oppList[i].PlanEndTime = ((DateTime)oppList[i].StartTime).AddDays((double)oppList[i].PlanOrderHours * 60 / 1400);
+                        oppList[i].EndTime = oppList[i].PlanEndTime;
+                    }
+                    TheOrderProductionPlanMgr.UpdateOrderProductionPlan(oppList[i]);
+                }
+            }
+            ShowSuccessMessage("MasterData.OrderPlan.CreatSuccess", orderProductionPlan.OrderPlanNo);
+        }
+        else//新的
+        {
+            IList<OrderProductionPlan> oppList = TheOrderProductionPlanMgr.GetOrderProductionPlan(null, txProductLineFacility.Text, tbFlow.Text, null, null);
+            if (oppList.Count == 0)
+            {
+                OrderProductionPlan orderProductionPlan = new OrderProductionPlan();
+                orderProductionPlan.OrderPlanNo = TheNumberControlMgr.GenerateNumber("ORDP");
+                orderProductionPlan.Flow = this.tbFlow.Text.Trim();
+                orderProductionPlan.Item = this.tbItemCode.Text.Trim();
+                orderProductionPlan.OrderQty = Int32.Parse(this.tbOrderQty.Text.Trim());
+                orderProductionPlan.PlanInTime = DateTime.Parse(this.tbPlanInTime.Text);
+                orderProductionPlan.StartTime = DateTime.Parse(txtStartTime.Text);
+                orderProductionPlan.PlanOrderHours = decimal.Parse(this.tbOrderQty.Text.Trim()) * ItemPoint[0].EquipmentTime / 3600;
+                orderProductionPlan.PlanEndTime = ((DateTime)orderProductionPlan.StartTime).AddDays((double)(orderProductionPlan.PlanOrderHours * 60 / 1440));
+                orderProductionPlan.WindowTime = DateTime.Now;
+                orderProductionPlan.EndTime = DateTime.Parse(this.tbPlanInTime.Text);
+                orderProductionPlan.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE;
+                orderProductionPlan.CreateUser = this.CurrentUser.Code;
+                orderProductionPlan.OrderNum = ItemPoint[0].Point * decimal.Parse(this.tbOrderQty.Text.Trim());
+                orderProductionPlan.ProductionLineCode = this.txProductLineFacility.Text.Trim();
+                TheOrderProductionPlanMgr.CreatOrderProductionPlan(orderProductionPlan);
+                ShowSuccessMessage("MasterData.OrderPlan.CreatSuccess", orderProductionPlan.OrderPlanNo);
             }
             else
             {
-                oppList[i].StartTime = ((DateTime)oppList[i - 1].EndTime).AddDays((double)itemPointD.TransferTime / 1440);
-                oppList[i].PlanEndTime = ((DateTime)oppList[i].StartTime).AddDays((double)oppList[i].PlanOrderHours * 60 / 1400);
-                oppList[i].EndTime = oppList[i].PlanEndTime;
+                OrderProductionPlan orderProductionPlan = new OrderProductionPlan();
+                orderProductionPlan.OrderPlanNo = TheNumberControlMgr.GenerateNumber("ORDP");
+                orderProductionPlan.Flow = this.tbFlow.Text.Trim();
+                orderProductionPlan.Item = this.tbItemCode.Text.Trim();
+                orderProductionPlan.OrderQty = Int32.Parse(this.tbOrderQty.Text.Trim());
+                orderProductionPlan.PlanInTime = DateTime.Parse(this.tbPlanInTime.Text);
+                orderProductionPlan.StartTime = ((DateTime)(oppList[oppList.Count - 1].PlanEndTime)).AddDays((double)ItemPoint[0].TransferTime / 1440);
+                orderProductionPlan.PlanOrderHours = decimal.Parse(this.tbOrderQty.Text.Trim()) * ItemPoint[0].EquipmentTime / 3600;
+                orderProductionPlan.PlanEndTime = ((DateTime)orderProductionPlan.StartTime).AddDays((double)(orderProductionPlan.PlanOrderHours * 60 / 1440));
+                orderProductionPlan.WindowTime = DateTime.Now;
+                orderProductionPlan.EndTime = DateTime.Parse(this.tbPlanInTime.Text);
+                orderProductionPlan.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE;
+                orderProductionPlan.CreateUser = this.CurrentUser.Code;
+                orderProductionPlan.OrderNum = ItemPoint[0].Point * decimal.Parse(this.tbOrderQty.Text.Trim());
+                orderProductionPlan.ProductionLineCode = this.txProductLineFacility.Text.Trim();
+                TheOrderProductionPlanMgr.CreatOrderProductionPlan(orderProductionPlan);
+                ShowSuccessMessage("MasterData.OrderPlan.CreatSuccess", orderProductionPlan.OrderPlanNo);
             }
-            TheOrderProductionPlanMgr.UpdateOrderProductionPlan(oppList[i]);
         }
+        #region ////
+        //OrderProductionPlan oppNew = TheOrderProductionPlanMgr.GetOrderProductionPlan(orderProductionPlan.OrderPlanNo, null, null, null, null)[0];
+        
+        //for (int i = row + 1; i < oppList.Count; i++)
+        //{
+        //    ItemPoint itemPointD = TheOrderProductionPlanMgr.GetItemPoint(oppList[i].Item)[0];
+        //    if (i == row + 1)
+        //    {
+        //        oppList[i].StartTime = ((DateTime)orderProductionPlan.EndTime).AddDays((double)itemPointD.TransferTime / 1440);
+        //        oppList[i].PlanEndTime = ((DateTime)oppList[i].StartTime).AddDays((double)oppList[i].PlanOrderHours * 60 / 1400);
+        //        oppList[i].EndTime = oppList[i].PlanEndTime;
+        //    }
+        //    else
+        //    {
+        //        oppList[i].StartTime = ((DateTime)oppList[i - 1].EndTime).AddDays((double)itemPointD.TransferTime / 1440);
+        //        oppList[i].PlanEndTime = ((DateTime)oppList[i].StartTime).AddDays((double)oppList[i].PlanOrderHours * 60 / 1400);
+        //        oppList[i].EndTime = oppList[i].PlanEndTime;
+        //    }
+        //    TheOrderProductionPlanMgr.UpdateOrderProductionPlan(oppList[i]);
+        //}
 
         //IList<OrderProductionPlan> oppOne = TheOrderProductionPlanMgr.GetOrderProductionPlanByID(id, txProductLineFacility.Text, tbFlow.Text);
         //IList<OrderProductionPlan> oppTwo = TheOrderProductionPlanMgr.GetOrderProductionPlanByID(id, txProductLineFacility.Text, tbFlow.Text);
@@ -119,8 +194,8 @@ public partial class MRP_Schedule_ProductionPlan_New : ListModuleBase
         //        Exchange(oppOne[j], oppTwo[j - 1]);
         //    }
         //}
+        #endregion
 
-        ShowSuccessMessage("MasterData.OrderPlan.CreatSuccess", orderProductionPlan.OrderPlanNo);
     }
 
     protected void tbFlow_TextChanged(Object sender, EventArgs e)
@@ -136,13 +211,19 @@ public partial class MRP_Schedule_ProductionPlan_New : ListModuleBase
         ItemPoint = TheOrderProductionPlanMgr.GetItemPoint(this.tbItemCode.Text.Trim());
         if (ItemPoint.Count > 0)
         {
-            if (ItemPoint[0].Flow != tbFlow.Text && ItemPoint[0].Fact != txProductLineFacility.Text)
+            if (ONo != "")
             {
-                tbItemCode.Text = "";
-                ShowWarningMessage("MasterData.ItemPoint.Mismatch");
+                if (ItemPoint[0].Flow != tbFlow.Text && ItemPoint[0].Fact != txProductLineFacility.Text)
+                {
+                    tbItemCode.Text = "";
+                    ShowWarningMessage("MasterData.ItemPoint.Mismatch");
+                }
             }
-            //tbFlow.Text = ItemPoint[0].Flow;
-            //txProductLineFacility.Text = ItemPoint[0].Fact;
+            else
+            {
+                tbFlow.Text = ItemPoint[0].Flow;
+                txProductLineFacility.Text = ItemPoint[0].Fact;
+            }
         }
         else
         {

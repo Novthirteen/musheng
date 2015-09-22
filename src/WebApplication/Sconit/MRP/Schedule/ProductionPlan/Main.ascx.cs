@@ -50,8 +50,10 @@ public partial class MRP_Schedule_ProductionPlan_Main : MainModuleBase
     {
         this.ucSearch.Visible = false;
 
-        this.ucNew.Visible = false;
+        this.ucNew.Visible = true;
 
-        this.ucList.Visible = true;
+        this.ucList.Visible = false;
+
+        this.ucNew.InitPageParameter((string)sender);
     }
 }
