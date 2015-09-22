@@ -24,6 +24,8 @@ using com.Sconit.Service.Ext.Cost;
 using com.Sconit.Service.Ext.Customize;
 using com.Sconit.Entity.Customize;
 using NHibernate.Mapping;
+using com.Sconit.Service.Ext.MRP;
+using com.Sconit.Entity.MRP;
 
 namespace com.Sconit.Service.MasterData.Impl
 {
@@ -68,6 +70,7 @@ namespace com.Sconit.Service.MasterData.Impl
         public IBomMgrE bomMgr { set; get; }
         public IBomDetailMgrE bomDetailMgr { set; get; }
         public IRoutingDetailMgrE routingDetailMgr { set; get; }
+        public IOrderProductionPlanMgrE orderProductionPlanMgr{ get; set; }
 
         private string[] FlowHead2OrderHeadCloneFields = new string[] 
             { 
@@ -3516,6 +3519,23 @@ namespace com.Sconit.Service.MasterData.Impl
                 orderHead.LastModifyUser = user;
 
                 this.orderHeadMgrE.UpdateOrderHead(orderHead);
+
+                #region 根据生产单找是否有计划单 更新计划单状态
+                IList<OrderProductionPlan> oppList = orderProductionPlanMgr.GetOrderProductionPlanByOrderNo(orderHead.OrderNo);
+                if (oppList.Count <= 0) 
+                {
+                    //找不到计划单
+                }
+                else
+                {
+                    foreach(OrderProductionPlan opp in oppList)
+                    {
+                        opp.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_COMPLETE;
+                        opp.ActualEndTime = nowDate;
+                        orderProductionPlanMgr.UpdateOrderProductionPlan(opp);
+                    }
+                }
+                #endregion
 
                 #region 记录工单设置成本
                 if (orderHead.Type == BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PRODUCTION)
