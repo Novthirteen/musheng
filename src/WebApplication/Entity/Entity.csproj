@@ -226,7 +226,6 @@
     <EmbeddedResource Include="Base\MRP\MrpRunLog.hbm.xml" />
     <EmbeddedResource Include="Base\MRP\MrpShipPlan.hbm.xml" />
     <EmbeddedResource Include="Base\MRP\MrpShipPlanView.hbm.xml" />
-    <EmbeddedResource Include="Base\MRP\OrderProductionPlan.hbm.xml" />
     <EmbeddedResource Include="Base\Procurement\AutoOrderTrack.hbm.xml" />
     <EmbeddedResource Include="Base\Procurement\ItemFlowPlan.hbm.xml" />
     <EmbeddedResource Include="Base\Procurement\ItemFlowPlanDetail.hbm.xml" />
@@ -275,7 +274,9 @@
     <EmbeddedResource Include="Base\MasterData\ItemMap.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Base\MRP\OrderProductionPlan.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Base\MRP\OrderProductionPlan.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
