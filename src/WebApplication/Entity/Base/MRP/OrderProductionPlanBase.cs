@@ -219,6 +219,19 @@ namespace com.Sconit.Entity.MRP
             }
         }
 
+        private com.Sconit.Entity.MasterData.OrderHead _order;
+        public com.Sconit.Entity.MasterData.OrderHead Order
+        {
+            get
+            {
+                return _order;
+            }
+            set
+            {
+                _order = value;
+            }
+        }
+
         public override int GetHashCode()
         {
             if (OrderPlanNo != null)

@@ -26,6 +26,8 @@
     <property name="Status" column="Status" type="String" length="50"  />
     <property name="CreateUser" column="CreateUser" type="String" length="50"  />
     <property name="WindowTime" column="WindowTime" type="DateTime"  />
+    <!--<property name="OrderNo" column="OrderNo" type="String" length="50" />-->
+    <many-to-one name="Order" column="OrderNo" class="com.Sconit.Entity.MasterData.OrderHead, com.Sconit.Entity" cascade="none" />
   </class>
 </hibernate-mapping>
 
