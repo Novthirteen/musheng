@@ -256,15 +256,15 @@ public partial class Finance_Bill_Edit : ListModuleBase
         {
             this.ucNewSearch.ModuleType = this.ModuleType;
         }
-        //IList<Role> role = TheUserRoleMgr.GetRolesByUserCode(CurrentUser.Code);
-        //for (int i = 0; i < role.Count; i++)
-        //{
-        //    if (role[0].Code == "VD")
-        //    {
-        //        ltlTaxAmount.Visible = false;
-        //        txtTaxAmount.Visible = false;
-        //    }
-        //}
+        IList<Role> role = TheUserRoleMgr.GetRolesByUserCode(CurrentUser.Code);
+        for (int i = 0; i < role.Count; i++)
+        {
+            if (role[i].Code == "VD")
+            {
+                ltlTaxAmount.Visible = false;
+                txtTaxAmount.Visible = false;
+            }
+        }
     }
 
     protected void FV_Bill_DataBound(object sender, EventArgs e)
@@ -382,7 +382,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
             }
             else
             {
-                IList<BillDetail> billDetailList = PopulateData(false);
+                IList<BillDetail> billDetailList = PopulateData(false,bill);
 
                 //TextBox tbPaymentAmount = this.FV_Bill.FindControl("tbPaymentAmount") as TextBox;
                 //if (tbPaymentAmount.Text.Trim() != string.Empty)
@@ -425,7 +425,10 @@ public partial class Finance_Bill_Edit : ListModuleBase
                 {
                     bill.Discount = null;
                 }
-                bill.BillDetails = billDetailList;
+                if (billDetailList != null)
+                {
+                    bill.BillDetails = billDetailList;
+                }
                 this.TheBillMgr.UpdateBill(bill, this.CurrentUser);
             }
 
@@ -534,7 +537,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
     {
         try
         {
-            IList<BillDetail> billDetailList = PopulateData(true);
+            IList<BillDetail> billDetailList = PopulateData(true,null);
             this.TheBillMgr.DeleteBillDetail(billDetailList, this.CurrentUser);
             this.ShowSuccessMessage("MasterData.Bill.DeleteBillDetailSuccessfully");
             this.FV_Bill.DataBind();
@@ -557,7 +560,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
         IList<Role> role = TheUserRoleMgr.GetRolesByUserCode(CurrentUser.Code);
         for (int i = 0; i < role.Count; i++)
         {
-            if (role[0].Code == "VD")
+            if (role[i].Code == "VD")
             {
                 ltlTaxAmount.Visible = false;
                 txtTaxAmount.Visible = false;
@@ -763,7 +766,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
         //this.btnDeleteDetail.Visible = !this.isGroup;
     }
 
-    private IList<BillDetail> PopulateData(bool isChecked)
+    private IList<BillDetail> PopulateData(bool isChecked,Bill bill)
     {
         if (this.Gv_List.Rows != null && this.Gv_List.Rows.Count > 0)
         {
@@ -783,7 +786,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
                     billDetail.BilledQty = decimal.Parse(tbQty.Text);
                     billDetail.Discount = decimal.Parse(tbDiscount.Text);
                     billDetail.Amount = decimal.Parse(tbAmount.Text);
-
+                    billDetail.Bill = bill;
                     billDetailList.Add(billDetail);
                 }
             }
