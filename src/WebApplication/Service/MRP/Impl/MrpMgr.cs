@@ -86,13 +86,21 @@ namespace com.Sconit.Service.MRP.Impl
             #region 获取实时库存和在途
             #region 查询
             #region 订单待收
-
             string sql = @"select oh.OrderNo, oh.Type, oh.Flow, olt.Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
                     left join ItemMap as im on im.Item = olt.Item
-                    where oh.Status in (?, ?) and oh.SubType = ? and not oh.Type = ? and olt.IOType = ?";
+                    where oh.Status in (?, ?) and oh.SubType = ? and not oh.Type = ? and olt.IOType = ?
+                    union
+                    select oh.OrderNo, oh.Type, oh.Flow, ISNULL(od.LocTo, oh.LocTo) as Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
+                    from OrderLocTrans as olt 
+                    inner join OrderDet as od on olt.OrderDetId = od.Id
+                    inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
+                    left join ItemMap as im on im.Item = olt.Item
+                    where oh.Status in (?) and oh.SubType = ? and oh.Type = ? and olt.IOType = ?
+                    and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?) and id.OrderLocTransId = olt.Id)
+                    ";
 
             IDictionary<String, IType> columns = new Dictionary<String, IType>();
             columns.Add("OrderNo", NHibernateUtil.String);
@@ -109,14 +117,19 @@ namespace com.Sconit.Service.MRP.Impl
             columns.Add("RecQty", NHibernateUtil.Decimal);
             columns.Add("UnitQty", NHibernateUtil.Decimal);
 
-
             IList<object[]> expectTransitInvList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
                 new Object[] {
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS, 
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_DISTRIBUTION,
-                    BusinessConstants.IO_TYPE_IN
+                    BusinessConstants.IO_TYPE_IN,
+                    BusinessConstants.CODE_MASTER_STATUS_VALUE_COMPLETE, 
+                    BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
+                    BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT, 
+                    BusinessConstants.IO_TYPE_OUT,
+                    BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT, 
+                    BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS
                 }, columns);
             #endregion
 
@@ -149,7 +162,6 @@ namespace com.Sconit.Service.MRP.Impl
             #endregion
 
             #region 发运在途
-
             sql = @"select od.LocTo, ISNULL(im.MapItem, olt.Item) as Item, SUM(ipd.Qty) as Qty, SUM(ipd.RecQty) as RecQty, ip.ArriveTime, om.LocTo as MLocTo
                     from IpDet as ipd inner join IpMstr as ip on ipd.IpNo = ip.IpNo
                     inner join OrderLocTrans as olt on ipd.OrderLocTransId = olt.Id
