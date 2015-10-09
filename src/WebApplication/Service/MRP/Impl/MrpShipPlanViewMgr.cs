@@ -334,7 +334,8 @@ namespace com.Sconit.Service.MRP.Impl
                                     where inv.Flow == scheduleHead.Flow
                                     && inv.Item == scheduleBody.Item
                                     && inv.WindowTime <= scheduleHead.DateTo
-                                    && (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
+                                    && inv.WindowTime > scheduleHead.DateTo.AddMonths(-1)
+                                    //&& (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
                                     select inv;
 
                             if (q != null && q.Count() >= 0)
