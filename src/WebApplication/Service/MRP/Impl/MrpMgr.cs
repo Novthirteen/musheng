@@ -98,7 +98,7 @@ namespace com.Sconit.Service.MRP.Impl
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
                     left join ItemMap as im on im.Item = olt.Item
-                    where oh.Status in (?) and oh.SubType = ? and oh.Type = ? and olt.IOType = ?
+                    where oh.Status in (?) and oh.SubType = ? and oh.Type in (?, ?) and olt.IOType = ?
                     and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?) and id.OrderLocTransId = olt.Id)
                     ";
 
@@ -127,6 +127,7 @@ namespace com.Sconit.Service.MRP.Impl
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_COMPLETE, 
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT, 
+                    BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_CUSTOMERGOODS, 
                     BusinessConstants.IO_TYPE_OUT,
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS
@@ -353,7 +354,8 @@ namespace com.Sconit.Service.MRP.Impl
                                                   StartTime = (DateTime)inv[7],
                                                   WindowTime = (DateTime)inv[8],
                                                   TransitQty = (string)inv[1] != BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PRODUCTION
-                                                               && (string)inv[1] != BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT ?
+                                                               && (string)inv[1] != BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT
+                                                               && (string)inv[1] != BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_CUSTOMERGOODS ?
                                                                                 ((decimal)inv[9] - (inv[10] != null ? (decimal)inv[10] : 0) * (decimal)inv[12])
                                                                                 : ((decimal)inv[9] - (inv[11] != null ? (decimal)inv[11] : 0) * (decimal)inv[12]),
                                                   EffectiveDate = effectiveDate
