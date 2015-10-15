@@ -85,7 +85,7 @@ namespace com.Sconit.Service.MRP.Impl
         public IList<OrderProductionPlan> GetOrderProductionPlanByOrderNo(string OrderNo)
         {
             DetachedCriteria criteria = DetachedCriteria.For(typeof(OrderProductionPlan));
-            criteria.Add(Expression.Eq("OrderNo", OrderNo));
+            criteria.Add(Expression.Eq("Order.OrderNo", OrderNo));
             return criteriaMgr.FindAll<OrderProductionPlan>(criteria);
         }
 

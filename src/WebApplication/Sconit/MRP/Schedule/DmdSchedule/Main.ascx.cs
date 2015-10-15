@@ -552,6 +552,7 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
 
     protected void GV_List_RowDataBound(object sender, GridViewRowEventArgs e)
     {
+        int ii = 0;
         int columnCount = this.GV_List.Columns.Count;
         if (e.Row.RowType == DataControlRowType.Header && isSupplier)
         {
@@ -615,7 +616,8 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
                             var txts = e.Row.Cells[i].Text.Split('|');
                             e.Row.Cells[i].Text = txts[0] + "|<font color='blue'>" + qty.ToString("0.####") + "</font>)";
                         }
-                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails);
+                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails,ii);
+                        ii++;
                         e.Row.Cells[i].Attributes.Add("title", detailTitle);
                     }
                 }
@@ -1019,7 +1021,7 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
         this.fld_Group.Visible = false;
     }
 
-    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails)
+    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails,int ii)
     {
         StringBuilder detail = new StringBuilder();
         var mrpShipPlans = this.mrpShipPlanDic.ValueOrDefault(itemCode);
@@ -1038,8 +1040,39 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
             if (this.rblListFormat.SelectedIndex == 1)
             {
                 endDate = effTime.Date.AddMonths(1).AddDays(-1);
-            }
 
+                if (ii == 0)
+                {
+                    startDate = DateTime.MinValue;
+                }
+                else
+                {
+                    startDate = effTime.Date;
+                }
+
+            }
+            
+            if (this.rblListFormat.SelectedIndex == 0)
+            {
+                if (ii == 0)
+                {
+                    startDate = DateTime.MinValue;
+                }
+                else
+                {
+                    for (int i = 0; i < mrpShipPlans.Count; i++)
+                    {
+                        if (i != 0)
+                        {
+                            if (effTime.Date == mrpShipPlans[i].WindowTime)
+                            {
+                                startDate = mrpShipPlans[i - 1].WindowTime;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
             var expectTransitInventories = this.expectTransitInventorieDic.ValueOrDefault(itemCode);
             if (expectTransitInventories != null)
             {
@@ -1047,9 +1080,9 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
                         where (isFlow ? inv.Flow == this.flowOrLoc : inv.Location == this.flowOrLoc)
                         && inv.Item == itemCode
                         && (isWinTime ?
-                             (inv.WindowTime.Date >= startDate && inv.WindowTime.Date <= endDate)
+                             (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
                              :
-                             (inv.StartTime.Date >= startDate && inv.StartTime.Date <= endDate))
+                             (inv.StartTime.Date > startDate && inv.StartTime.Date <= endDate))
                         select inv;
 
                 if (p != null && p.Count() > 0)
@@ -1065,9 +1098,9 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
                             where (isFlow ? inv.Flow == this.flowOrLoc : inv.Location == this.flowOrLoc)
                             && discon.Item.Code == itemCode
                             && (isWinTime ?
-                             (inv.WindowTime.Date >= startDate && inv.WindowTime.Date <= endDate)
+                             (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
                              :
-                             (inv.StartTime.Date >= startDate && inv.StartTime.Date <= endDate))
+                             (inv.StartTime.Date > startDate && inv.StartTime.Date <= endDate))
                             && discon.StartDate <= inv.StartTime.Date
                             && (!discon.EndDate.HasValue || discon.EndDate.Value >= inv.WindowTime)
                             select inv;
@@ -1080,9 +1113,9 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
             }
 
             q_MrpShipPlans = q_MrpShipPlans.Where(m => isWinTime ?
-                             (m.WindowTime.Date >= startDate && m.WindowTime.Date <= endDate)
+                             (m.WindowTime.Date > startDate && m.WindowTime.Date <= endDate)
                              :
-                             (m.StartTime.Date >= startDate && m.StartTime.Date <= endDate));
+                             (m.StartTime.Date > startDate && m.StartTime.Date <= endDate));
 
             if (q_MrpShipPlans.Count() > 0 || expectTransitInventoryList.Count > 0
                 || disconExpectTransitInventoryList.Count > 0 || locationDetails.Count > 0)

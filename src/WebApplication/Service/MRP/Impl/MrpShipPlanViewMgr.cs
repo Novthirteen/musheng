@@ -158,6 +158,8 @@ namespace com.Sconit.Service.MRP.Impl
                 DateTime? lastDate = null;
                 ScheduleHead lastScheduleHead = null;
 
+                DateTime dtS = DateTime.MinValue;
+
                 var itemDisconList = itemDiscontinueList == null ? null :
                         from discon in itemDiscontinueList
                         where discon.Item.Code == scheduleBody.Item
@@ -330,12 +332,16 @@ namespace com.Sconit.Service.MRP.Impl
                                 }
                             }
 
+                            
+                            //if(scheduleHead.)
                             var q = from inv in expectTransitInventoryViews
                                     where inv.Flow == scheduleHead.Flow
                                     && inv.Item == scheduleBody.Item
                                     && inv.WindowTime <= scheduleHead.DateTo
-                                    && (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
+                                    && inv.WindowTime > dtS
+                                    //&& (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
                                     select inv;
+                            
 
                             if (q != null && q.Count() >= 0)
                             {
@@ -345,6 +351,7 @@ namespace com.Sconit.Service.MRP.Impl
                                     if (pi.Name != null && StringHelper.Eq(pi.Name.ToLower(), actQty))
                                     {
                                         pi.SetValue(scheduleBody, q.Sum(qq => qq.TransitQty), null);
+                                        dtS = scheduleHead.DateTo;
                                         break;
                                     }
                                 }
