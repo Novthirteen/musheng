@@ -1741,15 +1741,19 @@ namespace com.Sconit.Service.MasterData.Impl
                     {
                         criteria.Add(Expression.In("Item", newCycItemAry));
                     }
+                    IList<string> transItemList = this.criteriaMgrE.FindAll<string>(criteria);
+                    IList<string> transItemList1 = null;
                     if (newCycItemAry1 != null && newCycItemAry1.Count > 0)
                     {
                         criteria1.Add(Expression.In("Item", newCycItemAry1));
+                        transItemList1 = this.criteriaMgrE.FindAll<string>(criteria1);
                     }
-                    IList<string> transItemList = this.criteriaMgrE.FindAll<string>(criteria);
-                    IList<string> transItemList1 = this.criteriaMgrE.FindAll<string>(criteria1);
-                    foreach (string str in transItemList1)
+                    if (transItemList1 != null && transItemList1.Count > 0)
                     {
-                        transItemList.Add(str);
+                        foreach (string str in transItemList1)
+                        {
+                            transItemList.Add(str);
+                        }
                     }
                     #endregion
 
