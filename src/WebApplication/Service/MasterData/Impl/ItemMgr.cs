@@ -113,15 +113,15 @@ namespace com.Sconit.Service.MasterData.Impl
                     for (int i = 0; i < thisAllItem.Count; i++)
                     {
                         Item item = thisAllItem[i];
-                        string desc = item.Description1;
+                        string desc = item.Description1.Replace("\r", "").Replace("\n", "");
                         desc = desc.Replace("'", "");
-                        data.Append(TextBoxHelper.GenSingleData(desc, item.Code) + (i < (thisAllItem.Count - 1) ? "," : string.Empty));
+                        data.Append(TextBoxHelper.GenSingleData(desc, item.Code.Replace("\r", "").Replace("\n", "")) + (i < (thisAllItem.Count - 1) ? "," : string.Empty));
                     }
                     data.Append("]");
 
                     cachedAllItemString = data.ToString();
-                    cachedAllItemCount = count;
-                    cachedAllItemId = sumId;
+                    //cachedAllItemCount = count;
+                    //cachedAllItemId = sumId;
                 }
             }
         }
