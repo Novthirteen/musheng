@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Quote.QuoteItem, com.Sconit.Entity" table="Quote_Item" lazy="false">
+    <id name="Id" column="Id" type="int" unsaved-value="0">
+      <generator class="identity" />
+    </id>
+    <property name="ItemCode" column="ItemCode" type="string"  />
+    <property name="Supplier" column="Supplier" type="string"  />
+    <property name="Category" column="Category" type="string"  />
+    <property name="Brand" column="Brand" type="string"  />
+    <property name="Model" column="Model" type="string"  />
+    <property name="SingleNum" column="SingleNum" type="string"  />
+    <property name="PurchasePrice" column="PurchasePrice" type="Decimal"  />
+    <property name="Price" column="Price" type="Decimal"  />
+    <property name="PinNum" column="PinNum" type="string"  />
+    <property name="PinConversion" column="PinConversion" type="string"  />
+    <property name="Point" column="Point" type="string"  />
+    <property name="ProjectId" column="ProjectId" type="string"  />
+
+  </class>
+</hibernate-mapping>
