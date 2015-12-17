@@ -162,7 +162,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                 var itemDisconList = itemDiscontinueList == null ? null :
                         from discon in itemDiscontinueList
-                        where discon.Item.Code == scheduleBody.Item
+                        where discon.Item.Code == scheduleBody.Item && discon.StartDate <= DateTime.Now && discon.EndDate >= DateTime.Now
                         select discon;
 
                 foreach (ScheduleHead scheduleHead in scheduleHeads)

@@ -38,6 +38,10 @@ namespace com.Sconit.Service.MRP.Impl
         public IMrpReceivePlanMgrE mrpReceivePlanMgr { get; set; }
         public IExpectTransitInventoryMgrE expectTransitInventoryMgr { get; set; }
 
+        //by ljz
+        public IEntityPreferenceMgrE entityPreferenceMgrE { get; set; }
+        //by ljz
+
         public static bool isRunMrp = false;
 
         private static log4net.ILog log = log4net.LogManager.GetLogger("Log.MRP");
@@ -715,6 +719,75 @@ namespace com.Sconit.Service.MRP.Impl
             this.mrpRunLogMgr.CreateMrpRunLog(currLog);
             #endregion
 
+            #region 发送邮件
+            IList<EntityPreference> entityPreferences = entityPreferenceMgrE.GetAllEntityPreference();
+            if (entityPreferences != null && entityPreferences.Count > 0)
+            {
+                string enableSendMail = string.Empty;
+                foreach(EntityPreference ep in entityPreferences)
+                {
+                    if(ep.Code == "EnableSendMailOfMRP")
+                    {
+                        enableSendMail = ep.Value;
+                        break;
+                    }
+                }
+                if(enableSendMail.ToLower() == "true")
+                {
+                    string subject = string.Empty; //主题
+                    string emailFrom = string.Empty; //发件人
+                    string userMail = string.Empty; //
+                    string SMTPEmailHost = string.Empty;
+                    string SMTPEmailPasswd = string.Empty;
+                    string supplierEmail = string.Empty;
+                    string mailBody = string.Empty;
+
+                    subject = DateTime.Now.ToString() + " - MRP执行完成";
+                    foreach (EntityPreference ep in entityPreferences)
+                    {
+                        if (ep.Code == BusinessConstants.ENTITY_PREFERENCE_CODE_SMTPEMAILADDR)
+                        {
+                            emailFrom = ep.Value;
+                            break;
+                        }
+                    }
+                    userMail = emailFrom;
+                    if (user.Email != null && user.Email.Trim() != string.Empty)
+                    {
+                        userMail = user.Email.Trim();
+                    }
+
+                    foreach (EntityPreference ep in entityPreferences)
+                    {
+                        if (ep.Code == BusinessConstants.ENTITY_PREFERENCE_CODE_SMTPEMAILHOST)
+                        {
+                            SMTPEmailHost = ep.Value;
+                            break;
+                        }
+                    }
+                    foreach (EntityPreference ep in entityPreferences)
+                    {
+                        if (ep.Code == BusinessConstants.ENTITY_PREFERENCE_CODE_SMTPEMAILPASSWD)
+                        {
+                            SMTPEmailPasswd = ep.Value;
+                            break;
+                        }
+                    }
+                    foreach (EntityPreference ep in entityPreferences)
+                    {
+                        if (ep.Code == "MailAddrOfMRP")
+                        {
+                            supplierEmail = ep.Value;
+                            break;
+                        }
+                    }
+                    mailBody = "您好,<br />";
+                    mailBody += "MRP已经执行完成!<br />";
+                    mailBody += "日期:" + DateTime.Now.ToString();
+                    SMTPHelper.SendSMTPEMail(subject, mailBody, emailFrom, supplierEmail, SMTPEmailHost, SMTPEmailPasswd, userMail);
+                }
+            }
+            #endregion
             log.Info("End run mrp effectivedate:" + effectiveDate.ToLongDateString());
         }
 

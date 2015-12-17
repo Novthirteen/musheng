@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Quote.Tooling, com.Sconit.Entity" table="Quote_ToolingInfo" lazy="false">
+    <id name="TL_No" column="TL_No" type="string" unsaved-value="0">
+      <generator class="assigned" />
+    </id>
+    <property name="TL_Name" column="TL_Name" type="string"  />
+    <property name="TL_Spec" column="TL_Spec" type="string"  />
+    <property name="Customer" column="Customer" type="string"  />
+    <property name="ProductName" column="ProductName" type="string"  />
+    <property name="PCBNo" column="PCBNo" type="string"  />
+    <property name="MSNo" column="MSNo" type="string"  />
+    <property name="Price" column="Price" type="Decimal"  />
+    <property name="Number" column="Number" type="int"  />
+    <property name="ApplyDate" column="ApplyDate" type="DateTime"  />
+    <property name="ApplyUser" column="ApplyUser" type="string"  />
+    <property name="ArriveDate" column="ArriveDate" type="DateTime"  />
+    <property name="TL_SalesType" column="TL_SalesType" type="string"  />
+    <property name="Suppliers" column="Suppliers" type="string"  />
+    <property name="SuppliersInNo" column="SuppliersInNo" type="string"  />
+    <property name="CustomerBStatus" column="CustomerBStatus" type="Boolean"  />
+    <property name="ProjectNo" column="ProjectNo" type="string"  />
+
+  </class>
+</hibernate-mapping>

@@ -24,7 +24,7 @@
             </td>
             <td class="td02">
                 <uc3:textbox ID="tbItemCode" runat="server" Width="250" DescField="Description" ValueField="Code"
-                    ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem" MustMatch="true" />
+                    ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem" />
             </td>
             <td class="td01">
                 <asp:Literal ID="lblBinCode" runat="server" Text="${Common.Business.Bin}:" />

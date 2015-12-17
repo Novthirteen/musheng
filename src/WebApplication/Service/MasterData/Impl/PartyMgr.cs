@@ -13,6 +13,7 @@ using com.Sconit.Utility;
 //TODO: Add other using statements here.
 using NHibernate.Expression;
 using com.Sconit.Entity.Exception;
+using com.Sconit.Entity.Quote;
 
 namespace com.Sconit.Service.MasterData.Impl
 {
@@ -41,6 +42,11 @@ namespace com.Sconit.Service.MasterData.Impl
         public IList<Party> GetFromParty(string orderType, string userCode)
         {
             return GetFromParty(orderType, userCode, false);
+        }
+
+        public IList<CostCategory> GetCostCategory(string userCode)
+        {
+            return criteriaMgrE.FindAll<CostCategory>();
         }
 
         public IList<Party> GetFromParty(string orderType, string userCode, bool includeInactive)

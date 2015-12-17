@@ -1600,6 +1600,7 @@ namespace com.Sconit.Service.MasterData.Impl
                 #region 按数量盘点
                 #region 查找库存
                 DetachedCriteria criteria = DetachedCriteria.For<LocationLotDetail>();
+                DetachedCriteria criteria1 = DetachedCriteria.For<LocationLotDetail>();
 
                 criteria.CreateAlias("Location", "loc");
                 criteria.CreateAlias("Item", "item");
@@ -1671,7 +1672,10 @@ namespace com.Sconit.Service.MasterData.Impl
                 {
                     #region 查找盘点上线至今所有零件的库存事务
                     criteria = DetachedCriteria.For<LocationTransaction>();
+                    criteria1 = DetachedCriteria.For<LocationTransaction>();
                     criteria.SetProjection(Projections.ProjectionList()
+                        .Add(Projections.GroupProperty("Item")));
+                    criteria1.SetProjection(Projections.ProjectionList()
                         .Add(Projections.GroupProperty("Item")));
 
                     criteria.Add(Expression.Eq("Location", cycleCount.Location.Code));
@@ -1699,22 +1703,58 @@ namespace com.Sconit.Service.MasterData.Impl
                         maxEndDate = maxDateList.Max(cycDet => (DateTime)cycDet[3]);
                     }
 
+                        ArrayList newCycItemAry = new ArrayList();
+                        ArrayList newCycItemAry1 = new ArrayList();
                     if (cycItemAry != null && cycItemAry.Length > 0)
                     {
-                        criteria.Add(Expression.In("Item", cycItemAry));
+                        if (cycItemAry.Length > 2000)
+                        {
+                            for (int i = 0; i < 2000; i++)
+                            {
+                                newCycItemAry.Add( cycItemAry[i]);
+                            }
+                            //criteria.Add(Expression.In("Item", newCycItemAry));
+                            for (int j = 2000; j < cycItemAry.Length; j++)
+                            {
+                                newCycItemAry1.Add(cycItemAry[j]);
+                            }
+                            //criteria.Add(Expression.Or(Expression.In("Item",newCycItemAry),Expression.In("Item",newCycItemAry1)));
+                        }
+                        else
+                        {
+                            criteria.Add(Expression.In("Item", cycItemAry));
+                        }
                     }
 
                     //criteria.Add(Expression.Ge("CreateDate", cycleCount.StartDate.Value));
                     if (minStartDate.HasValue)
                     {
                         criteria.Add(Expression.Ge("CreateDate", minStartDate.Value));
+                        criteria1.Add(Expression.Ge("CreateDate", minStartDate.Value));
                     }
                     else
                     {
                         criteria.Add(Expression.Ge("CreateDate", cycleCount.StartDate.Value));
+                        criteria1.Add(Expression.Ge("CreateDate", cycleCount.StartDate.Value));
                     }
-
+                    if(newCycItemAry!=null && newCycItemAry.Count>0)
+                    {
+                        criteria.Add(Expression.In("Item", newCycItemAry));
+                    }
                     IList<string> transItemList = this.criteriaMgrE.FindAll<string>(criteria);
+                    IList<string> transItemList1 = null;
+                    if (newCycItemAry1 != null && newCycItemAry1.Count > 0)
+                    {
+                        criteria1.Add(Expression.In("Item", newCycItemAry1));
+                        transItemList1 = this.criteriaMgrE.FindAll<string>(criteria1);
+                    }
+                    if (transItemList1 != null && transItemList1.Count > 0)
+                    {
+                        foreach (string str in transItemList1)
+                        {
+                            transItemList.Add(str);
+                        }
+                    }
                     #endregion
 
                     #region 循环发生过事务的零件

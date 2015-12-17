@@ -42,6 +42,10 @@ namespace com.Sconit.Service.Cost.Impl
         public IRawIOBMgrE rawIOBMgr { get; set; }
         public IItemMgrE itemMgr { get; set; }
 
+        //by ljz
+        public IEntityPreferenceMgrE entityPreferenceMgrE { get; set; }
+        //by ljz
+
         private static log4net.ILog log = log4net.LogManager.GetLogger("Log.MRP");
 
 
@@ -139,7 +143,7 @@ namespace com.Sconit.Service.Cost.Impl
         [Transaction(TransactionMode.Requires)]
         public void GenBalance(FinanceCalendar financeCalendar, string userCode, bool isGenRm, bool isGenCbom)
         {
-            lock(genBalanceLock)
+            lock (genBalanceLock)
             {
                 string fc = Getfc(financeCalendar);
 
@@ -184,7 +188,7 @@ namespace com.Sconit.Service.Cost.Impl
                 #endregion
 
                 #region bomtree and GenCbom
-                if(isGenCbom)
+                if (isGenCbom)
                 {
                     this.GenBomTree(financeCalendar, userCode);
                     this.GenCbom(financeCalendar, userCode);
@@ -241,10 +245,10 @@ namespace com.Sconit.Service.Cost.Impl
 
                 #region RM的材料成本=(本期采购金额+期初库存金额)/(采购数量+期初数量)
 
-                foreach(var rmBalance in rmBalances)
+                foreach (var rmBalance in rmBalances)
                 {
                     Balance lastBalance = lastBalances.FirstOrDefault(l => l.Item.Trim().ToLower() == rmBalance.Item.Trim().ToLower());
-                    if(lastBalance != null)
+                    if (lastBalance != null)
                     {
                         Balance newBalance = new Balance();
                         CloneHelper.CopyProperty(lastBalance, newBalance);
@@ -252,13 +256,13 @@ namespace com.Sconit.Service.Cost.Impl
                         double purchaseAmount = item_Purchase.Sum(p => p.Amount);
                         double purchaseQty = 0;
                         double purchaseCost = 0;
-                        foreach(var purchase in item_Purchase)
+                        foreach (var purchase in item_Purchase)
                         {
                             purchaseQty += (double)uomConversionMgr.ConvertUomQty(purchase.Item, purchase.Uom, (decimal)purchase.Qty, lastBalance.Uom);
                             newBalance.IsProvEst = purchase.IsProvEst;
                             purchaseCost = purchase.AvgPrice;
                         }
-                        if((lastBalance.Qty + purchaseQty) != 0)
+                        if ((lastBalance.Qty + purchaseQty) != 0)
                         {
                             newBalance.Cost = (lastBalance.Amount + purchaseAmount) / (lastBalance.Qty + purchaseQty);
                         }
@@ -295,7 +299,7 @@ namespace com.Sconit.Service.Cost.Impl
                     {
                         //月初没有的原材料RM成本
                         var purchase = purchases.FirstOrDefault(l => l.Item.Trim().ToLower() == rmBalance.Item.Trim().ToLower());
-                        if(purchase == null)
+                        if (purchase == null)
                         {
                             purchase = new Purchase();
                             purchase.Item = rmBalance.Item;
@@ -309,7 +313,7 @@ namespace com.Sconit.Service.Cost.Impl
                         }
 
                         object[] item = this.LoadItem(purchase.Item);
-                        if(item != null)
+                        if (item != null)
                         {
                             double rate = (double)uomConversionMgr.ConvertUomQty(purchase.Item, purchase.Uom, 1M, (string)item[1]);
                             double purchaseQty = purchase.Qty * rate;
@@ -402,12 +406,12 @@ namespace com.Sconit.Service.Cost.Impl
                                    BomDetails = result
                                };
 
-                foreach(var bomItem in groupBom)
+                foreach (var bomItem in groupBom)
                 {
                     Item item = items.FirstOrDefault(p => p.Code == bomItem.Bom);
                     //object[] item = this.LoadItem(bomItem.Bom);
 
-                    if(item != null)
+                    if (item != null)
                     {
                         //尚未考虑单位转换
                         FgOutPut fgOutPut = fgOutPuts.SingleOrDefault(f => f.Item.Trim().ToLower() == bomItem.Bom.Trim().ToLower());
@@ -421,16 +425,16 @@ namespace com.Sconit.Service.Cost.Impl
                         //consume = consume == null ? new Consume() : consume;
                         FgCost fgCost = new FgCost();
 
-                        foreach(var bomdetail in bomItem.BomDetails)
+                        foreach (var bomdetail in bomItem.BomDetails)
                         {
-                            if(bomdetail.ItemCategory.Contains("RM") || bomdetail.ItemCategory.Contains("CG"))
+                            if (bomdetail.ItemCategory.Contains("RM") || bomdetail.ItemCategory.Contains("CG"))
                             {
                                 var balance = balances.FirstOrDefault(b => b.Item.Trim().ToLower() == bomdetail.Item.Trim().ToLower());
                                 //balance = balance == null ? new Balance() : balance;
-                                if(bomdetail.ItemCategory.Contains("RM"))
+                                if (bomdetail.ItemCategory.Contains("RM"))
                                 {
                                     //总成本
-                                    if(balance != null)
+                                    if (balance != null)
                                     {
                                         //单位转换
                                         double _accumQty1 = (double)uomConversionMgr.ConvertUomQty(bomdetail.Item, bomdetail.Uom, (decimal)bomdetail.AccumQty, balance.Uom);
@@ -463,7 +467,7 @@ namespace com.Sconit.Service.Cost.Impl
                                 //cbomMgr.UpdateCbom(bomdetail);//lazy update
 
                                 fgCost.ScrapCost += bomdetail.Cost;
-                                if(bomdetail.IsProvEst)
+                                if (bomdetail.IsProvEst)
                                 {
                                     fgCost.IsProvEst = true;
                                 }
@@ -478,7 +482,7 @@ namespace com.Sconit.Service.Cost.Impl
                         fgCost.OutQty = (double)fgOutPut.Qty;
                         fgCosts.Add(fgCost);
                         //fgCostMgr.CreateFgCost(fgCost);
-                        foreach(var consume in q_consumes)
+                        foreach (var consume in q_consumes)
                         {
                             consume.Cost = fgCost.ScrapCost;
                             consume.Amount = consume.Qty * consume.Cost;
@@ -490,7 +494,7 @@ namespace com.Sconit.Service.Cost.Impl
 
                 #region 损耗原材料分摊 && 获取消耗成本
                 var cgConsumes = consumes.Where(c => c.ItemCategory.Contains("CG"));
-                foreach(var consume in cgConsumes)
+                foreach (var consume in cgConsumes)
                 {
                     //criteria = DetachedCriteria.For(typeof(PriceListDetail));
                     //criteria.Add(Expression.Eq("Item.Code", consume.Item));
@@ -511,12 +515,12 @@ namespace com.Sconit.Service.Cost.Impl
 
                 var rmConsumes = consumes.Where(c => c.ItemCategory.Contains("RM") || c.ItemCategory.Contains("CG"));
                 double consumeAmount = 0;
-                foreach(var consume in rmConsumes)
+                foreach (var consume in rmConsumes)
                 {
                     //只分摊到最终的产成品上去
                     var rmCboms = cboms.Where(c => c.Item.Trim().ToLower() == consume.Item.Trim().ToLower() && c.FGCategory == "FG");
 
-                    if(rmCboms.Count() > 0)
+                    if (rmCboms.Count() > 0)
                     {
                         consume.Cost = rmCboms.First().Cost;
                         consume.Amount = consume.Cost * consume.Qty;
@@ -525,11 +529,11 @@ namespace com.Sconit.Service.Cost.Impl
                     }
 
                     double sumInQty = rmCboms.Sum(c => c.InQty);
-                    if(sumInQty != 0)//表示本月有消耗此原材料的成品产出,加权平均分摊到对应的成品的原材料上去
+                    if (sumInQty != 0)//表示本月有消耗此原材料的成品产出,加权平均分摊到对应的成品的原材料上去
                     {
-                        foreach(var cbom in rmCboms)
+                        foreach (var cbom in rmCboms)
                         {
-                            if(cbom.InQty != 0)
+                            if (cbom.InQty != 0)
                             {
                                 //(此物料的用量/总用量)*报废数
                                 cbom.ScraptQty += ((cbom.InQty / sumInQty) * (-consume.Qty));
@@ -550,11 +554,11 @@ namespace com.Sconit.Service.Cost.Impl
                 //再加权平均分摊到所有的成品上去
                 var fg_Costs = fgCosts.Where(f => f.ItemCategory == "FG");
                 double sumFgAmount = fg_Costs.Sum(f => f.Amount);
-                if(sumFgAmount != 0)
+                if (sumFgAmount != 0)
                 {
-                    foreach(var fgCost in fg_Costs)
+                    foreach (var fgCost in fg_Costs)
                     {
-                        if(fgCost.Amount != 0)
+                        if (fgCost.Amount != 0)
                         {
                             fgCost.Allocation += ((fgCost.Amount / sumFgAmount) * consumeAmount);
                             //fgCostMgr.UpdateFgCost(fgCost);
@@ -567,17 +571,17 @@ namespace com.Sconit.Service.Cost.Impl
                 #region 插入本月成品月结库存 GenFG in Balance
                 IList<Balance> fgBalances = this.GetHisInv(financeCalendar, "FG");
 
-                foreach(var fgBalance in fgBalances)
+                foreach (var fgBalance in fgBalances)
                 {
                     //balances
                     var fgCost = fgCosts.FirstOrDefault(f => f.Item.Trim().ToLower() == fgBalance.Item.Trim().ToLower());
-                    if(fgCost != null)
+                    if (fgCost != null)
                     {
                         var rmBalance = balances.FirstOrDefault(b => b.Item.Trim().ToLower() == fgBalance.Item.Trim().ToLower());
 
-                        if(rmBalance != null)
+                        if (rmBalance != null)
                         {
-                            if(rmBalance.ItemCategory.Contains("FG"))
+                            if (rmBalance.ItemCategory.Contains("FG"))
                             {
                                 rmBalance.Cost = fgCost.Cost;
                                 rmBalance.Qty = fgBalance.Qty;
@@ -602,6 +606,76 @@ namespace com.Sconit.Service.Cost.Impl
                 #endregion
 
                 fgCostMgr.CreateFgCost(fgCosts);
+
+                #region 发送邮件
+                IList<EntityPreference> entityPreferences = entityPreferenceMgrE.GetAllEntityPreference();
+                if (entityPreferences != null && entityPreferences.Count > 0)
+                {
+                    string enableSendMail = string.Empty;
+                    foreach (EntityPreference ep in entityPreferences)
+                    {
+                        if (ep.Code == "EnableSendMailOfCostCalculate")
+                        {
+                            enableSendMail = ep.Value;
+                            break;
+                        }
+                    }
+                    if (enableSendMail.ToLower() == "true")
+                    {
+                        string subject = string.Empty; //主题
+                        string emailFrom = string.Empty; //发件人
+                        string userMail = string.Empty; //
+                        string SMTPEmailHost = string.Empty;
+                        string SMTPEmailPasswd = string.Empty;
+                        string supplierEmail = string.Empty;
+                        string mailBody = string.Empty;
+
+                        subject = DateTime.Now.ToString() + " - 成本计算执行完成";
+                        foreach (EntityPreference ep in entityPreferences)
+                        {
+                            if (ep.Code == BusinessConstants.ENTITY_PREFERENCE_CODE_SMTPEMAILADDR)
+                            {
+                                emailFrom = ep.Value;
+                                break;
+                            }
+                        }
+                        userMail = emailFrom;
+                        //if (user.Email != null && user.Email.Trim() != string.Empty)
+                        //{
+                        //    userMail = user.Email.Trim();
+                        //}
+
+                        foreach (EntityPreference ep in entityPreferences)
+                        {
+                            if (ep.Code == BusinessConstants.ENTITY_PREFERENCE_CODE_SMTPEMAILHOST)
+                            {
+                                SMTPEmailHost = ep.Value;
+                                break;
+                            }
+                        }
+                        foreach (EntityPreference ep in entityPreferences)
+                        {
+                            if (ep.Code == BusinessConstants.ENTITY_PREFERENCE_CODE_SMTPEMAILPASSWD)
+                            {
+                                SMTPEmailPasswd = ep.Value;
+                                break;
+                            }
+                        }
+                        foreach (EntityPreference ep in entityPreferences)
+                        {
+                            if (ep.Code == "MailAddrOfCostCalculate")
+                            {
+                                supplierEmail = ep.Value;
+                                break;
+                            }
+                        }
+                        mailBody = "您好,<br />";
+                        mailBody += "成本计算已经执行完成!<br />";
+                        mailBody += "日期:" + DateTime.Now.ToString();
+                        SMTPHelper.SendSMTPEMail(subject, mailBody, emailFrom, supplierEmail, SMTPEmailHost, SMTPEmailPasswd, userMail);
+                    }
+                }
+                #endregion
             }
         }
 

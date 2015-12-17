@@ -725,16 +725,13 @@ public partial class Finance_Bill_Edit : ListModuleBase
         this.tbTotalDiscount.Text = (bill.Discount.HasValue ? bill.Discount.Value : 0).ToString("F2");
         this.tbTotalDiscountRate.Text = bill.TotalBillDiscountRate.ToString("F2");
 
-        if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT)
+        if (bill.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE)
         {
-            this.txtTaxAmount.Text = bill.TaxAmount.ToString("F2");
+            this.txtTaxAmount.Text = bill.TotalAfterTaxAmount.ToString("F2");
         }
         else
         {
-            if (this.txtTaxAmount.Text == "")
-            {
-                this.txtTaxAmount.Text = bill.TotalAfterTaxAmount.ToString("F2");
-            }
+            this.txtTaxAmount.Text = bill.TaxAmount.ToString("F2");
         }
         #endregion
 

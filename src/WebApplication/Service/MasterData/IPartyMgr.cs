@@ -1,6 +1,7 @@
 using com.Sconit.Service.Ext.MasterData;
 using System.Collections.Generic;
 using com.Sconit.Entity.MasterData;
+using com.Sconit.Entity.Quote;
 
 //TODO: Add other using statements here.
 
@@ -11,6 +12,8 @@ namespace com.Sconit.Service.MasterData
         #region Customized Methods
 
         IList<Party> GetFromParty(string orderType, string userCode);
+
+        IList<CostCategory> GetCostCategory(string userCode);
 
         IList<Party> GetFromParty(string orderType, string userCode, bool includeInactive);
 

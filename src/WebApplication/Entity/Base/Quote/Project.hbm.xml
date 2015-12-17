@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Quote.Project, com.Sconit.Entity" table="Quote_Project" lazy="false">
+    <id name="Id" column="Id" type="int" unsaved-value="0">
+      <generator class="identity" />
+    </id>
+    <property name="ProjectId" column="ProjectId" type="string"  />
+    <property name="Status" column="Status" type="string"  />
+    <property name="CustomerCode" column="CustomerCode" type="string"  />
+    <property name="CustomerName" column="CustomerName" type="string"  />
+    <property name="InputUserName" column="InputUserName" type="string"  />
+    <property name="InputDate" column="InputDate" type="DateTime"  />
+    <property name="ProductName" column="ProductName" type="string"  />
+    <property name="ProductNo" column="ProductNo" type="string"  />
+    <property name="VersionNo" column="VersionNo" type="string"  />
+    <property name="DeliveryAdd" column="DeliveryAdd" type="string"  />
+    <property name="CooperationMode" column="CooperationMode" type="string"  />
+    <property name="SType" column="SType" type="string"  />
+    <property name="BillPeriod" column="BillPeriod" type="string"  />
+    <property name="MonthlyDemand" column="MonthlyDemand" type="string"  />
+    <property name="QFor" column="QFor" type="string"  />
+    <property name="TSType" column="TSType" type="string"  />
+    <property name="PlanAllocationNum" column="PlanAllocationNum" type="string"  />
+    <property name="PT" column="PT" type="string"  />
+    <property name="PCBNum" column="PCBNum" type="string"  />
+    <property name="DoubleSideMount" column="DoubleSideMount" type="string"  />
+    <property name="ChipBurning" column="ChipBurning" type="string"  />
+    <property name="LightNum" column="LightNum" type="string"  />
+    <property name="BoardMode" column="BoardMode" type="string"  />
+    <property name="ConnPoint" column="ConnPoint" type="string"  />
+    <property name="DeviceShaping" column="DeviceShaping" type="string"  />
+    <property name="DeviceCoding" column="DeviceCoding" type="string"  />
+    <property name="CodingType" column="CodingType" type="string"  />
+    <property name="SurfaceCoating" column="SurfaceCoating" type="string"  />
+    <property name="CoatingAcreage" column="CoatingAcreage" type="string"  />
+    <property name="PackMode" column="PackMode" type="string"  />
+    <property name="EachBox" column="EachBox" type="string"  />
+    <property name="LogisticsMode" column="LogisticsMode" type="string"  />
+    <property name="IsBack" column="IsBack" type="string"  />
+    <property name="SalesUP" column="SalesUP" type="string"  />
+    <property name="SalesUPI" column="SalesUPI" type="string"  />
+    <property name="LumpSumFee" column="LumpSumFee" type="string"  />
+    <property name="LumpSumFeeI" column="LumpSumFeeI" type="string"  />
+    <property name="Data" column="Data" type="string"  />
+    <property name="ToCustomerName" column="ToCustomerName" type="string"  />
+    <property name="ToCustomerDate" column="ToCustomerDate" type="DateTime"  />
+  </class>
+</hibernate-mapping>

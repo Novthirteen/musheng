@@ -463,8 +463,9 @@ public partial class Order_OrderView_LocTransList : ModuleBase
                         Label lbDiscontinueItem = (Label)e.Row.FindControl("lbDiscontinueItem");
                         if (ordeLocTrans.ItemDiscontinue != null)
                         {
-                            lbItemDiscontinue.Text = ordeLocTrans.ItemDiscontinue.Item.Code;
-                            lbDiscontinueItem.Text = ordeLocTrans.ItemDiscontinue.Item.Description1;
+                            //lbItemDiscontinue.Text = ordeLocTrans.ItemDiscontinue.Item.Code;
+                            lbItemDiscontinue.Text = ordeLocTrans.ItemDiscontinue.DiscontinueItem.Code;
+                            lbDiscontinueItem.Text = ordeLocTrans.ItemDiscontinue.DiscontinueItem.Description1;
                         }
 
                         //tbItemDiscontinue.

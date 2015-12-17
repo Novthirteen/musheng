@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Quote.ProductInfo, com.Sconit.Entity" table="Quote_ProductInfo" lazy="false">
+    <id name="Id" column="Id" type="int" unsaved-value="0">
+      <generator class="identity" />
+    </id>
+    <property name="CustomerCode" column="CustomerCode" type="string"  />
+    <property name="CustomerName" column="CustomerName" type="string"  />
+    <property name="ProductName" column="ProductName" type="string"  />
+    <property name="ProductNo" column="ProductNo" type="string"  />
+    <property name="VersionNo" column="VersionNo" type="string"  />
+    <property name="PT" column="PT" type="string"  />
+    <property name="PCBNum" column="PCBNum" type="string"  />
+    <property name="AdvisePCBNum" column="AdvisePCBNum" type="string"  />
+    <property name="DoubleSideMount" column="DoubleSideMount" type="Boolean"  />
+    <property name="ChipBurning" column="ChipBurning" type="Boolean"  />
+    <property name="BurningNum" column="BurningNum" type="string"  />
+    <property name="LightNum" column="LightNum" type="string"  />
+    <property name="BoardMode" column="BoardMode" type="string"  />
+    <property name="ConnPoint" column="ConnPoint" type="string"  />
+    <property name="DeviceShaping" column="DeviceShaping" type="Boolean"  />
+    <property name="ShapingType" column="ShapingType" type="string"  />
+    <property name="ShapingSecCount" column="ShapingSecCount" type="string"  />
+    <property name="DeviceCoding" column="DeviceCoding" type="Boolean"  />
+    <property name="CodingType" column="CodingType" type="string"  />
+    <property name="CodingSecCount" column="CodingSecCount" type="string"  />
+    <property name="FCTTest" column="FCTTest" type="Boolean"  />
+    <property name="TestSec" column="TestSec" type="string"  />
+    <property name="ProductAssembly" column="ProductAssembly" type="Boolean"  />
+    <property name="AssemblySec" column="AssemblySec" type="string"  />
+    <property name="FinalAssemblyTest" column="FinalAssemblyTest" type="Boolean"  />
+    <property name="FinalTestSec" column="FinalTestSec" type="string"  />
+    <property name="SpecialReq" column="SpecialReq" type="string"  />
+    <property name="SurfaceCoating" column="SurfaceCoating" type="Boolean"  />
+    <property name="MaterialNo" column="MaterialNo" type="string"  />
+    <property name="CoatingAcreage" column="CoatingAcreage" type="string"  />
+    <property name="CoatingSec" column="CoatingSec" type="string"  />
+    <property name="ProductFilling" column="ProductFilling" type="Boolean"  />
+    <property name="FillingPrice" column="FillingPrice" type="Decimal"  />
+    <property name="PackMode" column="PackMode" type="string"  />
+    <property name="OutBox" column="OutBox" type="string"  />
+    <property name="OutBoxPrice" column="OutBoxPrice" type="Decimal"  />
+    <property name="Plate" column="Plate" type="string"  />
+    <property name="PlateNum" column="PlateNum" type="string"  />
+    <property name="PlatePrice" column="PlatePrice" type="Decimal"  />
+    <property name="Partition" column="Partition" type="string"  />
+    <property name="PartitionNum" column="PartitionNum" type="string"  />
+    <property name="PartitionPrice" column="PartitionPrice" type="Decimal"  />
+    <property name="BubbleBag" column="BubbleBag" type="string"  />
+    <property name="BubbleBagPrice" column="BubbleBagPrice" type="Decimal"  />
+    <property name="Blister" column="Blister" type="string"  />
+    <property name="BlisterNum" column="BlisterNum" type="string"  />
+    <property name="BlisterPrice" column="BlisterPrice" type="Decimal"  />
+    <property name="FCLNum" column="FCLNum" type="string"  />
+    <property name="DeliveryAdd" column="DeliveryAdd" type="string"  />
+    <property name="LogisticsFee" column="LogisticsFee" type="Decimal"  />
+    <property name="LogisticsCost" column="LogisticsCost" type="Decimal"  />
+    <property name="OutBoxResult" column="OutBoxResult" type="Decimal"  />
+    <property name="PlateResult" column="PlateResult" type="Decimal"  />
+    <property name="PartitionResult" column="PartitionResult" type="Decimal"  />
+    <property name="BubbleBagResult" column="BubbleBagResult" type="Decimal"  />
+    <property name="BlisterResult" column="BlisterResult" type="Decimal"  />
+    <property name="PackPrice" column="PackPrice" type="Decimal"  />
+    <property name="PackCost" column="PackCost" type="Decimal"  />
+
+    <property name="ProjectId" column="ProjectId" type="string"  />
+    <property name="CreateDate" column="CreateDate" type="DateTime"  />
+    <property name="Status" column="Status" type="string"  />
+  </class>
+</hibernate-mapping>

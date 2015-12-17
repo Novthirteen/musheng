@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.Quote.CostList, com.Sconit.Entity" table="Quote_CostList" lazy="false">
+    <id name="Id" column="Id" type="int" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+    <property name="Name" column="Name" type="string" />
+    <many-to-one name="CCId" column="CCId" class="com.Sconit.Entity.Quote.CostCategory, com.Sconit.Entity" cascade="none" />
+    <property name="Number" column="Number" type="string"  />
+    <property name="Unit" column="Unit" type="string"  />
+    <property name="Price" column="Price" type="string"  />
+  </class>
+</hibernate-mapping>
