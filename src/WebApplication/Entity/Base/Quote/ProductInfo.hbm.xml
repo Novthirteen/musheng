@@ -66,5 +66,9 @@
     <property name="ProjectId" column="ProjectId" type="string"  />
     <property name="CreateDate" column="CreateDate" type="DateTime"  />
     <property name="Status" column="Status" type="string"  />
+
+    <property name="Source_" column="Source_" type="string"  />
+    <property name="Remark1" column="Remark1" type="string"  />
+    <property name="Remark2" column="Remark2" type="string"  />
   </class>
 </hibernate-mapping>

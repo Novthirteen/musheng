@@ -140,6 +140,18 @@ namespace com.Sconit.Entity.Quote
         {
             get;
             set;
-        } 
+        }
+
+        public DateTime? CustomerBillDate
+        {
+            get;
+            set;
+        }
+
+        public string CustomerBillNo
+        {
+            get;
+            set;
+        }
     }
 }

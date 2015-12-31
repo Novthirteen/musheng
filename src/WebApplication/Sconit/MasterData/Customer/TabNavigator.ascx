@@ -11,5 +11,9 @@
         OnClick="lbBillAddress_Click" /></span></span></span></span><span 
         id='tab_shipaddress' runat="server"><span class='ajax__tab_outer'><span class='ajax__tab_inner'><span 
         class='ajax__tab_tab'><asp:LinkButton ID="lbShipAddress" Text="${MasterData.Address.ShipAddress}" runat="server"
-        OnClick="lbShipAddress_Click" /></span></span></span></span>
+        OnClick="lbShipAddress_Click" /></span></span></span></span><span 
+        id='tab_quoteinfo' runat="server"><span class='ajax__tab_outer'><span class='ajax__tab_inner'><span 
+        class='ajax__tab_tab'><asp:LinkButton ID="lblQuoteInfo" Text="${Quote.Fee}" runat="server"
+        OnClick="lblQuoteFee_Click" /></span></span></span></span>
     </div>
+</div>

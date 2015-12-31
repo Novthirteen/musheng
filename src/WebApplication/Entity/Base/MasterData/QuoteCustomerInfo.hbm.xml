@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="com.Sconit.Entity.MasterData.QuoteCustomerInfo, com.Sconit.Entity" table="Quote_CustomerInfo" lazy="false">
+
+    <id name="Id" column="Id" type="int" unsaved-value="0" >
+      <generator class="identity" />
+    </id>
+    <property name="Code" column="Code" type="string"  />
+    <property name="Name" column="Name" type="string"  />
+    <property name="SType" column="SType" type="string"  />
+    <property name="BillPeriod" column="BillPeriod" type="int"  />
+    <property name="P_LossRate" column="P_LossRate" type="string"  />
+    <property name="P_ManageFee" column="P_ManageFee" type="string"  />
+    <property name="P_FinanceFee" column="P_FinanceFee" type="string"  />
+    <property name="P_Profit" column="P_Profit" type="string"  />
+    <property name="M_ManageFee" column="M_ManageFee" type="string"  />
+    <property name="M_FinanceFee" column="M_FinanceFee" type="string"  />
+    <property name="DeliveryAdd" column="DeliveryAdd" type="string"  />
+    <property name="DeliveryCity" column="DeliveryCity" type="string"  />
+    <property name="Status" column="Status" type="Boolean"  />
+    <property name="StartDate" column="StartDate" type="DateTime"  />
+    <property name="EndDate" column="EndDate" type="DateTime"  />
+
+  </class>
+</hibernate-mapping>

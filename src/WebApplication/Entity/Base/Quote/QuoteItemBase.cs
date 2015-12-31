@@ -107,5 +107,23 @@ namespace com.Sconit.Entity.Quote
             get;
             set;
         }
+
+        public int ProductId
+        {
+            get;
+            set;
+        }
+
+        public string BitNum
+        {
+            get;
+            set;
+        }
+
+        public string Side
+        {
+            get;
+            set;
+        }
     }
 }

@@ -20,6 +20,9 @@
     <property name="SuppliersInNo" column="SuppliersInNo" type="string"  />
     <property name="CustomerBStatus" column="CustomerBStatus" type="Boolean"  />
     <property name="ProjectNo" column="ProjectNo" type="string"  />
+    <property name="CustomerBillDate" column="CustomerBillDate" type="DateTime"  />
+    <property name="CustomerBillNo" column="CustomerBillNo" type="string"  />
+
 
   </class>
 </hibernate-mapping>

@@ -123,7 +123,7 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucDetailMain.Visible = true;
         this.ucViewShipList.Visible = false;
         this.ucFlowInfo.InitPageParameter(((List<string>)((object[])sender)[0])[0]);
-        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0]);
+        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0], (List<List<string>>)((object[])sender)[1]);
     }
 
     void SaveDetail_Render(object sender, EventArgs e)
@@ -185,7 +185,7 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucDetailMain.Visible = true;
         this.ucViewShipList.Visible = false;
         this.ucFlowInfo.InitPageParameter(((List<string>)((object[])sender)[0])[0]);
-        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0], true);
+        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0],(List<List<string>>)((object[])sender)[1], true);
     }
 
     void PickListInfoBack_Render(object sender, EventArgs e)

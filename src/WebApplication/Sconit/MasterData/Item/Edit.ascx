@@ -337,9 +337,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td class="td01" style="width: 150px"></td>
                         <td class="td01">
-                            <asp:Literal ID="Literal1" runat="server" Text="${MasterData.Item.ItemPoint}:" />
+                            <asp:Literal ID="ltlItemPack" runat="server" Text="${Menu.MasterData.ItemPack}:"></asp:Literal>
+                        </td>
+                        <td class="td02">
+                            <uc3:textbox ID="txtItemPack" runat="server" Visible="true" Width="250" MustMatch="false"
+                                DescField="Descr" ValueField="Spec" ServicePath="OrderProductionPlanMgr.service" ServiceMethod="GetItemPack" />
+                        </td>
+                        <td class="td01">
                         </td>
                         <td class="td02">
                         </td>

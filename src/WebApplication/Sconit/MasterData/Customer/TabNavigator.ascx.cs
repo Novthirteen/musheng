@@ -16,6 +16,7 @@ public partial class MasterData_Customer_TabNavigator : System.Web.UI.UserContro
     public event EventHandler lblCustomerClickEvent;
     public event EventHandler lblBillAddressClickEvent;
     public event EventHandler lblShipAddressClickEvent;
+    public event EventHandler lblQuoteFeeClickEvent;
 
     public void UpdateView()
     {
@@ -37,6 +38,7 @@ public partial class MasterData_Customer_TabNavigator : System.Web.UI.UserContro
         this.tab_customer.Attributes["class"] = "ajax__tab_active";
         this.tab_billaddress.Attributes["class"] = "ajax__tab_inactive";
         this.tab_shipaddress.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_quoteinfo.Attributes["class"] = "ajax__tab_inactive";
     }
 
 
@@ -49,6 +51,7 @@ public partial class MasterData_Customer_TabNavigator : System.Web.UI.UserContro
             this.tab_customer.Attributes["class"] = "ajax__tab_inactive";
             this.tab_billaddress.Attributes["class"] = "ajax__tab_active";
             this.tab_shipaddress.Attributes["class"] = "ajax__tab_inactive";
+            this.tab_quoteinfo.Attributes["class"] = "ajax__tab_inactive";
         }
     }
 
@@ -61,6 +64,17 @@ public partial class MasterData_Customer_TabNavigator : System.Web.UI.UserContro
             this.tab_customer.Attributes["class"] = "ajax__tab_inactive";
             this.tab_billaddress.Attributes["class"] = "ajax__tab_inactive";
             this.tab_shipaddress.Attributes["class"] = "ajax__tab_active";
+            this.tab_quoteinfo.Attributes["class"] = "ajax__tab_inactive";
         }
+    }
+
+    protected void lblQuoteFee_Click(object sender, EventArgs e)
+    {
+        lblQuoteFeeClickEvent(this, e);
+
+        this.tab_customer.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_billaddress.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_shipaddress.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_quoteinfo.Attributes["class"] = "ajax__tab_active";
     }
 }

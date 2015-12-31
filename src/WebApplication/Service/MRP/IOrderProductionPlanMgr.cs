@@ -5,6 +5,7 @@ using System.Text;
 using com.Sconit.Entity.MRP;
 using com.Sconit.Entity.MasterData;
 using com.Sconit.Entity.Customize;
+using com.Sconit.Entity.Quote;
 
 namespace com.Sconit.Service.MRP
 {
@@ -26,6 +27,14 @@ namespace com.Sconit.Service.MRP
         IList<OrderProductionPlan> GetOrderProductionPlanByBetween(int NewId, int OldId, string ProductionLineCode, string Flow);
         IList<OrderProductionPlan> GetOrderProductionPlans(string Flow, string ProductionLineCode, DateTime? PStartDate, DateTime? PEndDate, List<string> Status);
         IList<OrderProductionPlan> GetOrderProductionPlanByOrderNo(string OrderNo);
+
+        #region 报价单部分
+        IList<QuoteCustomerInfo> GetCustomer();
+        IList<GPID> GetGPID(bool Status);
+
+        IList<ItemPack> GetItemPack();
+        IList<ProductInfo> GetProduct();
+        #endregion
     }
 }
 

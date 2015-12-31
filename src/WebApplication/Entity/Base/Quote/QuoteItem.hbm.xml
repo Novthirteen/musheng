@@ -16,6 +16,9 @@
     <property name="PinConversion" column="PinConversion" type="string"  />
     <property name="Point" column="Point" type="string"  />
     <property name="ProjectId" column="ProjectId" type="string"  />
-
+    <property name="ProductId" column="ProductId" type="int"  />
+    <property name="BitNum" column="BitNum" type="string"  />
+    <property name="Side" column="Side" type="string"  />
+    
   </class>
 </hibernate-mapping>

@@ -8,6 +8,8 @@
         id='tab_ItemRef' runat="server"><span class='ajax__tab_outer'><span class='ajax__tab_inner'><span 
         class='ajax__tab_tab'><asp:LinkButton ID="lbItemRef" Text="${MasterData.ItemRef}" runat="server" OnClick="lbItemRef_Click" /></span></span></span></span><span 
         id='tab_ItemKit' runat="server" visible="false"><span class='ajax__tab_outer'><span class='ajax__tab_inner'><span 
-        class='ajax__tab_tab'><asp:LinkButton ID="lbItemKit" Text="${MasterData.ItemKit}" runat="server" OnClick="lbItemKit_Click" /></span></span></span></span>
+        class='ajax__tab_tab'><asp:LinkButton ID="lbItemKit" Text="${MasterData.ItemKit}" runat="server" OnClick="lbItemKit_Click" /></span></span></span></span><span 
+        id='tab_ItemQuote' runat="server"><span class='ajax__tab_outer'><span class='ajax__tab_inner'><span 
+        class='ajax__tab_tab'><asp:LinkButton ID="lbItemQuote" Text="${MasterData.ItemQuote}" runat="server" OnClick="lbItemQuote_Click" /></span></span></span></span>
     </div>
 <div class="ajax__tab_body">

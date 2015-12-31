@@ -77,6 +77,8 @@ public partial class MasterData_Item_Edit : EditModuleBase
                 ((CheckBox)(this.FV_Item.FindControl("cbDeleteImage"))).Visible = false;
                 ((Literal)(this.FV_Item.FindControl("ltlDeleteImage"))).Visible = false;
             }
+
+            ((Controls_TextBox)(this.FV_Item.FindControl("txtItemPack"))).Text = (item.ItemPack == null) ? string.Empty : item.ItemPack.Spec;
         }
     }
 
@@ -103,6 +105,12 @@ public partial class MasterData_Item_Edit : EditModuleBase
     protected void ODS_Item_Updating(object sender, ObjectDataSourceMethodEventArgs e)
     {
         Item item = (Item)e.InputParameters[0];
+
+        string itemPack = ((Controls_TextBox)(this.FV_Item.FindControl("txtItemPack"))).Text.Trim();
+        if (itemPack != string.Empty)
+        {
+            item.ItemPack = TheToolingMgr.GetItemPack(itemPack)[0];
+        }
 
         item.Desc1 = item.Desc1.Trim();
         item.Desc2 = item.Desc2.Trim();

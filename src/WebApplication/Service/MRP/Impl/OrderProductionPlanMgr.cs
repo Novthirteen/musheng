@@ -11,6 +11,7 @@ using com.Sconit.Entity.MasterData;
 using NHibernate;
 using NHibernate.Type;
 using com.Sconit.Entity.Customize;
+using com.Sconit.Entity.Quote;
 
 namespace com.Sconit.Service.MRP.Impl
 {
@@ -210,6 +211,42 @@ namespace com.Sconit.Service.MRP.Impl
             criteria.Add(Expression.Eq("Flow", Flow));
             return criteriaMgr.FindAll<OrderProductionPlan>(criteria);
         }
+
+        #region 报价单部分
+        public IList<QuoteCustomerInfo> GetCustomer()
+        {
+            DetachedCriteria criteria = DetachedCriteria.For(typeof(QuoteCustomerInfo));
+            criteria.Add(Expression.Eq("Status", true));
+            return criteriaMgr.FindAll<QuoteCustomerInfo>(criteria);
+        }
+
+        public IList<GPID> GetGPID(bool Status)
+        {
+            DetachedCriteria criteria = DetachedCriteria.For(typeof(GPID));
+            if (Status)
+            {
+                criteria.Add(Expression.Eq("Status", Status));
+            }
+            return criteriaMgr.FindAll<GPID>(criteria);
+        }
+
+        public IList<ItemPack> GetItemPack()
+        {
+            DetachedCriteria criteria = DetachedCriteria.For(typeof(ItemPack));
+            return criteriaMgr.FindAll<ItemPack>(criteria);
+        }
+
+        public IList<ProductInfo> GetProduct()
+        {
+            DetachedCriteria criteria = DetachedCriteria.For(typeof(ProductInfo));
+            IList<ProductInfo> PList = criteriaMgr.FindAll<ProductInfo>(criteria);
+            foreach(ProductInfo p in PList)
+            {
+                p.ProductNo = p.ProductNo + " - " + p.VersionNo + " - " + p.ProductName;
+            }
+            return PList;
+        }
+        #endregion
     }
 }
 

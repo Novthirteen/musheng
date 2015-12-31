@@ -98,7 +98,7 @@ public class BaseWS : System.Web.Services.WebService
     //protected INumberControlMgrE TheNumberControlMgr { get { return GetService<INumberControlMgrE>("NumberControlMgr.service"); } }
     //protected IWorkdayShiftMgrE TheWorkdayShiftMgr { get { return GetService<IWorkdayShiftMgrE>("WorkdayShiftMgr.service"); } }
     //protected ICurrencyMgrE TheCurrencyMgr { get { return GetService<ICurrencyMgrE>("CurrencyMgr.service"); } }
-    //protected IPriceListMgrE ThePriceListMgr { get { return GetService<IPriceListMgrE>("PriceListMgr.service"); } }
+    protected IPriceListMgrE ThePriceListMgr { get { return GetService<IPriceListMgrE>("PriceListMgr.service"); } }
     //protected ILocationLotDetailMgrE TheLocationLotDetailMgr { get { return GetService<ILocationLotDetailMgrE>("LocationLotDetailMgr.service"); } }
     //protected IReceiptMgrE TheReceiptMgr { get { return GetService<IReceiptMgrE>("ReceiptMgr.service"); } }
     //protected IReceiptDetailMgrE TheReceiptDetailMgr { get { return GetService<IReceiptDetailMgrE>("ReceiptDetailMgr.service"); } }

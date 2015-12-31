@@ -12,6 +12,7 @@ using Castle.Core.Resource;
 using BatchJob.Properties;
 using com.Sconit.Utility;
 using com.Sconit.Service.Batch;
+using System.Threading;
 
 
 namespace BatchJob
@@ -33,6 +34,7 @@ namespace BatchJob
 
         protected override void OnStart(string[] args)
         {
+            Thread.Sleep(30000);
             try
             {
                 log.Info("BatchJob Service Start");

@@ -2,3 +2,4 @@ bin
 obj
 *.suo
 /src/WebApplication/PrecompiledWeb
+*.user

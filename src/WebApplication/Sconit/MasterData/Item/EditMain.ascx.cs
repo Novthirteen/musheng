@@ -55,6 +55,9 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKitEdit.EditEvent += new System.EventHandler(this.ItemKitEditEdit_Render);
         this.ucItemKitEdit.BackEvent += new System.EventHandler(this.ItemKitEditBack_Render);
         this.ucItemRef.BackEvent += new System.EventHandler(this.EditBack_Render);
+
+        this.ucTabNavigator.lbItemQuoteClickEvent += new System.EventHandler(this.TabItemQuoteClick_Render);
+        this.ucItemQuote.BackEvent += new System.EventHandler(this.ItemQuoteBack_Render);
     }
 
     protected void TabItemClick_Render(object sender, EventArgs e)
@@ -64,6 +67,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
         this.ucItemRef.Visible = false;
+        this.ucItemQuote.Visible = false;
         this.ucEdit.InitPageParameter(ItemCode);
         ShowTabKit();
     }
@@ -75,6 +79,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
         this.ucItemRef.Visible = false;
+        this.ucItemQuote.Visible = false;
         this.ucItemKit.InitPageParameter(ItemCode);
     }
 
@@ -85,6 +90,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
         this.ucItemRef.Visible = true;
+        this.ucItemQuote.Visible = false;
         this.ucItemRef.InitPageParameter(ItemCode);
     }
 
@@ -102,6 +108,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKit.Visible = true;
         this.ucItemKitNew.Visible = true;
         this.ucItemKitEdit.Visible = false;
+        this.ucItemQuote.Visible = false;
         this.ucItemKitNew.PageCleanup(ItemCode);
     }
 
@@ -111,6 +118,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKit.Visible = true;
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
+        this.ucItemQuote.Visible = false;
     }
 
     protected void ItemKitNewCreate_Render(object sender, EventArgs e)
@@ -119,6 +127,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKit.Visible = true;
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
+        this.ucItemQuote.Visible = false;
         this.ucItemKit.InitPageParameter(ItemCode);
     }
 
@@ -128,6 +137,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKit.Visible = true;
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = true;
+        this.ucItemQuote.Visible = false;
         this.ucItemKitEdit.InitPageParameter(ItemCode);
         this.ucItemKitEdit.PageCleanup((string)sender);
     }
@@ -138,6 +148,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKit.Visible = true;
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
+        this.ucItemQuote.Visible = false;
         this.ucItemKit.InitPageParameter(ItemCode);
     }
 
@@ -147,6 +158,7 @@ public partial class MasterData_Item_EditMain : MainModuleBase
         this.ucItemKit.Visible = true;
         this.ucItemKitNew.Visible = false;
         this.ucItemKitEdit.Visible = false;
+        this.ucItemQuote.Visible = false;
         this.ucItemKit.InitPageParameter(ItemCode);
     }
 
@@ -163,5 +175,26 @@ public partial class MasterData_Item_EditMain : MainModuleBase
             this.ucTabNavigator.ShowTabKit(false);
             //this.ucTabNavigator.Visible = false;
         }
+    }
+
+    protected void TabItemQuoteClick_Render(object sender, EventArgs e)
+    {
+        this.ucEdit.Visible = false;
+        this.ucItemKit.Visible = false;
+        this.ucItemKitNew.Visible = false;
+        this.ucItemKitEdit.Visible = false;
+        this.ucItemQuote.Visible = true;
+        this.ucItemRef.Visible = false;
+        this.ucItemQuote.InitPageParameter(ItemCode);
+    }
+
+     protected void ItemQuoteBack_Render(object sender, EventArgs e)
+    {
+        //this.ucEdit.Visible = true;
+        //this.ucItemKit.Visible = false;
+        //this.ucItemKitNew.Visible = false;
+        //this.ucItemKitEdit.Visible = false;
+        //this.ucItemQuote.Visible = false;
+        //this.ucItemRef.Visible = false;
     }
 }

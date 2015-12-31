@@ -31,6 +31,7 @@ using com.Sconit.Service.Ext.Customize;
 using com.Sconit.Service.Ext.MRP;
 using com.Sconit.Service.Ext;
 using com.Sconit.Service;
+using com.Sconit.Service.Ext.Quote;
 
 /// <summary>
 /// Summary description for ControlBase
@@ -340,6 +341,9 @@ namespace com.Sconit.Web
 
         protected IOrderProductionPlanMgrE TheOrderProductionPlanMgr { get { return ServiceLocator.GetService<IOrderProductionPlanMgrE>("OrderProductionPlanMgr.service"); } }
 
+        #region Quote
+        protected IToolingMgrE TheToolingMgr { get { return GetService<IToolingMgrE>("ToolingMgr.service"); } }
+        #endregion
         #endregion
     }
 }

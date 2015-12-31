@@ -15,6 +15,7 @@ using com.Sconit.Service.Ext.View;
 using com.Sconit.Service.Ext.Cost;
 using com.Sconit.Utility;
 using System.Text;
+using com.Sconit.Service.Ext.Quote;
 
 
 /// <summary>
@@ -272,6 +273,7 @@ namespace com.Sconit.Web
         protected ICostElementMgrE TheCostElementMgr { get { return ServiceLocator.GetService<ICostElementMgrE>("CostElementMgr.service"); } }
         protected IStandardCostMgrE TheStandardCostMgr { get { return ServiceLocator.GetService<IStandardCostMgrE>("StandardCostMgr.service"); } }
         protected IFinanceCalendarMgrE TheFinanceCalendarMgr { get { return ServiceLocator.GetService<IFinanceCalendarMgrE>("FinanceCalendarMgr.service"); } }
+        protected IToolingMgrE TheToolingMgr { get { return GetService<IToolingMgrE>("ToolingMgr.service"); } }
         #endregion
     }
 }

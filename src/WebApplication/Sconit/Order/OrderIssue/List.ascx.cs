@@ -67,19 +67,20 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             .Add(Expression.Eq("Status", BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS))
             .Add(Expression.Eq("SubType", this.ModuleSubType))
             .AddOrder(Order.Asc("WindowTime"));
-        IList<OrderHead> orderList = new List<OrderHead>();
+        IList<OrderHead> orderList = new List<OrderHead>(); IList<OrderDetail> orderDetailList = new List<OrderDetail>();
         IList<OrderHead> orderHeadList = TheCriteriaMgr.FindAll<OrderHead>(selectCriteria);
         foreach (OrderHead orderHead in orderHeadList)
         {
-            IList<OrderDetail> orderDetailList = orderHead.OrderDetails;
+            //IList<OrderDetail> orderDetailList = orderHead.OrderDetails;
             if (orderHead.OrderDetails.Count > 0)
             {
                 foreach (OrderDetail orderDetail in orderHead.OrderDetails)
                 {
                     if (orderDetail.RemainShippedQty > 0)
                     {
-                        orderList.Add(orderHead);
-                        break;
+                        orderDetailList.Add(orderDetail);
+                        //orderList.Add(orderHead);
+                        //break;
                     }
                 }
             }
@@ -92,8 +93,9 @@ public partial class Distribution_OrderIssue_List : ModuleBase
 
 
         }
-        this.GV_List.DataSource = orderList;
+        this.GV_List.DataSource = orderDetailList;
         this.GV_List.DataBind();
+        LoadCK();
     }
 
     //add by ljz start
@@ -101,7 +103,7 @@ public partial class Distribution_OrderIssue_List : ModuleBase
     {
         DetachedCriteria selectCriteria = DetachedCriteria.For(typeof(OrderDetail));
         selectCriteria.Add(Expression.Eq("Item.Code", ItemCode));
-        IList<OrderHead> orderList = new List<OrderHead>();
+        IList<OrderHead> orderList = new List<OrderHead>();IList<OrderDetail> orderDetailList = new List<OrderDetail>();
         IList<OrderDetail> orderHeadList = TheCriteriaMgr.FindAll<OrderDetail>(selectCriteria);
 
         this.ModuleSubType = orderSubType;
@@ -116,15 +118,16 @@ public partial class Distribution_OrderIssue_List : ModuleBase
 
             foreach (OrderHead orderHead in orderHeadListOrderHead)
             {
-                IList<OrderDetail> orderDetailList = orderHead.OrderDetails;
+                //IList<OrderDetail> orderDetailList = orderHead.OrderDetails;
                 if (orderHead.OrderDetails.Count > 0)
                 {
                     foreach (OrderDetail orderDetail in orderHead.OrderDetails)
                     {
                         if (orderDetail.RemainShippedQty > 0)
                         {
-                            orderList.Add(orderHead);
-                            break;
+                            orderDetailList.Add(orderDetail);
+                            //orderList.Add(orderHead);
+                            //break;
                         }
                     }
                 }
@@ -135,10 +138,25 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             this.OrderType = orderList[0].Type;
             this.InitialUI();
         }
-        this.GV_List.DataSource = orderList;
+        this.GV_List.DataSource = orderDetailList;
         this.GV_List.DataBind();
+        LoadCK();
     }
     //add by ljz end
+
+    private void LoadCK()
+    {
+        foreach(List<string> item in ItemList)
+        {
+            foreach(GridViewRow row in GV_List.Rows)
+            {
+                if (((Literal)row.FindControl("ltlItem")).Text == item[1] && ((Literal)row.FindControl("ltlOrderNo")).Text == item[0])
+                {
+                    ((CheckBox)row.FindControl("CheckBoxGroup")).Checked = true;
+                }
+            }
+        }
+    }
 
     protected void btnEditShipQty_Click(object sender, EventArgs e)
     {
@@ -150,7 +168,7 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             //modify by ljz end
             if (orderNoListNew.Count > 0)
             {
-                EditEvent(new Object[] { orderNoListNew }, e);
+                EditEvent(new Object[] { orderNoListNew,ItemList }, e);
             }
             else
             {
@@ -159,6 +177,9 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         }
         orderNoList = null;
         orderNoList = new List<string>();
+        //ljz
+        ItemList = null;
+        ItemList = new List<List<string>>();
     }
 
     protected void btnCreatePickList_Click(object sender, EventArgs e)
@@ -179,19 +200,19 @@ public partial class Distribution_OrderIssue_List : ModuleBase
 
     protected void GV_List_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            OrderHead orderHead = (OrderHead)e.Row.DataItem;
+        //if (e.Row.RowType == DataControlRowType.DataRow)
+        //{
+        //    OrderHead orderHead = (OrderHead)e.Row.DataItem;
 
-            Label lblWinTime = (Label)e.Row.FindControl("lblWinTime");
-            if (orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE
-               || orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT
-               || orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS)
-            {
-                lblWinTime.ForeColor = OrderHelper.GetWinTimeColor(orderHead.StartTime, orderHead.WindowTime);
-            }
+        //    Label lblWinTime = (Label)e.Row.FindControl("lblWinTime");
+        //    if (orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE
+        //       || orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT
+        //       || orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS)
+        //    {
+        //        lblWinTime.ForeColor = OrderHelper.GetWinTimeColor(orderHead.StartTime, orderHead.WindowTime);
+        //    }
 
-        }
+        //}
     }
 
     private List<string> CollectOrderNoList()
@@ -222,6 +243,7 @@ public partial class Distribution_OrderIssue_List : ModuleBase
     }
 
     static List<string> orderNoList = new List<string>();
+    static List<List<string>> ItemList = new List<List<string>>();//ljz
     protected void CheckBoxGroup_CheckedChanged(Object sender, EventArgs e)
     {
         CheckBox chk = (CheckBox)sender;
@@ -229,17 +251,24 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         DataControlFieldCell dcf = (DataControlFieldCell)chk.Parent;    //这个对象的父类为cell  
         GridViewRow gr = (GridViewRow)dcf.Parent;                       //cell对象的父类为row
         string orderNo = ((Literal)gr.FindControl("ltlOrderNo")).Text;
+        string item = ((Literal)gr.FindControl("ltlItem")).Text;//ljz
 
+        List<string> olit = new List<string>();
+        List<string> it = new List<string>();
+        olit.Add(orderNo);
+        olit.Add(item);
         if (chk.Checked)
         {
             if (!orderNoList.Contains(orderNo))
             {
                 orderNoList.Add(orderNo);
             }
+            ItemList.Add(olit);//ljz
         }
         else
         {
             orderNoList.Remove(orderNo);
+            ItemList.Remove(olit);//ljz
         }
     }
     protected void CheckAll_CheckedChanged(Object sender, EventArgs e)

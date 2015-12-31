@@ -32,35 +32,48 @@
                 <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.OrderNo.Distribution}"
                     SortExpression="OrderNo">
                     <ItemTemplate>
-                        <asp:Literal ID="ltlOrderNo" runat="server" Text='<%# Eval("OrderNo")%>' />
+                        <%--<asp:Literal ID="ltlOrderNo" runat="server" Text='<%# Eval("OrderNo")%>' />--%>
+                        <asp:Literal ID="ltlOrderNo" runat="server" Text='<%# Eval("OrderHead.OrderNo")%>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.PartyFrom.Supplier}"
-                    SortExpression="PartyFrom.Name">
+                <asp:TemplateField HeaderText="<%$Resources:Language,MasterDataSequence%>">
                     <ItemTemplate>
-                        <%# DataBinder.Eval(Container.DataItem, "PartyFrom.Name")%>
+                        <asp:Literal ID="ltlSequence" runat="server" Text='<%# Eval("Sequence")%>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.PartyTo.Customer}" SortExpression="PartyTo.Name">
+                <asp:TemplateField HeaderText="<%$Resources:Language,MasterDataItemCode%>"
+                    SortExpression="Item.Code">
                     <ItemTemplate>
-                        <%# DataBinder.Eval(Container.DataItem, "PartyTo.Name")%>
+                        <%--<%# DataBinder.Eval(Container.DataItem, "PartyFrom.Name")%>--%>
+                        <asp:Literal ID="ltlItem" runat="server" Text='<%# Eval("Item.Code")%>'></asp:Literal>
+                        <%--<%# DataBinder.Eval(Container.DataItem, "Item.Code")%>--%>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="<%$Resources:Language,MasterDataItemDesc%>" SortExpression="Item.Description">
+                    <ItemTemplate>
+                       <%-- <%# DataBinder.Eval(Container.DataItem, "PartyTo.Name")%>--%>
+                        <%# DataBinder.Eval(Container.DataItem, "Item.Description")%>
                     </ItemTemplate>
                 </asp:TemplateField> 
-                <asp:BoundField DataField="StartTime" HeaderText="${MasterData.Order.OrderHead.StartTime}"
-                    SortExpression="StartTime" />
-                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.WindowTime}" SortExpression="WindowTime">
+                <%--<asp:BoundField DataField="StartTime" HeaderText="${MasterData.Order.OrderHead.StartTime}"
+                    SortExpression="StartTime" />--%>
+                <asp:BoundField DataField="ReferenceItemCode" HeaderText="<%$Resources:Language,MasterDataReferenceItemCode%>" />
+                <asp:TemplateField HeaderText="<%$Resources:Language,MasterDataUom%>" SortExpression="Uom.Code">
                     <ItemTemplate>
-                        <asp:Label ID="lblWinTime" Text='<%# Bind("WindowTime") %>' runat="server" />
+                        <%--<asp:Label ID="lblWinTime" Text='<%# Bind("WindowTime") %>' runat="server" />--%>
+                        <%# DataBinder.Eval(Container.DataItem, "Uom.Code")%>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.Priority}">
+                <asp:TemplateField HeaderText="<%$Resources:Language,MasterDataUnitCount%>">
                     <ItemTemplate>
-                        <cc1:CodeMstrLabel ID="lblPriority" runat="server" Code="OrderPriority" Value='<%# Bind("Priority") %>' />
+                        <%--<cc1:CodeMstrLabel ID="lblPriority" runat="server" Code="OrderPriority" Value='<%# Bind("Priority") %>' />--%>
+                        <asp:Label ID="lblUnitCount" runat="server" Text='<%# Bind("UnitCount","{0:0.########}") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.CreateUser}" SortExpression="CreateUser.Name">
+                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.CreateUser}" SortExpression="OrderHead.CreateUser.CodeName">
                     <ItemTemplate>
-                        <%# DataBinder.Eval(Container.DataItem, "CreateUser.Name")%>
+                        <%--<%# DataBinder.Eval(Container.DataItem, "CreateUser.Name")%>--%>
+                        <%# DataBinder.Eval(Container.DataItem, "OrderHead.CreateUser.CodeName")%>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

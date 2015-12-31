@@ -46,12 +46,12 @@ public partial class Order_OrderIssue_ShipItemList : BusinessModuleBase
         }
     }
 
-    public void InitPageParameter(List<string> orderNoList)
+    public void InitPageParameter(List<string> orderNoList, List<List<string>> itemList)
     {
-        this.InitPageParameter(orderNoList, false);
+        this.InitPageParameter(orderNoList,itemList, false);
         this.orderNoList = orderNoList;
     }
-    public void InitPageParameter(List<string> orderNoList, bool createPickList)
+    public void InitPageParameter(List<string> orderNoList, List<List<string>> itemList, bool createPickList)
     {
         this.orderNoList = orderNoList;
         try
@@ -76,6 +76,20 @@ public partial class Order_OrderIssue_ShipItemList : BusinessModuleBase
                     t.CurrentQty = 0;
                 }
             }
+            //ljz s
+            List<Transformer> tfList = new List<Transformer>();
+            foreach(List<string> item in itemList)
+            {
+                foreach (Transformer t in this.CacheResolver.Transformers)
+                {
+                    if (item[1] == t.ItemCode && t.OrderNo == item[0])
+                    {
+                        tfList.Add(t);
+                    }
+                }
+            }
+            this.CacheResolver.Transformers = tfList;
+            //ljz e
             this.ucTransformer.InitPageParameter(this.CacheResolver);
 
             if (BindInfoEvent != null)

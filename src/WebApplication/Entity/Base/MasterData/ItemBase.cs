@@ -249,6 +249,8 @@ namespace com.Sconit.Entity.MasterData
         }
         public string DefaultFlow { get; set; }
         public string DefaultSupplier { get; set; }
+
+        public ItemPack ItemPack { get; set; }
         #endregion
 
         #region O/R Mapping Retention Properties

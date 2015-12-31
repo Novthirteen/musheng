@@ -498,5 +498,23 @@ namespace com.Sconit.Entity.Quote
             get;
             set;
         }
+
+        public string Source_
+        {
+            get;
+            set;
+        }
+
+        public string Remark1
+        {
+            get;
+            set;
+        }
+
+        public string Remark2
+        {
+            get;
+            set;
+        }
     }
 }

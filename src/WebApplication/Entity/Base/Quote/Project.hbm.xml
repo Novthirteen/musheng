@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
   <class name="com.Sconit.Entity.Quote.Project, com.Sconit.Entity" table="Quote_Project" lazy="false">
-    <id name="Id" column="Id" type="int" unsaved-value="0">
-      <generator class="identity" />
+    <id name="Id" column="Id" type="int" unsaved-value="0" >
+      <generator class="identity"/>
     </id>
     <property name="ProjectId" column="ProjectId" type="string"  />
     <property name="Status" column="Status" type="string"  />
@@ -44,5 +44,6 @@
     <property name="Data" column="Data" type="string"  />
     <property name="ToCustomerName" column="ToCustomerName" type="string"  />
     <property name="ToCustomerDate" column="ToCustomerDate" type="DateTime"  />
+    <property name="PVision" column="PVision" type="string" />
   </class>
 </hibernate-mapping>

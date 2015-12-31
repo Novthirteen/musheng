@@ -335,6 +335,12 @@ namespace com.Sconit.Entity.Quote
         {
             get;
             set;
-        }        
+        }
+
+        public string PVision
+        {
+            get;
+            set;
+        }
     }
 }

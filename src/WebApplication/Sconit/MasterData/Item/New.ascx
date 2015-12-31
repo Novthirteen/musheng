@@ -342,7 +342,19 @@
                             <asp:CheckBox ID="cbIsRunMrp" runat="server" Checked='<%# Bind("IsRunMrp") %>' />
                         </td>
                     </tr>
-                   
+                   <tr>
+                        <td class="td01">
+                            <asp:Literal ID="ltlItemPack" runat="server" Text="${Menu.MasterData.ItemPack}:"></asp:Literal>
+                        </td>
+                        <td class="td02">
+                            <uc3:textbox ID="txtItemPack" runat="server" Visible="true" Width="250" MustMatch="false"
+                                DescField="Descr" ValueField="Spec" ServicePath="OrderProductionPlanMgr.service" ServiceMethod="GetItemPack" />
+                        </td>
+                        <td class="td01">
+                        </td>
+                        <td class="td02">
+                        </td>
+                    </tr>
                     <tr>
                         <td class="td01">
                         </td>

@@ -38,6 +38,10 @@ public partial class Item_FLowItem_Main : MainModuleBase
 
                 criteria.Add(Expression.Eq("Item.Code", this.tbItemCode.Text.Trim()));
                 criteria.Add(Expression.Eq("f.IsActive", true));
+                //add by ljz start
+                criteria.Add(Expression.Not(Expression.Eq("MRPWeight", 0)));
+                criteria.Add(Expression.Lt("EndDate", DateTime.Now));
+                //add by ljz end
 
                 #region partyFrom
                 SecurityHelper.SetPartySearchCriteria(criteria, "fpf.Code", this.CurrentUser.Code);             

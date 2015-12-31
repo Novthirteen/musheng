@@ -18,6 +18,8 @@ public partial class MasterData_Item_TabNavigator : System.Web.UI.UserControl
     public event EventHandler lbItemKitClickEvent;
     public event EventHandler lbItemRefClickEvent;
 
+    public event EventHandler lbItemQuoteClickEvent;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         
@@ -33,6 +35,7 @@ public partial class MasterData_Item_TabNavigator : System.Web.UI.UserControl
         this.tab_Item.Attributes["class"] = "ajax__tab_active";
         this.tab_ItemKit.Attributes["class"] = "ajax__tab_inactive";
         this.tab_ItemRef.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_ItemQuote.Attributes["class"] = "ajax__tab_inactive";
     }
 
     protected void lbItemKit_Click(object sender, EventArgs e)
@@ -44,6 +47,7 @@ public partial class MasterData_Item_TabNavigator : System.Web.UI.UserControl
             this.tab_Item.Attributes["class"] = "ajax__tab_inactive";
             this.tab_ItemKit.Attributes["class"] = "ajax__tab_active";
             this.tab_ItemRef.Attributes["class"] = "ajax__tab_inactive";
+            this.tab_ItemQuote.Attributes["class"] = "ajax__tab_inactive";
         }
     }
 
@@ -56,6 +60,7 @@ public partial class MasterData_Item_TabNavigator : System.Web.UI.UserControl
             this.tab_Item.Attributes["class"] = "ajax__tab_inactive";
             this.tab_ItemKit.Attributes["class"] = "ajax__tab_inactive";
             this.tab_ItemRef.Attributes["class"] = "ajax__tab_active";
+            this.tab_ItemQuote.Attributes["class"] = "ajax__tab_inactive";
         }
     }
 
@@ -67,6 +72,16 @@ public partial class MasterData_Item_TabNavigator : System.Web.UI.UserControl
     public void UpdateView()
     {
         lbItem_Click(this, null);
+    }
+
+    protected void lbItemQuote_Click(object sender, EventArgs e)
+    {
+        lbItemQuoteClickEvent(this, e);
+
+        this.tab_Item.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_ItemKit.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_ItemRef.Attributes["class"] = "ajax__tab_inactive";
+        this.tab_ItemQuote.Attributes["class"] = "ajax__tab_active";
     }
 
 }

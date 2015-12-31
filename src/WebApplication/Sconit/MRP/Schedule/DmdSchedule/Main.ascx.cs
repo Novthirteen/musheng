@@ -215,30 +215,30 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
         this.DoSearch((Button)sender);
 
         //OrderDataBind();
-        #region
-        seq = 1;
-        DataControlFieldCollection dcfc = GV_List.Columns;
-        for (int i = 6; i < dcfc.Count; i++)
-        {
-            DataControlField dcf = dcfc[i];
-            //if (dcf.SortExpression == e.SortExpression)
-            //{
-                ColumnNum = i - 6;
-                this.hfLastScheduleTime.Value = dcf.FooterText;
-                this.ScheduleDate = DateTime.Parse(dcf.HeaderText);
+        #region ///
+        //seq = 1;
+        //DataControlFieldCollection dcfc = GV_List.Columns;
+        //for (int i = 6; i < dcfc.Count; i++)
+        //{
+        //    DataControlField dcf = dcfc[i];
+        //    //if (dcf.SortExpression == e.SortExpression)
+        //    //{
+        //        ColumnNum = i - 6;
+        //        this.hfLastScheduleTime.Value = dcf.FooterText;
+        //        this.ScheduleDate = DateTime.Parse(dcf.HeaderText);
 
-                OrderDataBind();
+        //        OrderDataBind();
 
-                if (isFlow)
-                {
-                    this.tbFlow.Text = this.flowOrLoc;
-                    Flow flow = TheFlowMgr.LoadFlow(tbFlow.Text.Trim(), false, false);
-                    SetOrderHead(flow);
-                }
-                //this.ucShift.Date = DateTime.Today;
-                break;
-            //}
-        }
+        //        if (isFlow)
+        //        {
+        //            this.tbFlow.Text = this.flowOrLoc;
+        //            Flow flow = TheFlowMgr.LoadFlow(tbFlow.Text.Trim(), false, false);
+        //            SetOrderHead(flow);
+        //        }
+        //        //this.ucShift.Date = DateTime.Today;
+        //        break;
+        //    //}
+        //}
         #endregion
     }
 
@@ -330,6 +330,7 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
     {
         try
         {
+            //OrderDataBind();
             if (this.tbFlow.Text == string.Empty)
             {
                 ShowErrorMessage("MRP.Schedule.Import.CustomerSchedule.Result.SelectFlow");
@@ -615,8 +616,8 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
             {
                 for (int i = 6; i < columnCount; i++)
                 {
-                    //string headerText = this.GV_List.Columns[i].SortExpression;
-                    string headerText = this.GV_List.Columns[i].HeaderText;
+                    string headerText = this.GV_List.Columns[i].SortExpression;
+                    //string headerText = this.GV_List.Columns[i].HeaderText;
                     string lastHeaderText = this.GV_List.Columns[i].FooterText;
                     DateTime headerTextTime = DateTime.Parse(headerText);
                     DateTime? lastHeaderTextTime = null;
@@ -811,10 +812,10 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
 
         this.GV_Order.DataSource = scheduleView.ScheduleBodys;
         this.GV_Order.DataBind();
-        //this.fld_Search.Visible = false;
+        this.fld_Search.Visible = false;
         this.div_OrderDetail.Visible = true;
-        //this.div_MRP_Detail.Visible = false;
-        //this.fld_Group.Visible = false;
+        this.div_MRP_Detail.Visible = false;
+        this.fld_Group.Visible = false;
     }
 
     protected void CustomersGridView_Sorted(Object sender, EventArgs e)
@@ -998,7 +999,7 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
                             {
                                 bfColumn.HeaderText = isWinTime ? scheduleHead.DateTo.ToString("yyyy-MM") : scheduleHead.DateFrom.ToString("yyyy-MM");
                             }
-                            //bfColumn.SortExpression = isWinTime ? scheduleHead.DateTo.ToString("yyyy-MM-dd") : scheduleHead.DateFrom.ToString("yyyy-MM-dd");
+                            bfColumn.SortExpression = isWinTime ? scheduleHead.DateTo.ToString("yyyy-MM-dd") : scheduleHead.DateFrom.ToString("yyyy-MM-dd");
                             bfColumn.FooterText = isWinTime ? (scheduleHead.LastDateTo.HasValue ? scheduleHead.LastDateTo.Value.ToString("yyyy-MM-dd") : string.Empty) : (scheduleHead.LastDateFrom.HasValue ? scheduleHead.LastDateFrom.Value.ToString("yyyy-MM-dd") : string.Empty);
                             this.GV_List.Columns.Add(bfColumn);
                             break;

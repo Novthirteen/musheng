@@ -42,6 +42,11 @@ public partial class MasterData_Customer_EditMain : System.Web.UI.UserControl
         this.ucTabNavigator.lblCustomerClickEvent += new System.EventHandler(this.TabCustomerClick_Render);
         this.ucTabNavigator.lblBillAddressClickEvent += new System.EventHandler(this.TabBillAddressClick_Render);
         this.ucTabNavigator.lblShipAddressClickEvent += new System.EventHandler(this.TabShipAddressClick_Render);
+        this.ucTabNavigator.lblQuoteFeeClickEvent += new System.EventHandler(this.TabQuoteFeeClick_Render);
+        this.ucQuoteFee.EditEvent += new System.EventHandler(this.QuoteFeeEdit_Render);
+        this.ucEditQuoteFee.BackEvent += new System.EventHandler(this.QuoteFeeBack_Render);
+        this.ucNewQuoteFee.BackEvent += new System.EventHandler(this.NewQuoteFeeBack_Render);
+        this.ucQuoteFee.NewEvent += new System.EventHandler(this.New_Render);
     }
 
     public void InitPageParameter(string code)
@@ -63,29 +68,87 @@ public partial class MasterData_Customer_EditMain : System.Web.UI.UserControl
 
     protected void TabCustomerClick_Render(object sender, EventArgs e)
     {
+        this.ucQuoteFee.Visible = false;
+
         this.ucEdit.Visible = true;
         this.ucBillAddress.Visible = false;
         this.ucShipAddress.Visible = false;
+        this.ucNewQuoteFee.Visible = false;
+        this.ucEditQuoteFee.Visible = false;
     }
 
 
     protected void TabBillAddressClick_Render(object sender, EventArgs e)
     {
+        this.ucQuoteFee.Visible = false;
+
         this.ucEdit.Visible = false;
         this.ucBillAddress.Visible = true;
         this.ucShipAddress.Visible = false;
         this.ucBillAddress.PartyCode = this.CustomerCode;
         this.ucBillAddress.AddrType = BusinessConstants.PARTY_ADDRESS_TYPE_BILL_ADDRESS;
         this.ucBillAddress.InitPageParameter();
+        this.ucNewQuoteFee.Visible = false;
+        this.ucEditQuoteFee.Visible = false;
     }
 
     protected void TabShipAddressClick_Render(object sender, EventArgs e)
     {
+        this.ucQuoteFee.Visible = false;
+
         this.ucEdit.Visible = false;
         this.ucBillAddress.Visible = false;
         this.ucShipAddress.Visible = true;
         this.ucShipAddress.PartyCode = this.CustomerCode;
         this.ucShipAddress.AddrType = BusinessConstants.PARTY_ADDRESS_TYPE_SHIP_ADDRESS;
         this.ucShipAddress.InitPageParameter();
+        this.ucNewQuoteFee.Visible = false;
+        this.ucEditQuoteFee.Visible = false;
+    }
+
+    protected void TabQuoteFeeClick_Render(object sender,EventArgs e)
+    {
+        this.ucQuoteFee.Visible = true;
+        this.ucEdit.Visible = false;
+        this.ucBillAddress.Visible = false;
+        this.ucShipAddress.Visible = false;
+        this.ucQuoteFee.CustomerCode = this.CustomerCode;
+        this.ucQuoteFee.InitPageParameter();
+        this.ucNewQuoteFee.Visible = false;
+        this.ucEditQuoteFee.Visible = false;
+
+    }
+
+    protected void QuoteFeeEdit_Render(object sender,EventArgs e)
+    {
+        this.ucQuoteFee.Visible = false;
+        this.ucEditQuoteFee.Visible = true;
+        this.ucEditQuoteFee.InitPageParameter((string)sender);
+        this.ucEditQuoteFee.QcCode = CustomerCode;
+        this.ucNewQuoteFee.Visible = false;
+    }
+
+    protected void QuoteFeeBack_Render(object sender,EventArgs e)
+    {
+        this.ucQuoteFee.Visible = true;
+        this.ucEditQuoteFee.Visible = false;
+        this.ucNewQuoteFee.Visible = false;
+        this.ucEditQuoteFee.CleanControl();
+    }
+
+    protected void NewQuoteFeeBack_Render(object sender,EventArgs e)
+    {
+        this.ucQuoteFee.Visible = true;
+        this.ucEditQuoteFee.Visible = false;
+        this.ucNewQuoteFee.Visible = false;
+    }
+
+    protected void New_Render(object sender,EventArgs e)
+    {
+        this.ucQuoteFee.Visible = false;
+        this.ucEditQuoteFee.Visible = false;
+        this.ucNewQuoteFee.Visible = true;
+        this.ucNewQuoteFee.QcCode = CustomerCode;
+        this.ucNewQuoteFee.InitPageParameter(CustomerCode);
     }
 }

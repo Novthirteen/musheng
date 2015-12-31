@@ -11,6 +11,7 @@ using com.Sconit.Web;
 using com.Sconit.Entity;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using com.Sconit.Entity.Quote;
 /// <summary>
 /// Summary description for ItemManagerWS
 /// </summary>
@@ -19,13 +20,49 @@ using System.Web.Script.Serialization;
 // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
 [System.Web.Script.Services.ScriptService]
 public class ItemMgrWS : BaseWS
-{  
+{
+    public IEntityPreferenceMgrE entityPreferenceMgrE { get; set; }
+    public IPriceListMgrE priceListMgrE { get; set; }
+
     public ItemMgrWS()
     {
 
         //Uncomment the following line if using designed components 
         //InitializeComponent(); 
     }
+    [WebMethod]
+    public Item GetParaByCode(string itemcode)
+    {
+        Item item = this.TheItemMgr.LoadItem(itemcode);
+        item.Desc2 = null;
+        IList<EntityPreference> entityPreferences = TheEntityPreferenceMgr.GetAllEntityPreference();
+        string priceCode = string.Empty;
+        if (entityPreferences != null && entityPreferences.Count > 0)
+        {
+            foreach (EntityPreference ep in entityPreferences)
+            {
+                if (ep.Code == "QuotePrice")
+                {
+                    priceCode = ep.Value;
+                    break;
+                }
+            }
+        }
+        PriceList priceList = ThePriceListMgr.LoadPriceList(priceCode, true);
+        foreach (PriceListDetail pd in priceList.PriceListDetails)
+        {
+            if(pd.Item.Code == itemcode)
+            {
+                if ((pd.StartDate == null ? DateTime.MinValue : pd.StartDate) <= DateTime.Now && (pd.EndDate == null ? DateTime.MaxValue : pd.EndDate) >= DateTime.Now)
+                {
+                    item.Desc2 = pd.UnitPrice.ToString();
+                }
+            }
+        }
+
+        return item;
+    }
+
     [WebMethod]
     public Item GenerateItemProxy(string itemCode)
     {
