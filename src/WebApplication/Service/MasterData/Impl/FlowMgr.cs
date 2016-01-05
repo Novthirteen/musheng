@@ -980,8 +980,13 @@ namespace com.Sconit.Service.MasterData.Impl
             return flow;
         }
 
-        public IList<string> GetFlowItem(string flowCode)
+        public IList<string> GetFlowItem(string flowCode, DateTime? effDate)
         {
+            if (!effDate.HasValue)
+            {
+                effDate = DateTime.Now;
+            }
+
             DetachedCriteria criteria = DetachedCriteria.For<Flow>();
             criteria.Add(Expression.Eq("Code", flowCode));
 
@@ -996,22 +1001,21 @@ namespace com.Sconit.Service.MasterData.Impl
                 return flowItem.ToList();
             }
 
-            DateTime dateTimeNow = DateTime.Now;
             criteria = DetachedCriteria.For<FlowDetail>();
             
             if (referenceFlows != null && referenceFlows.Count() > 0)
             {
                 criteria.Add(Expression.Or(Expression.Eq("Flow.Code", flowCode), Expression.Eq("Flow.Code", referenceFlows[0][0])));
-                criteria.Add(Expression.Or(Expression.Le("StartDate", dateTimeNow), Expression.IsNull("StartDate")));
-                criteria.Add(Expression.Or(Expression.Ge("EndDate", dateTimeNow), Expression.IsNull("EndDate")));
+                criteria.Add(Expression.Or(Expression.Le("StartDate", effDate), Expression.IsNull("StartDate")));
+                criteria.Add(Expression.Or(Expression.Ge("EndDate", effDate), Expression.IsNull("EndDate")));
                 criteria.SetProjection(Projections.ProjectionList().Add(
                     Projections.Distinct(Projections.GroupProperty("Item.Code"))));
             }
             else
             {
                 criteria.Add(Expression.Eq("Flow.Code", flowCode));
-                criteria.Add(Expression.Or(Expression.Le("StartDate", dateTimeNow), Expression.IsNull("StartDate")));
-                criteria.Add(Expression.Or(Expression.Ge("EndDate", dateTimeNow), Expression.IsNull("EndDate")));
+                criteria.Add(Expression.Or(Expression.Le("StartDate", effDate), Expression.IsNull("StartDate")));
+                criteria.Add(Expression.Or(Expression.Ge("EndDate", effDate), Expression.IsNull("EndDate")));
                 criteria.SetProjection(Projections.ProjectionList().Add(
                     Projections.Distinct(Projections.GroupProperty("Item.Code"))));
             }

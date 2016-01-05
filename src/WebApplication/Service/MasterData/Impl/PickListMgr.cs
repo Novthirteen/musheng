@@ -119,7 +119,7 @@ namespace com.Sconit.Service.MasterData.Impl
 
             if (orderLocationTransactionList != null && orderLocationTransactionList.Count > 0)
             {
-                var flowItem = flowMgrE.GetFlowItem(orderLocationTransactionList[0].OrderDetail.OrderHead.Flow);
+                var flowItem = flowMgrE.GetFlowItem(orderLocationTransactionList[0].OrderDetail.OrderHead.Flow, null);
 
                 foreach (OrderLocationTransaction orderLocationTransaction in orderLocationTransactionList)
                 {

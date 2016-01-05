@@ -81,7 +81,7 @@ namespace com.Sconit.Service.MasterData
 
         IList<Flow> GetFlowListForMushengRequireCustOnly(string userCode);
 
-        IList<string> GetFlowItem(string flowCode);
+        IList<string> GetFlowItem(string flowCode, DateTime? effDate);
 
         #endregion Customized Methods
     }

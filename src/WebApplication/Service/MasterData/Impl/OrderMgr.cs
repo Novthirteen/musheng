@@ -525,7 +525,7 @@ namespace com.Sconit.Service.MasterData.Impl
             IList<string> flowDetailItemList = new List<string>();
             if (orderHead.Flow != null && orderHead.Flow.Trim() != string.Empty)
             {
-                flowDetailItemList = this.flowMgrE.GetFlowItem(orderHead.Flow);
+                flowDetailItemList = this.flowMgrE.GetFlowItem(orderHead.Flow, orderHead.WindowTime);
             }
             #endregion
 
@@ -2188,7 +2188,7 @@ namespace com.Sconit.Service.MasterData.Impl
 
             InProcessLocation inProcessLocation = new InProcessLocation();
 
-            var flowItem = flowMgrE.GetFlowItem(pickList.Flow);
+            var flowItem = flowMgrE.GetFlowItem(pickList.Flow, null);
 
             foreach (PickListDetail pickListDetail in pickList.PickListDetails)
             {
@@ -2667,7 +2667,7 @@ namespace com.Sconit.Service.MasterData.Impl
             #region 判断全0收货
             if (receipt != null && receipt.ReceiptDetails != null && receipt.ReceiptDetails.Count > 0)
             {
-                var flowItem = flowMgrE.GetFlowItem(receipt.ReceiptDetails.First().OrderLocationTransaction.OrderDetail.OrderHead.Flow);
+                var flowItem = flowMgrE.GetFlowItem(receipt.ReceiptDetails.First().OrderLocationTransaction.OrderDetail.OrderHead.Flow, null);
                 //判断全0收货
                 IList<ReceiptDetail> nonZeroReceiptDetailList = new List<ReceiptDetail>();
                 foreach (ReceiptDetail receiptDetail in receipt.ReceiptDetails)
@@ -4110,7 +4110,7 @@ namespace com.Sconit.Service.MasterData.Impl
             #region 判断是否全0发货
             if (inProcessLocation.InProcessLocationDetails != null && inProcessLocation.InProcessLocationDetails.Count > 0)
             {
-                var flowItem = flowMgrE.GetFlowItem(inProcessLocation.InProcessLocationDetails.First().OrderLocationTransaction.OrderDetail.OrderHead.Flow);
+                var flowItem = flowMgrE.GetFlowItem(inProcessLocation.InProcessLocationDetails.First().OrderLocationTransaction.OrderDetail.OrderHead.Flow, null);
                 //判断全0发货
                 foreach (InProcessLocationDetail inProcessLocationDetail in inProcessLocation.InProcessLocationDetails)
                 {
