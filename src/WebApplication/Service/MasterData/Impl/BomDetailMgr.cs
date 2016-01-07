@@ -422,7 +422,14 @@ namespace com.Sconit.Service.MasterData.Impl
             criteria.Add(Expression.Eq("Item.Code", compCode));
             criteria.Add(Expression.Eq("Operation", Operation));
             //criteria.Add(Expression.Eq("Reference", Reference));
-            criteria.Add(Expression.Or(Expression.IsNull("Reference"), Expression.Eq("Reference", Reference)));
+            if (string.IsNullOrEmpty(Reference))
+            {
+                criteria.Add(Expression.Or(Expression.IsNull("Reference"), Expression.Eq("Reference", "")));
+            }
+            else
+            {
+                criteria.Add(Expression.Eq("Reference", Reference));
+            }
             criteria.Add(Expression.Ge("StartDate", startTime));
 
             IList<BomDetail> bomDetails = criterialMgrE.FindAll<BomDetail>(criteria);
@@ -484,10 +491,11 @@ namespace com.Sconit.Service.MasterData.Impl
             int col9 = 9;//用量	
             int col10 = 10;//废品率	
             int col11 = 11;//回冲方式	
-            int col12 = 12;//发货扫描条码
-            int col13 = 13;//打印
-            int col14 = 14;//库位	
-            int col15 = 15;//优先级
+            int col12 = 12;//位号
+            int col13 = 13;//发货扫描条码
+            int col14 = 14;//打印
+            int col15 = 15;//库位	
+            int col16 = 16;//优先级
 
             #endregion
 
@@ -519,6 +527,7 @@ namespace com.Sconit.Service.MasterData.Impl
 
                 string locationCode = string.Empty;
                 int priority = 0;
+                string positionNo = string.Empty;
 
                 #region 读取父物料
                 try
@@ -565,7 +574,11 @@ namespace com.Sconit.Service.MasterData.Impl
                 try
                 {
                     reference = ImportHelper.GetCellStringValue(row.GetCell(col2));
-                    //if (reference == null) reference = string.Empty;
+
+                    if (string.IsNullOrEmpty(reference))
+                    {
+                        reference = null;
+                    }
                     //throw new BusinessErrorException("MasterData.Bom.Import.Empty.Error.Reference", (row.RowNum + 1).ToString());
                 }
                 catch
@@ -719,10 +732,25 @@ namespace com.Sconit.Service.MasterData.Impl
                 }
                 #endregion
 
+                #region 读取位号
+                try
+                {
+                    positionNo = row.GetCell(col12).StringCellValue;
+                    if (string.IsNullOrEmpty(positionNo))
+                    {
+                        positionNo = null;
+                    }
+                }
+                catch
+                {
+                    throw new BusinessErrorException("MasterData.Bom.Import.Read.Error.PositionNo", (row.RowNum + 1).ToString());
+                }
+                #endregion
+
                 #region 读取发货扫描条码
                 try
                 {
-                    isShipScanHu = bool.Parse(row.GetCell(col12).StringCellValue);
+                    isShipScanHu = bool.Parse(row.GetCell(col13).StringCellValue);
                 }
                 catch
                 {
@@ -733,7 +761,7 @@ namespace com.Sconit.Service.MasterData.Impl
                 #region 读取打印
                 try
                 {
-                    needPrint = bool.Parse(row.GetCell(col13).StringCellValue);
+                    needPrint = bool.Parse(row.GetCell(col14).StringCellValue);
                 }
                 catch
                 {
@@ -744,7 +772,7 @@ namespace com.Sconit.Service.MasterData.Impl
                 #region 读取库位
                 try
                 {
-                    locationCode = ImportHelper.GetCellStringValue(row.GetCell(col14));
+                    locationCode = ImportHelper.GetCellStringValue(row.GetCell(col15));
                     if (locationCode != null && locationCode != string.Empty)
                     {
 
@@ -758,6 +786,10 @@ namespace com.Sconit.Service.MasterData.Impl
                             location = locationList[0];
                         }
                     }
+                    else
+                    {
+                        locationCode = null;
+                    }
                 }
                 catch
                 {
@@ -769,7 +801,7 @@ namespace com.Sconit.Service.MasterData.Impl
                 #region 读取优先级
                 try
                 {
-                    priority = (int)(row.GetCell(col15).NumericCellValue);
+                    priority = (int)(row.GetCell(col16).NumericCellValue);
                 }
                 catch
                 {
@@ -801,6 +833,7 @@ namespace com.Sconit.Service.MasterData.Impl
 
                 bomDetail.BackFlushMethod = backFlushMethod;
                 bomDetail.NeedPrint = needPrint;
+                bomDetail.PositionNo = positionNo;
                 bomDetail.IsShipScanHu = isShipScanHu;
                 bomDetail.Location = location;
                 bomDetail.Priority = priority;
