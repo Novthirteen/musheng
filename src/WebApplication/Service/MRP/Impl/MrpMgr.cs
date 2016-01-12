@@ -96,7 +96,7 @@ namespace com.Sconit.Service.MRP.Impl
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
                     left join ItemMap as im on im.Item = olt.Item
                     where oh.Status in (?, ?) and oh.SubType = ? and not oh.Type = ? and olt.IOType = ?
-                    union
+                    union all
                     select oh.OrderNo, oh.Type, oh.Flow, ISNULL(od.LocTo, oh.LocTo) as Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, od.ShipQty, od.RecQty, olt.UnitQty
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id

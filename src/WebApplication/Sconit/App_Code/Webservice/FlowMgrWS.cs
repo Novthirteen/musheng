@@ -174,7 +174,7 @@ public class FlowMgrWS : BaseWS
     [WebMethod]
     public void GetFlowItem(string flowCode)
     {
-        var a = TheFlowMgr.GetFlowItem(flowCode);
+        var a = TheFlowMgr.GetFlowItem(flowCode, null);
     }
 }
 

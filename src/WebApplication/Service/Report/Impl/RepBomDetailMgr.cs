@@ -76,15 +76,17 @@ namespace com.Sconit.Service.Report.Impl
                         this.SetRowCell(rowIndex, 10, double.Parse(bomDetail.ScrapPercentage.Value.ToString("0.########")));
                     //回冲方式	
                     this.SetRowCell(rowIndex, 11, bomDetail.BackFlushMethod);
+                    //位号	
+                    this.SetRowCell(rowIndex, 12, bomDetail.PositionNo);
                     //发货扫描条码	
-                    this.SetRowCell(rowIndex, 12, bomDetail.IsShipScanHu.ToString());
+                    this.SetRowCell(rowIndex, 13, bomDetail.IsShipScanHu.ToString());
                     //打印	
-                    this.SetRowCell(rowIndex, 13, bomDetail.NeedPrint.ToString());
+                    this.SetRowCell(rowIndex, 14, bomDetail.NeedPrint.ToString());
                     //库位	
                     if (bomDetail.Location != null)
-                        this.SetRowCell(rowIndex, 14, bomDetail.Location.Code);
+                        this.SetRowCell(rowIndex, 15, bomDetail.Location.Code);
                     //优先级
-                    this.SetRowCell(rowIndex, 15, bomDetail.Priority);
+                    this.SetRowCell(rowIndex, 16, bomDetail.Priority);
 
                     rowIndex++;
                 }

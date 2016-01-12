@@ -52,6 +52,7 @@
                             Value='<%# Bind("BackFlushMethod") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
+                <asp:BoundField DataField="PositionNo" HeaderText="${MasterData.BomDetail.PositionNo}" SortExpression="PositionNo" />
                 <asp:TemplateField HeaderText="${MasterData.Flow.IsShipScanHu}" SortExpression="IsShipScanHu">
                     <ItemTemplate>
                         <cc1:CodeMstrLabel ID="lblIsShipScanHu" runat="server" Code="TrueOrFalse" Value='<%# Bind("IsShipScanHu") %>' />
