@@ -8,9 +8,9 @@
     <many-to-one name="Item" column="Item" class="com.Sconit.Entity.MasterData.Item, com.Sconit.Entity" cascade="none" />
     <property name="Operation" column="Op" type="Int32"  />
     <property name="Reference" column="Ref" type="String" length="50" />
-    <!--<property name="StructureType" column="StruType" type="String" length="50" />-->
+    <property name="StructureType" column="StruType" type="String" length="50" />
     <property name="StartDate" column="StartDate" type="DateTime"  />
-    <!--<property name="EndDate" column="EndDate" type="DateTime" />
+    <property name="EndDate" column="EndDate" type="DateTime" />
     <many-to-one name="Uom" column="Uom" class="com.Sconit.Entity.MasterData.Uom, com.Sconit.Entity" cascade="none" />
     <property name="RateQty" column="RateQty" type="Decimal"  />
     <property name="ScrapPercentage" column="ScrapPct" type="Decimal"  />
@@ -19,7 +19,7 @@
     <many-to-one name="Location" column="Loc" class="com.Sconit.Entity.MasterData.Location, com.Sconit.Entity" cascade="none" />
     <property name="IsShipScanHu" column="IsShipScan" type="Boolean" />
     <property name="HuLotSize" column="HuLotSize" type="Int32" />
-    <property name="BackFlushMethod" column="BackFlushMethod" type="String" length="50" />-->
+    <property name="BackFlushMethod" column="BackFlushMethod" type="String" length="50" />
     <!--<property name="SortLevel1From" column="SortLevel1From" type="String" length="10" />
     <property name="SortLevel1To" column="SortLevel1To" type="String" length="10" />
     <property name="ColorLevel1From" column="ColorLevel1From" type="String" length="10" />
@@ -28,6 +28,6 @@
     <property name="SortLevel2To" column="SortLevel2To" type="String" length="10" />
     <property name="ColorLevel2From" column="ColorLevel2From" type="String" length="10" />
     <property name="ColorLevel2To" column="ColorLevel2To" type="String" length="10" />-->
-    <!--<property name="PositionNo" column="PositionNo" type="String" length="10" />-->
+    <property name="PositionNo" column="PositionNo" type="String" length="10" />
   </class>
 </hibernate-mapping>

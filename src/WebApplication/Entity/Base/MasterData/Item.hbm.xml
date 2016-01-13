@@ -50,6 +50,6 @@
 	  <property name="Msl" column="Msl" type="String" length="50" />
 	  <property name="Bin" column="Bin" type="String" length="50" />
     <!--<property name="ItemPoint" column="ItemPoint" type="Int32" />-->
-    <many-to-one name="ItemPack" column="ItemPack" class="com.Sconit.Entity.MasterData.ItemPack, com.Sconit.Entity" cascade="none" />
+    <!--<many-to-one name="ItemPack" column="ItemPack" class="com.Sconit.Entity.MasterData.ItemPack, com.Sconit.Entity" cascade="none" />-->
   </class>
 </hibernate-mapping>
