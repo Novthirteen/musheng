@@ -110,16 +110,41 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
 
     protected void tbFlow_TextChanged(Object sender, EventArgs e)
     {
-        DoSearch();
+        if (this.tbFlow != null && this.tbFlow.Text.Trim() != string.Empty)
+        {
+            //modify by ljz start
+            //SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML }), null);
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, true }), null);
+            //modify by ljz end
+        }
+        //add by ljz start
+        else
+        {
+            SearchEventByNull(null, null);
+        }
+    }
+
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+
+        Button btn = (Button)sender;
+
+        if (this.tbFlow != null && this.tbFlow.Text.Trim() != string.Empty)
+        {
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false }), null);
+        }
+        else
+        {
+            SearchEventByNull(null, null);
+        }
     }
 
     //add by ljz start
     protected void tbItemCode_TextChanged(Object sender, EventArgs e)
     {
-        string isItemCode = "ItemCode";
         if (this.tbItemCode != null && this.tbItemCode.Text.Trim() != string.Empty)
         {
-            SearchEvent((new object[] { this.tbItemCode.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, isItemCode}), null);
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false }), null);
         }
         else
         {
@@ -130,12 +155,12 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
 
     protected override void DoSearch()
     {
-        string isFlow = "Flow"; //add by ljz
+        //string isFlow = "Flow"; //add by ljz
         if (this.tbFlow != null && this.tbFlow.Text.Trim() != string.Empty)
         {
             //modify by ljz start
             //SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML }), null);
-            SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, isFlow }), null);
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML }), null);
             //modify by ljz end
         }
         //add by ljz start

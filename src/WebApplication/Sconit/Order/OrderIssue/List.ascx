@@ -29,6 +29,11 @@
                         <asp:CheckBox ID="CheckBoxGroup" OnCheckedChanged="CheckBoxGroup_CheckedChanged" AutoPostBack="true" name="CheckBoxGroup" runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
+                <asp:TemplateField Visible="false">
+                    <ItemTemplate>
+                        <asp:Literal ID="ltlId" runat="server" Text='<%# Eval("Id")%>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.OrderNo.Distribution}"
                     SortExpression="OrderNo">
                     <ItemTemplate>
@@ -55,6 +60,18 @@
                         <%# DataBinder.Eval(Container.DataItem, "Item.Description")%>
                     </ItemTemplate>
                 </asp:TemplateField> 
+                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.StartTime}" SortExpression="Item.Description">
+                    <ItemTemplate>
+                       <%-- <%# DataBinder.Eval(Container.DataItem, "PartyTo.Name")%>--%>
+                        <%# DataBinder.Eval(Container.DataItem, "OrderHead.StartTime")%>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.WindowTime}" SortExpression="Item.Description">
+                    <ItemTemplate>
+                       <%-- <%# DataBinder.Eval(Container.DataItem, "PartyTo.Name")%>--%>
+                        <%# DataBinder.Eval(Container.DataItem, "OrderHead.WindowTime")%>
+                    </ItemTemplate>
+                </asp:TemplateField>  
                 <%--<asp:BoundField DataField="StartTime" HeaderText="${MasterData.Order.OrderHead.StartTime}"
                     SortExpression="StartTime" />--%>
                 <asp:BoundField DataField="ReferenceItemCode" HeaderText="<%$Resources:Language,MasterDataReferenceItemCode%>" />
@@ -76,11 +93,43 @@
                         <%# DataBinder.Eval(Container.DataItem, "OrderHead.CreateUser.CodeName")%>
                     </ItemTemplate>
                 </asp:TemplateField>
+                <asp:TemplateField HeaderText="${MasterData.Order.OrderDetail.OrderedQty}">
+                    <ItemTemplate>
+                        <asp:Label ID="lblOrderedQty" runat="server" Text='<%# string.Format("{0:0.########}", Eval("OrderedQty")) %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="${MasterData.Order.OrderDetail.ShippedQty}">
+                    <ItemTemplate>
+                        <asp:Label ID="lblShippedQty" runat="server" Text='<%# string.Format("{0:0.########}", Eval("ShippedQty")) %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
+<%--                <asp:TemplateField HeaderText="待发数">
+                    <ItemTemplate>
+                        <asp:Label ID="lblReceivedQty" runat="server" Text='<%# string.Format("{0:0.########}", Convert.ToDecimal(Eval("OrderedQty"))-Convert.ToDecimal(Eval("ShippedQty") == null? 0:Eval("ShippedQty"))) %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>--%>
+                <asp:TemplateField HeaderText="${MasterData.Order.OrderDetail.CurrentShipQty}">
+                    <ItemTemplate>
+                        <asp:TextBox ID="tbCurrentQty" runat="server" Text='<%# string.Format("{0:0.########}", Convert.ToDecimal(Eval("OrderedQty"))-Convert.ToDecimal(Eval("ShippedQty") == null? 0:Eval("ShippedQty"))) %>'
+                            onmouseup="if(!readOnly)select();" Width="50"></asp:TextBox>
+                        <asp:RangeValidator ID="rvCurrentQty" ControlToValidate="tbCurrentQty" runat="server"
+                            Display="Dynamic" ErrorMessage="*" MaximumValue="999999999" MinimumValue="0"
+                            Enabled="false" Type="Double" />
+                    </ItemTemplate>
+                </asp:TemplateField>
             </Columns>
         </asp:GridView>
     </div>
 </fieldset>
 <div class="tablefooter">
+    <asp:CheckBox ID="cbPrintAsn" runat="server" Text="${MasterData.Distribution.PrintAsn}" />
+    <cc1:Button ID="btnShip" runat="server" OnClick="btnShip_Click" Text="${MasterData.Distribution.Button.Ship}"
+        FunctionId="ShipOrder" OnClientClick="return confirm('${Common.Order.Confirm.Ship}')"  />
+    <cc1:Button ID="btnPrint" runat="server" Text="${Common.Button.Print}" CssClass="button2"
+        OnClick="btnPrint_Click" FunctionId="PrintOrder" />
+</div>
+<div class="tablefooter" style=" display:none;">
+<%--<div class="tablefooter">--%>
     <cc1:Button ID="btnEditShipQty" runat="server" OnClick="btnEditShipQty_Click" Text="${MasterData.Distribution.Button.EditShipQty}"
         CssClass="button2" FunctionId="ShipOrder" />
     <cc1:Button ID="btnCreatePickList" runat="server" Visible="false" OnClick="btnCreatePickList_Click"

@@ -75,6 +75,7 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucPickListInfo.DeleteEvent += new EventHandler(this.PickListInfoBack_Render);
 
         this.ucSearch.SearchEventByNull += new System.EventHandler(this.Search_RenderNull); //add by ljz 
+        this.ucList.ShipSuccessEvent += new System.EventHandler(this.Search_Render);
     }
 
     //add by ljz start
@@ -100,14 +101,14 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
             this.ucList.Visible = true;
             //modify by ljz start
             //this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
-            if (((string)((object[])sender)[2]) == "Flow")
-            {
-                this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
-            }
-            else if (((string)((object[])sender)[2]) == "ItemCode")
-            {
-                this.ucList.InitPageParameterByItemCode((string)((object[])sender)[0], (string)((object[])sender)[1]);
-            }
+            //if (((string)((object[])sender)[2]) == "Flow")
+            //{
+            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], (string)((object[])sender)[2], (string)((object[])sender)[3], (string)((object[])sender)[4], (bool)((object[])sender)[5]);
+            //}
+            //else if (((string)((object[])sender)[2]) == "ItemCode")
+            //{
+            //    this.ucList.InitPageParameterByItemCode((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            //}
             //modify by ljz end
         }
     }
