@@ -63,10 +63,10 @@
             </td>
             <td />
             <td class="ttd02">
-                <cc1:Button ID="btnSearch1" runat="server" Text="查询明细" OnClick="btnSearch_Click1"
-                    Width="79px" CssClass="button2" FunctionId="EditBill" />
                 <asp:Button ID="btnSearch" runat="server" Text="${Common.Button.Search}" OnClick="btnSearch_Click"
                     Width="59px" CssClass="button2" />
+                <cc1:Button ID="btnSearch1" runat="server" Text="查询明细" OnClick="btnSearch_Click1"
+                    Width="79px" CssClass="button2" FunctionId="EditBill" /> 
                 <cc1:Button ID="btnNew" runat="server" Text="${Common.Button.New}" OnClick="btnNew_Click"
                     Width="59px" CssClass="button2" FunctionId="EditBill" />
             </td>
