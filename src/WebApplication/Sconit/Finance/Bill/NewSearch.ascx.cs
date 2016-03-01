@@ -199,8 +199,13 @@ public partial class Finance_Bill_NewSearch : SearchModuleBase
 
             if (this.IsRelease.Checked)
             {
-                TheBillMgr.ReleaseBill(billList[0].BillNo, this.CurrentUser);
-                this.ShowSuccessMessage("MasterData.Bill.ReleaseSuccessfully", billList[0].BillNo);
+                var billNos = string.Empty;
+                foreach (var bill in billList)
+                {
+                    TheBillMgr.ReleaseBill(bill.BillNo, this.CurrentUser, bill.TotalBillAmount + bill.TotalBillAmount*(decimal)0.17);
+                    billNos = billNos + bill.BillNo + ',';
+                }
+                this.ShowSuccessMessage("MasterData.Bill.ReleaseSuccessfully", billNos);
             }
             this.PageCleanUp();
             CreateEvent(billList[0].BillNo, null);

@@ -47,6 +47,46 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         set { ViewState["OrderType"] = value; }
     }
 
+    public string FlowCode
+    {
+        get { return (string)ViewState["FlowCode"]; }
+        set { ViewState["FlowCode"] = value; }
+    }
+
+    public string ItemCode
+    {
+        get { return (string)ViewState["ItemCode"]; }
+        set { ViewState["ItemCode"] = value; }
+    }
+
+    public string StartDate
+    {
+        get { return (string)ViewState["StartDate"]; }
+        set { ViewState["StartDate"] = value; }
+    }
+    public string EndDate
+    {
+        get { return (string)ViewState["EndDate"]; }
+        set { ViewState["EndDate"] = value; }
+    }
+
+    public string OrderSubType
+    {
+        get { return (string)ViewState["OrderSubType"]; }
+        set { ViewState["OrderSubType"] = value; }
+    }
+
+    public bool IsFLowChange
+    {
+        get { return (bool)ViewState["IsFLowChange"]; }
+        set { ViewState["IsFLowChange"] = value; }
+    }
+    public bool IsSupplier
+    {
+        get { return (bool)ViewState["IsSupplier"]; }
+        set { ViewState["IsSupplier"] = value; }
+    }
+
     private decimal GetActedQty(GridViewRow gvr)
     {
         return GetCurrentQtyTextBox(gvr).Text.Trim() != string.Empty ? decimal.Parse(GetCurrentQtyTextBox(gvr).Text.Trim()) : 0;
@@ -56,12 +96,13 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         return (TextBox)gvr.FindControl("tbCurrentQty");
     }
 
-    private string flowCode;
-    private string ItemCode;
-    private string startDate;
-    private string endDate;
-    private string orderSubType;
-    private bool isFLowChange;
+    //private string flowCode;
+    //private string ItemCode;
+    //private string startDate;
+    //private string endDate;
+    //private string orderSubType;
+    //private bool isFLowChange;
+    //private bool isSupplier;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -78,14 +119,15 @@ public partial class Distribution_OrderIssue_List : ModuleBase
     }
     //add by ljz end
 
-    public void InitPageParameter(string flowCode, string ItemCode, string startDate, string endDate, string orderSubType, bool isFLowChange)
+    public void InitPageParameter(string flowCode, string ItemCode, string startDate, string endDate, string orderSubType, bool isFLowChange, bool isSupplier)
     {
-        this.flowCode = flowCode;
+        this.FlowCode = flowCode;
         this.ItemCode = ItemCode;
-        this.startDate = startDate;
-        this.endDate = flowCode;
-        this.orderSubType = orderSubType;
-        this.isFLowChange = isFLowChange;
+        this.StartDate = startDate;
+        this.EndDate = flowCode;
+        this.OrderSubType = orderSubType;
+        this.IsFLowChange = isFLowChange;
+        this.IsSupplier = isSupplier;
 
         if (isFLowChange == true)
         {
@@ -115,17 +157,35 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             //selectCriteria.Add(Expression.Eq("OrderDetail.Item.Code", ItemCode));
         }
 
-        if (!string.IsNullOrEmpty(startDate) && string.IsNullOrEmpty(endDate))
+        if (isSupplier == false)
         {
-            selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(startDate)));
+            if (!string.IsNullOrEmpty(startDate) && string.IsNullOrEmpty(endDate))
+            {
+                selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(startDate)));
+            }
+            else if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(startDate))).Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
+            }
+            else if (string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                selectCriteria.Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
+            }
         }
-        else if(!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+        else
         {
-            selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(startDate))).Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
-        }
-        else if (string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
-        {
-            selectCriteria.Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
+            if (!string.IsNullOrEmpty(startDate) && string.IsNullOrEmpty(endDate))
+            {
+                selectCriteria.Add(Expression.Ge("StartDate", DateTime.Parse(startDate)));
+            }
+            else if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                selectCriteria.Add(Expression.Ge("StartDate", DateTime.Parse(startDate))).Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
+            }
+            else if (string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                selectCriteria.Add(Expression.Le("StartDate", DateTime.Parse(endDate)));
+            }
         }
 
         IList<OrderHead> orderList = new List<OrderHead>(); IList<OrderDetail> orderDetailList = new List<OrderDetail>();
@@ -139,7 +199,17 @@ public partial class Distribution_OrderIssue_List : ModuleBase
                 {
                     if (orderDetail.RemainShippedQty > 0)
                     {
-                        orderDetailList.Add(orderDetail);
+                        if (!string.IsNullOrEmpty(ItemCode))
+                        {
+                            if(orderDetail.Item.Code == ItemCode)
+                            { 
+                                orderDetailList.Add(orderDetail);
+                            }
+                        }
+                        else
+                        {
+                            orderDetailList.Add(orderDetail);
+                        }
                         //orderList.Add(orderHead);
                         //break;
                     }
@@ -295,7 +365,7 @@ public partial class Distribution_OrderIssue_List : ModuleBase
                 ShowSuccessMessage("MasterData.Distribution.Ship.Successfully", inporcess.IpNo);
                 orderNoList = new List<string>();
                 orderDetIdList = new List<int>();
-                ShipSuccessEvent(new Object[] { this.flowCode, this.ItemCode, this.startDate, this.endDate, this.orderSubType, this.isFLowChange }, e);
+                ShipSuccessEvent(new Object[] { this.FlowCode, this.ItemCode, this.StartDate, this.EndDate, this.OrderSubType, this.IsFLowChange }, e);
             }
         }
         catch (BusinessErrorException ex)
@@ -387,6 +457,15 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         olit.Add(item);
         if (chk.Checked)
         {
+            if (this.IsSupplier == true)
+            {
+                var orderHead = this.TheOrderHeadMgr.LoadOrderHead(orderNo);
+                if (DateTime.Now.AddMonths(-1) > orderHead.StartDate)
+                {
+                    ShowErrorMessage("订单已超出一个月，不允许发货。");
+                    chk.Checked = false;
+                }
+            }
             if (!orderNoList.Contains(orderNo))
             {
                 orderNoList.Add(orderNo);
