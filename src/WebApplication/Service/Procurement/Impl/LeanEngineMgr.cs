@@ -17,6 +17,8 @@ using LeanEngine;
 using Castle.Services.Transaction;
 using NHibernate.Transform;
 using com.Sconit.Service.Ext.Hql;
+using com.Sconit.Persistence;
+using System.Data;
 
 namespace com.Sconit.Service.Procurement.Impl
 {
@@ -46,6 +48,7 @@ namespace com.Sconit.Service.Procurement.Impl
         public IOrderTracerMgrE orderTracerMgrE { get; set; }
         //public IMRPMgrE mrpMgrE { get; set; }
         //public ICustomerPlanMgrE customerPlanMgrE { get; set; }
+        public ISqlHelperDao sqlHelperDao { get; set; }
         #endregion
 
         #region Public Methods
@@ -153,9 +156,17 @@ namespace com.Sconit.Service.Procurement.Impl
             log.Debug("Begin to load data:");
             container.ItemFlows = this.TransformToItemFlow();
             log.Debug("FlowDetail count:" + container.ItemFlows.Count);
-            container.Plans = this.TransformToPlans();
+
+            DataSet dataSet = this.sqlHelperDao.GetDatasetBySql(@"select olt.Id, olt.Loc, olt.Item, om.Flow, om.OrderNo, om.StartTime, om.WindowTime, olt.IOType, om.Type, olt.OrderQty, ISNULL(olt.AccumQty , 0)
+                                            from OrderLocTrans as olt
+                                            inner join OrderDet as od on olt.OrderDetId = od.Id
+                                            inner join OrderMstr as om on od.OrderNo = om.OrderNo
+                                            where om.Status in ('Submit', 'In-Process')
+                                            select Location, Item, SUM(Qty) as Qty from LocationLotDet where Qty <> 0
+                                            GROUP BY Location, Item", null);
+            container.Plans = this.TransformToPlans(dataSet.Tables[0]);
             log.Debug("OrderLocTrans count:" + container.Plans.Count);
-            container.InvBalances = this.TransformToInvBalances();
+            container.InvBalances = this.TransformToInvBalances(dataSet.Tables[1]);
             log.Debug("LocationDetail count:" + container.InvBalances.Count);
             log.Debug("Load data finished.");
             #endregion
@@ -398,6 +409,24 @@ namespace com.Sconit.Service.Procurement.Impl
             return itemFlows;
         }
 
+        private List<LeanEngine.Entity.InvBalance> TransformToInvBalances(DataTable dt)
+        {
+            List<LeanEngine.Entity.InvBalance> invBalanceList = new List<LeanEngine.Entity.InvBalance>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                LeanEngine.Entity.InvBalance invBalance = new LeanEngine.Entity.InvBalance();
+                invBalance.Loc = (string)dr[0];
+                invBalance.Item = (string)dr[1];
+                invBalance.Qty = (decimal)dr[2];
+                invBalance.InvType = Enumerators.InvType.Normal;
+
+                invBalanceList.Add(invBalance);
+            }
+
+            return invBalanceList;
+        }
+
         private List<LeanEngine.Entity.InvBalance> TransformToInvBalances()
         {
             _locationDetails = this.GetLocationDetail();
@@ -429,6 +458,32 @@ namespace com.Sconit.Service.Procurement.Impl
             #endregion
 
             return invBalances;
+        }
+
+        private List<LeanEngine.Entity.Plans> TransformToPlans(DataTable dt)
+        {
+            List<LeanEngine.Entity.Plans> plans = new List<LeanEngine.Entity.Plans>();
+            #region Transform
+            foreach (DataRow row in dt.Rows)
+            {
+                LeanEngine.Entity.Plans plan = new LeanEngine.Entity.Plans();
+                plan.ID = (int)row[0];
+                plan.Loc = row[1] is System.DBNull ? null : (string)row[1];
+                plan.Item = (string)row[2];
+                plan.FlowCode = (string)row[3];
+                plan.OrderNo = (string)row[4];
+                plan.ReqTime =  (string)row[7] == BusinessConstants.IO_TYPE_IN ? (DateTime)row[6] : (DateTime)row[5];
+                plan.IRType = (string)row[7] == BusinessConstants.IO_TYPE_IN ? Enumerators.IRType.RCT : Enumerators.IRType.ISS;
+                plan.PlanType = Enumerators.PlanType.Orders;
+                plan.FlowType = this.MappingFlowType((string)row[8]);
+                plan.OrderedQty = (decimal)row[9];
+                plan.FinishedQty = (decimal)row[10];
+
+                plans.Add(plan);
+            }
+            #endregion
+
+            return plans;
         }
 
         private List<LeanEngine.Entity.Plans> TransformToPlans()
