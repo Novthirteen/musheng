@@ -142,7 +142,8 @@ namespace com.Sconit.Service.Distribution.Impl
                 OrderDetail orderDetail = orderLocationTransaction.OrderDetail;
                 OrderHead orderHead = orderDetail.OrderHead;
 
-                if (orderHead.Priority == BusinessConstants.CODE_MASTER_ORDER_PRIORITY_VALUE_URGENT) {
+                if (orderHead.Priority == BusinessConstants.CODE_MASTER_ORDER_PRIORITY_VALUE_URGENT)
+                {
                     isEmergency = true;
                 }
 
@@ -378,7 +379,7 @@ namespace com.Sconit.Service.Distribution.Impl
                 {
                     throw new BusinessErrorException("Order.Error.ShipOrder.IsGoodsReceiveFIFONotEqual");
                 }
-              
+
             }
 
             if (isShipScanHu.HasValue && !isShipScanHu.Value && !isAllShipCreateHu && hasShipCreateHu)
@@ -414,8 +415,9 @@ namespace com.Sconit.Service.Distribution.Impl
             inProcessLocation.DepartTime = dateTimeNow;
             Flow flow = this.flowMgr.CheckAndLoadFlow(flowCode);
             inProcessLocation.Flow = flow;
-            if (isEmergency) {
-                inProcessLocation.ArriveTime = inProcessLocation.DepartTime.AddHours(Convert.ToDouble(flow.EmTime.HasValue ? flow.EmTime.Value : 0));                
+            if (isEmergency)
+            {
+                inProcessLocation.ArriveTime = inProcessLocation.DepartTime.AddHours(Convert.ToDouble(flow.EmTime.HasValue ? flow.EmTime.Value : 0));
             }
             else
             {
@@ -490,7 +492,7 @@ namespace com.Sconit.Service.Distribution.Impl
                                 IList<ItemDiscontinue> itemDiscontinueList = null;
                                 if (orderHead.Type == BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PRODUCTION
                                     && orderHead.SubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML
-                                    && inProcessLocationDetail.Qty >¡¡0)
+                                    && inProcessLocationDetail.Qty > 0)
                                 {
                                     itemDiscontinueList = this.itemDiscontinueMgr.GetItemDiscontinue(orderLocationTransaction.Item, (orderLocationTransaction.BomDetail != null ? orderLocationTransaction.BomDetail.Bom : null), dateTimeNow);
                                 }
@@ -601,7 +603,7 @@ namespace com.Sconit.Service.Distribution.Impl
                                 //if (orderDetail.NeedRejectInspection && orderHead.NeedRejectInspection
                                 //    && orderHead.SubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_RTN
                                 //    && orderHead.PartyFrom.GetType() == typeof(Region))
-                                if (orderDetail.Item.NeedInspect.HasValue && orderDetail.Item.NeedInspect.Value 
+                                if (orderDetail.Item.NeedInspect.HasValue && orderDetail.Item.NeedInspect.Value
                                     && orderHead.NeedRejectInspection
                                     && orderHead.SubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_RTN
                                     && orderHead.PartyFrom.GetType() == typeof(Region))
@@ -1013,12 +1015,20 @@ namespace com.Sconit.Service.Distribution.Impl
 
                     this.UpdateInProcessLocation(nmlInProcessLocation);
                     #endregion
+
+                    orderLocationTransaction.AccumulateQty -= nmlInProcessLocationDetail.Qty;
+                    orderLocationTransaction.OrderDetail.ShippedQty -= nmlInProcessLocationDetail.Qty;
+
+                    this.orderDetailMgrE.UpdateOrderDetail(orderLocationTransaction.OrderDetail);
+                    this.orderLocationTransactionMgrE.UpdateOrderLocationTransaction(orderLocationTransaction);
                 }
                 else
                 {
                     throw new TechnicalException("unspecified GRGapTo " + grGapTo);
                 }
             }
+
+
         }
 
         [Transaction(TransactionMode.Unspecified)]
