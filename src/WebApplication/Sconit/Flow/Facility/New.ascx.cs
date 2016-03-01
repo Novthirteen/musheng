@@ -67,7 +67,6 @@ public partial class MasterData_Facility_New : ModuleBase
     protected void ODS_ProductLineFacility_Inserting(object sender, ObjectDataSourceMethodEventArgs e)
     {
         productLineFacility = (ProductLineFacility)e.InputParameters[0];
-
         productLineFacility.Code = productLineFacility.Code.Trim();
         productLineFacility.ProductLine = FlowCode;
         Controls_TextBox tbRouting = (Controls_TextBox)FV_ProductLineFacility.FindControl("tbRouting");
@@ -104,8 +103,13 @@ public partial class MasterData_Facility_New : ModuleBase
     protected void checkCodeExists(object source, ServerValidateEventArgs args)
     {
         String code = ((TextBox)(this.FV_ProductLineFacility.FindControl("tbCode"))).Text.Trim();
-
+        if (string.IsNullOrEmpty(((TextBox)(this.FV_ProductLineFacility.FindControl("txtPointTime"))).Text.Trim()))
+        {
+            args.IsValid = false;
+            this.ShowErrorMessage("贴片时间必须填入数字");
+        }
         ProductLineFacility productLineFacility = TheProductLineFacilityMgr.GetPLFacility(code);
+        
         if (productLineFacility != null)
         {
             args.IsValid = false;

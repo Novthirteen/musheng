@@ -89,28 +89,28 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
     void Search_Render(object sender, EventArgs e)
     {
         //if (this.ModuleType == BusinessConstants.ORDER_MODULETYPE_VALUE_SUPPLIERDISTRIBUTION)
-        if (this.IsSupplier)
-        {
-            this.ucList.Visible = false;
-            this.ucSupplierList.Visible = true;
-            this.ucSupplierList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
-        }
-        else
-        {
+        //if (this.IsSupplier)
+        //{
+        //    this.ucList.Visible = false;
+        //    this.ucSupplierList.Visible = true;
+        //    this.ucSupplierList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
+        //}
+        //else
+        //{
             this.ucSupplierList.Visible = false;
             this.ucList.Visible = true;
             //modify by ljz start
             //this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
             //if (((string)((object[])sender)[2]) == "Flow")
             //{
-            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], (string)((object[])sender)[2], (string)((object[])sender)[3], (string)((object[])sender)[4], (bool)((object[])sender)[5]);
+            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], (string)((object[])sender)[2], (string)((object[])sender)[3], (string)((object[])sender)[4], (bool)((object[])sender)[5], this.IsSupplier);
             //}
             //else if (((string)((object[])sender)[2]) == "ItemCode")
             //{
             //    this.ucList.InitPageParameterByItemCode((string)((object[])sender)[0], (string)((object[])sender)[1]);
             //}
             //modify by ljz end
-        }
+        //}
     }
 
 

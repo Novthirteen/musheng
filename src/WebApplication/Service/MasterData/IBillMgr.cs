@@ -67,6 +67,8 @@ namespace com.Sconit.Service.MasterData
 
         void ReleaseBill(Bill bill, User user);
 
+        void ReleaseBill(string billNo, User user, decimal taxAmount);
+
         void CancelBill(string billNo, string userCode);
 
         void CancelBill(string billNo, User user);

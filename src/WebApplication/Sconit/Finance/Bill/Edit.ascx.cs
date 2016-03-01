@@ -242,6 +242,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
 
         totalPrice -= (bill.Discount.HasValue ? bill.Discount.Value : decimal.Zero);
         this.tbTotalAmount.Text = totalPrice.ToString("F2");
+        this.txtTaxAmount.Text = (totalPrice + totalPrice * ((decimal)0.17)).ToString("F2");
     }
 
 
@@ -270,6 +271,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
     protected void FV_Bill_DataBound(object sender, EventArgs e)
     {
         Bill bill = (Bill)((FormView)(sender)).DataItem;
+        bill = this.TheBillMgr.LoadBill(bill.BillNo, true);
         UpdateView(bill);
     }
 
@@ -448,7 +450,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
         {
             //modify by ljz start
             //this.TheBillMgr.ReleaseBill(this.BillNo, this.CurrentUser);
-            this.TheBillMgr.ReleaseBill(this.BillNo+","+this.txtTaxAmount.Text, this.CurrentUser);
+            this.TheBillMgr.ReleaseBill(this.BillNo, this.CurrentUser, decimal.Parse(this.txtTaxAmount.Text));
             //modify by ljz end
             this.ShowSuccessMessage("MasterData.Bill.ReleaseSuccessfully", this.BillNo);
             this.FV_Bill.DataBind();
