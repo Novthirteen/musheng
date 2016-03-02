@@ -35,6 +35,7 @@ namespace com.Sconit.Service.Distribution.Impl
         public ICriteriaMgrE criteriaMgrE { get; set; }
         public IOrderLocationTransactionMgrE orderLocationTransactionMgrE { get; set; }
         public IOrderDetailMgrE orderDetailMgrE { get; set; }
+        public IOrderHeadMgrE orderHeadMgrE { get; set; }
         public IRegionMgrE regionMgr { get; set; }
         public IItemDiscontinueMgrE itemDiscontinueMgr { get; set; }
         public IProductLineInProcessLocationDetailMgrE productLineInProcessLocationDetailMgr { get; set; }
@@ -762,21 +763,22 @@ namespace com.Sconit.Service.Distribution.Impl
             #region ≤È’“≤Ó“Ï
             if (handleGap && oldInProcessLocation.OrderType != BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PRODUCTION)
             {
-                IList<InProcessLocationDetail> gapInProcessLocationDetailList = new List<InProcessLocationDetail>();
                 foreach (InProcessLocationDetail inProcessLocationDetail in oldInProcessLocation.InProcessLocationDetails)
                 {
-                    if (inProcessLocationDetail.Qty > 0 && inProcessLocationDetail.Qty != inProcessLocationDetail.ReceivedQty)
+                    if (inProcessLocationDetail.Qty >= 0 && inProcessLocationDetail.Qty != inProcessLocationDetail.ReceivedQty)
                     {
-                        InProcessLocationDetail gapInProcessLocationDetail = new InProcessLocationDetail();
-                        gapInProcessLocationDetail.Qty = inProcessLocationDetail.ReceivedQty - inProcessLocationDetail.Qty;
-                        gapInProcessLocationDetail.OrderLocationTransaction = inProcessLocationDetail.OrderLocationTransaction;
-                        gapInProcessLocationDetail.LotNo = inProcessLocationDetail.LotNo;
-                        gapInProcessLocationDetail.IsConsignment = inProcessLocationDetail.IsConsignment;
-                        gapInProcessLocationDetail.PlannedBill = inProcessLocationDetail.PlannedBill;
-                        gapInProcessLocationDetailList.Add(gapInProcessLocationDetail);
+                        OrderLocationTransaction orderLocationTransaction = inProcessLocationDetail.OrderLocationTransaction;
+                        orderLocationTransaction.AccumulateQty -= inProcessLocationDetail.Qty - inProcessLocationDetail.ReceivedQty;
+                        orderLocationTransaction.OrderDetail.ShippedQty -= inProcessLocationDetail.Qty - inProcessLocationDetail.ReceivedQty;
+                        orderLocationTransaction.OrderDetail.OrderHead.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS;
+                        orderLocationTransaction.OrderDetail.OrderHead.CompleteDate = null;
+                        orderLocationTransaction.OrderDetail.OrderHead.CancelUser = null;
+
+                        this.orderHeadMgrE.UpdateOrderHead(orderLocationTransaction.OrderDetail.OrderHead);
+                        this.orderDetailMgrE.UpdateOrderDetail(orderLocationTransaction.OrderDetail);
+                        this.orderLocationTransactionMgrE.UpdateOrderLocationTransaction(orderLocationTransaction);
                     }
                 }
-                this.RecordInProcessLocationGap(gapInProcessLocationDetailList, oldInProcessLocation.GoodsReceiptGapTo, user);
             }
             #endregion
         }
@@ -1018,7 +1020,11 @@ namespace com.Sconit.Service.Distribution.Impl
 
                     orderLocationTransaction.AccumulateQty -= nmlInProcessLocationDetail.Qty;
                     orderLocationTransaction.OrderDetail.ShippedQty -= nmlInProcessLocationDetail.Qty;
+                    orderLocationTransaction.OrderDetail.OrderHead.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS;
+                    orderLocationTransaction.OrderDetail.OrderHead.CompleteDate = null;
+                    orderLocationTransaction.OrderDetail.OrderHead.CancelUser = null;
 
+                    this.orderHeadMgrE.UpdateOrderHead(orderLocationTransaction.OrderDetail.OrderHead);
                     this.orderDetailMgrE.UpdateOrderDetail(orderLocationTransaction.OrderDetail);
                     this.orderLocationTransactionMgrE.UpdateOrderLocationTransaction(orderLocationTransaction);
                 }
