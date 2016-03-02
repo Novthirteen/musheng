@@ -181,7 +181,7 @@ public partial class Order_OrderHead_ScrapNew : NewModuleBase
 
     protected void btnConfirm_Click(object sender, EventArgs e)
     {
-        this.ucList.SaveCallBack();
+        this.ucList.SaveCallBack("");
     }
 
     private void SaveRender(object sender, EventArgs e)

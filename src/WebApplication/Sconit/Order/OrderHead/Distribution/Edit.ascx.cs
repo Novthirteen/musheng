@@ -113,7 +113,7 @@ public partial class Order_OrderHead_Edit : EditModuleBase
             ShowErrorMessage("MasterData.Order.OrderHead.StartTime.Later.Than.WinTime");
             return;
         }
-        this.ucDetail.SaveCallBack();
+        this.ucDetail.SaveCallBack("");
 
         UpdateLocTransAndActBillEvent(this.OrderNo, null);
 
@@ -123,7 +123,7 @@ public partial class Order_OrderHead_Edit : EditModuleBase
     {
         try
         {
-            this.ucDetail.SaveCallBack();
+            this.ucDetail.SaveCallBack("");
             this.TheOrderMgr.ReleaseOrder(this.OrderNo, this.CurrentUser, true);
             this.FV_Order.DataBind();
             UpdateView();

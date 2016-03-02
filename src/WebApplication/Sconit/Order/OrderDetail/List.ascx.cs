@@ -277,7 +277,7 @@ public partial class Order_OrderDetail_List : ModuleBase
     }
 
     //保存
-    public void SaveCallBack()
+    public void SaveCallBack(string memo)
     {
         if (this.NewOrEdit == "New")
         {
@@ -373,6 +373,10 @@ public partial class Order_OrderDetail_List : ModuleBase
                         }
                     }
 
+                    if (!string.IsNullOrEmpty(memo))
+                    {
+                        this.TheOrder.Memo = memo;
+                    }
                     SaveEvent(this.TheOrder, null);
                 }
             }

@@ -224,6 +224,7 @@ public partial class Order_OrderHead_New : NewModuleBase
             this.ShowErrorMessage(ex);
         }
     }
+
     private void InitDetailParamater(OrderHead orderHead)
     {
         Flow currentFlow = this.TheFlowMgr.LoadFlow(orderHead.Flow);
@@ -262,7 +263,7 @@ public partial class Order_OrderHead_New : NewModuleBase
         }
         else
         {
-            this.ucList.SaveCallBack();
+            this.ucList.SaveCallBack(this.tbMemo.Text);
         }
 
     }
@@ -521,6 +522,7 @@ public partial class Order_OrderHead_New : NewModuleBase
             OrderHead orderHead = TheOrderMgr.TransferFlow2Order(this.tbFlow.Text.Trim());
             orderHead.SubType = this.ModuleSubType;
             orderHead.WindowTime = DateTime.Parse(tbWinTime.Text.Trim());
+            orderHead.Memo = this.tbMemo.Text;
             InitDetailParamater(orderHead);
         }
     }
