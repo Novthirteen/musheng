@@ -91,6 +91,7 @@
             <td class="td02">
                 <asp:Button ID="btnSearch" runat="server" Text="${Common.Button.Search}" OnClick="btnSearch_Click" />
                 <asp:Button ID="btnExport" runat="server" Text="${Common.Button.Export}" OnClick="btnSearch_Click" />
+                <asp:Button ID="btnCreate2" runat="server" Text="${Common.Button.Create}" OnClick="btnCreate2_Click" Visible="false"/>
                 <asp:Button ID="btnBack1" runat="server" Text="${Common.Button.Back}" OnClick="btnBack_Click"
                     Visible="false" />
             </td>
