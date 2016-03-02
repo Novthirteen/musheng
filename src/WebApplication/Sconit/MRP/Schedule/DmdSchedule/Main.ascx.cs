@@ -489,6 +489,7 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
                 orderHead.WindowTime = winTime;
                 orderHead.StartTime = startTime;
                 orderHead.IsAutoRelease = this.cbReleaseOrder.Checked;
+                orderHead.Memo = this.tbMemo.Text;
 
                 if (this.cbIsUrgent.Checked)
                 {

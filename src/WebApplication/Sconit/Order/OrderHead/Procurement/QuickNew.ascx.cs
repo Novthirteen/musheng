@@ -202,7 +202,7 @@ public partial class Order_OrderHead_QuickNew : NewModuleBase
         }
         else
         {
-            this.ucList.SaveCallBack();
+            this.ucList.SaveCallBack("");
         }
 
     }

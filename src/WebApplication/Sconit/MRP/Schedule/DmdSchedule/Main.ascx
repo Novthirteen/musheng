@@ -242,6 +242,14 @@
             </tr>
             <tr>
                 <td class="td01">
+                    <asp:Literal ID="ltlMemo" runat="server" Text="${MasterData.Order.OrderHead.Memo}:"  />
+                </td>
+                <td class="td02">
+                    <asp:TextBox ID="tbMemo" runat="server" ></asp:TextBox>
+                </td>
+            </tr>>
+            <tr>
+                <td class="td01">
                 </td>
                 <td class="td02">
                     <asp:CheckBox ID="cbReleaseOrder" runat="server" Text="${MasterData.Order.OrderHead.ReleaseOrder}" />
