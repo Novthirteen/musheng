@@ -48,11 +48,11 @@
                     Display="Dynamic" ControlToValidate="tbFlow" ValidationGroup="vgCreate" />
             </td>
             <td class="td01">
-                <asp:Literal ID="lblCurrency" runat="server" Text="${MasterData.Order.OrderHead.Currency}:"
-                    Visible="false" />
+                <asp:Literal ID="lblMemo" runat="server" Text="${MasterData.Order.OrderHead.Memo}:"
+                    Visible="true" />
             </td>
             <td class="td02">
-                <asp:Literal ID="lbCurrency" runat="server" Visible="false" />
+                <asp:TextBox ID="tbMemo" runat="server" ></asp:TextBox>
             </td>
         </tr>
         <tr>

@@ -112,9 +112,10 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
     {
         if (this.tbFlow != null && this.tbFlow.Text.Trim() != string.Empty)
         {
+            bool showChecked = this.ckShowChecked.Checked;
             //modify by ljz start
             //SearchEvent((new object[] { this.tbFlow.Text.Trim(), BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML }), null);
-            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, true }), null);
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, true, showChecked }), null);
             //modify by ljz end
         }
         //add by ljz start
@@ -131,7 +132,8 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
 
         if (this.tbFlow != null && this.tbFlow.Text.Trim() != string.Empty)
         {
-            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false }), null);
+            bool showChecked = this.ckShowChecked.Checked;
+            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
         }
         else
         {
@@ -139,17 +141,18 @@ public partial class Distribution_OrderIssue_Search : SearchModuleBase
         }
     }
 
+
+    protected void IsShowChecked_CheckedChanged(Object sender, EventArgs e)
+    {
+        bool showChecked = this.ckShowChecked.Checked;
+        SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
+    }
+
     //add by ljz start
     protected void tbItemCode_TextChanged(Object sender, EventArgs e)
     {
-        if (this.tbItemCode != null && this.tbItemCode.Text.Trim() != string.Empty)
-        {
-            SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false }), null);
-        }
-        else
-        {
-            SearchEventByNull(null, null);
-        }
+        bool showChecked = this.ckShowChecked.Checked;
+        SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
     }
     //add by ljz end
 

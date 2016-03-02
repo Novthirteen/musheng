@@ -109,7 +109,7 @@ public partial class Order_OrderHead_New : NewModuleBase
         this.cbIsUrgent.Checked = false;
         this.CurrentFlowCode = null;
         this.tbStartTime.Text = string.Empty;
-        this.lbCurrency.Text = string.Empty;
+        this.tbMemo.Text = string.Empty;
         this.ucList.PageCleanup();
         this.ucHuList.PageCleanup();
         this.ucList.Visible = false;
@@ -208,6 +208,7 @@ public partial class Order_OrderHead_New : NewModuleBase
                     double leadTime = currentFlow.LeadTime.HasValue ? -(double)currentFlow.LeadTime.Value : 0;
                     this.tbStartTime.Text = winTime.AddHours(leadTime).ToString("yyyy-MM-dd HH:mm");
                     orderHead.WindowTime = winTime;
+                    orderHead.Memo = this.tbMemo.Text;
 
                     this.hfLeadTime.Value = currentFlow.LeadTime.ToString();
                     this.hfEmTime.Value = currentFlow.EmTime.ToString();

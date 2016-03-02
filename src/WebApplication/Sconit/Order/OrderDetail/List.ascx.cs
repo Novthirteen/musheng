@@ -135,6 +135,18 @@ public partial class Order_OrderDetail_List : ModuleBase
         }
     }
 
+    protected string Memo
+    {
+        get
+        {
+            return (string)ViewState["Memo"];
+        }
+        set
+        {
+            ViewState["Memo"] = value;
+        }
+    }
+
     protected DateTime StartTime
     {
         get
@@ -194,6 +206,7 @@ public partial class Order_OrderDetail_List : ModuleBase
         this.NewOrEdit = "New";
         this.TheOrder = orderHead;
         this.FlowCode = orderHead.Flow;
+        this.Memo = orderHead.Memo;
         this.StartTime = orderHead.StartTime > DateTime.Now ? orderHead.StartTime : DateTime.Now;
         this.PartyFromCode = orderHead.PartyFrom.Code;
         this.PartyToCode = orderHead.PartyTo.Code;

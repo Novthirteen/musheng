@@ -22,11 +22,11 @@ namespace com.Sconit.Service.Report.Impl
         {
 
             //明细部分的行数
-            this.pageDetailRowCount = 36;
+            this.pageDetailRowCount = 33;
             //列数   1起始
             this.columnCount = 10;
             //报表头的行数  1起始
-            this.headRowCount = 15;
+            this.headRowCount = 18;
             //报表尾的行数  1起始
             this.bottomRowCount = 1;
 
@@ -213,6 +213,7 @@ namespace com.Sconit.Service.Report.Impl
             //YFV传真 Fax:
             this.SetRowCell(11, 7, orderHead.ShipTo != null ? orderHead.ShipTo.Fax : String.Empty);
 
+            this.SetRowCell(13, 2, orderHead.Memo);
             //系统号 SysCode:
             //this.SetRowCell(++rowNum, 3, "");
             //版本号 Version:

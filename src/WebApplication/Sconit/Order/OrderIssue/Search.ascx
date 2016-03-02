@@ -49,8 +49,10 @@
         </tr>
         <tr>
             <td class="td01">
+                仅显示选中
             </td>
             <td class="td02">
+                <asp:CheckBox ID="ckShowChecked" runat="server" AutoPostBack="true" OnCheckedChanged="IsShowChecked_CheckedChanged"  />
             </td>
             <td class="td01">
             </td>

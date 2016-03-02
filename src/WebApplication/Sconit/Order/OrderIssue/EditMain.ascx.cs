@@ -103,7 +103,7 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
             //this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
             //if (((string)((object[])sender)[2]) == "Flow")
             //{
-            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], (string)((object[])sender)[2], (string)((object[])sender)[3], (string)((object[])sender)[4], (bool)((object[])sender)[5], this.IsSupplier);
+            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], (string)((object[])sender)[2], (string)((object[])sender)[3], (string)((object[])sender)[4], (bool)((object[])sender)[5], (bool)((object[])sender)[6], this.IsSupplier);
             //}
             //else if (((string)((object[])sender)[2]) == "ItemCode")
             //{

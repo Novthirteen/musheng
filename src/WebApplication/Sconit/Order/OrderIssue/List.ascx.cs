@@ -119,7 +119,7 @@ public partial class Distribution_OrderIssue_List : ModuleBase
     }
     //add by ljz end
 
-    public void InitPageParameter(string flowCode, string ItemCode, string startDate, string endDate, string orderSubType, bool isFLowChange, bool isSupplier)
+    public void InitPageParameter(string flowCode, string ItemCode, string startDate, string endDate, string orderSubType, bool isFLowChange, bool showChecked, bool isSupplier)
     {
         this.FlowCode = flowCode;
         this.ItemCode = ItemCode;
@@ -154,7 +154,6 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         if (!string.IsNullOrEmpty(ItemCode))
         {
             selectCriteria.CreateCriteria("OrderDetails").Add(Expression.Eq("Item.Code", ItemCode));
-            //selectCriteria.Add(Expression.Eq("OrderDetail.Item.Code", ItemCode));
         }
 
         if (isSupplier == false)
@@ -202,16 +201,34 @@ public partial class Distribution_OrderIssue_List : ModuleBase
                         if (!string.IsNullOrEmpty(ItemCode))
                         {
                             if(orderDetail.Item.Code == ItemCode)
-                            { 
-                                orderDetailList.Add(orderDetail);
+                            {
+                                if (showChecked)
+                                {
+                                    if (orderDetIdList.Contains(orderDetail.Id))
+                                    {
+                                        orderDetailList.Add(orderDetail);
+                                    }
+                                }
+                                else
+                                { 
+                                    orderDetailList.Add(orderDetail);
+                                }
                             }
                         }
                         else
                         {
-                            orderDetailList.Add(orderDetail);
+                            if (showChecked)
+                            {
+                                if (orderDetIdList.Contains(orderDetail.Id))
+                                {
+                                    orderDetailList.Add(orderDetail);
+                                }
+                            }
+                            else
+                            {
+                                orderDetailList.Add(orderDetail);
+                            }
                         }
-                        //orderList.Add(orderHead);
-                        //break;
                     }
                 }
             }
@@ -460,9 +477,9 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             if (this.IsSupplier == true)
             {
                 var orderHead = this.TheOrderHeadMgr.LoadOrderHead(orderNo);
-                if (DateTime.Now.AddMonths(-1) > orderHead.StartDate)
+                if (DateTime.Now.AddMonths(1) < orderHead.StartDate)
                 {
-                    ShowErrorMessage("订单已超出一个月，不允许发货。");
+                    ShowErrorMessage("订单未到达发货时间，不允许发货。");
                     chk.Checked = false;
                 }
             }
