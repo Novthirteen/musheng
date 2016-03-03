@@ -98,30 +98,6 @@ public partial class Reports_IntransitDetail_List : ListModuleBase
             }
         }
 
-        #region 初始化使用的列
-        for (int i = 8; i < (8 + routingDetailList.Count); i++)
-        {
-            this.GV_List.Columns[i].Visible = true;
-            //this.GV_List.Columns[i].HeaderText = routingDetailList[i - 8].Activity;
-        }
-        #endregion
-
-        #region 隐藏多余列
-        if (routingDetailList.Count == 0)
-        {
-            this.GV_List.Columns[7].Visible = true;
-        }
-        else
-        {
-            this.GV_List.Columns[7].Visible = false;
-        }
-
-        for (int i = (8 + routingDetailList.Count); i < 28; i++)
-        {
-            this.GV_List.Columns[i].Visible = false;
-        }
-        #endregion
-
         #region 查询
         DetachedCriteria selectCriteria = DetachedCriteria.For(typeof(InProcessLocationDetailTrackView));
         selectCriteria.CreateAlias("OrderDetail", "od");
@@ -151,33 +127,23 @@ public partial class Reports_IntransitDetail_List : ListModuleBase
         #region 转换查询结果为IntransitDetail
         if (inProcessLocationDetailTrackViewList != null && inProcessLocationDetailTrackViewList.Count > 0)
         {
-            string oldItemCode = null;
-            string oldUom = null;
-            decimal oldUnitCount = 0;
             IntransitDetail intransitDetail = null;
             IList<IntransitDetail> intransitDetailList = new List<IntransitDetail>();
             foreach (InProcessLocationDetailTrackView inProcessLocationDetailTrackView in inProcessLocationDetailTrackViewList)
             {
-                if (oldItemCode == null
-                    || oldItemCode != inProcessLocationDetailTrackView.OrderDetail.Item.Code
-                    || oldUom != inProcessLocationDetailTrackView.OrderDetail.Uom.Code
-                    || oldUnitCount != inProcessLocationDetailTrackView.OrderDetail.UnitCount)
-                {
-                    intransitDetail = new IntransitDetail();
-                    intransitDetail.PartyFrom = inProcessLocationDetailTrackView.OrderDetail.OrderHead.PartyFrom.Name;
-                    intransitDetail.PartyTo = inProcessLocationDetailTrackView.OrderDetail.OrderHead.PartyTo.Name;
-                    intransitDetail.ItemCode = inProcessLocationDetailTrackView.OrderDetail.Item.Code;
-                    intransitDetail.ItemName = inProcessLocationDetailTrackView.OrderDetail.Item.Description;
-                    intransitDetail.ReferenceItem = inProcessLocationDetailTrackView.OrderDetail.ReferenceItemCode;
-                    intransitDetail.Uom = inProcessLocationDetailTrackView.OrderDetail.Uom.Code;
-                    intransitDetail.UnitCount = inProcessLocationDetailTrackView.OrderDetail.UnitCount;
+                intransitDetail = new IntransitDetail();
+                intransitDetail.PartyFrom = inProcessLocationDetailTrackView.OrderDetail.OrderHead.PartyFrom.Name;
+                intransitDetail.PartyTo = inProcessLocationDetailTrackView.OrderDetail.OrderHead.PartyTo.Name;
+                intransitDetail.OrderNo = inProcessLocationDetailTrackView.OrderDetail.OrderHead.OrderNo;
+                intransitDetail.ItemCode = inProcessLocationDetailTrackView.OrderDetail.Item.Code;
+                intransitDetail.ItemName = inProcessLocationDetailTrackView.OrderDetail.Item.Description;
+                intransitDetail.ReferenceItem = inProcessLocationDetailTrackView.OrderDetail.ReferenceItemCode;
+                intransitDetail.Uom = inProcessLocationDetailTrackView.OrderDetail.Uom.Code;
+                intransitDetail.UnitCount = inProcessLocationDetailTrackView.OrderDetail.UnitCount;
+                intransitDetail.DefaultActivity = inProcessLocationDetailTrackView.Qty;
+                intransitDetail.IpNo = inProcessLocationDetailTrackView.IpNo;
 
-                    oldItemCode = inProcessLocationDetailTrackView.OrderDetail.Item.Code;
-                    oldUom = inProcessLocationDetailTrackView.OrderDetail.Uom.Code;
-                    oldUnitCount = inProcessLocationDetailTrackView.OrderDetail.UnitCount;
-
-                    intransitDetailList.Add(intransitDetail);
-                }
+                intransitDetailList.Add(intransitDetail);
 
                 //switch (FindActvitySeq(routingDetailList, inProcessLocationDetailTrackView.CurrentOperation))
                 //{
@@ -313,6 +279,8 @@ class IntransitDetail
 {
     public string PartyFrom { get; set; }
     public string PartyTo { get; set; }
+    public string OrderNo { get; set; }
+    public string IpNo { get; set; }
     public string ItemCode { get; set; }
     public string ItemName { get; set; }
     public string ReferenceItem { get; set; }
