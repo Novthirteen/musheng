@@ -124,7 +124,7 @@ public partial class Distribution_OrderIssue_List : ModuleBase
         this.FlowCode = flowCode;
         this.ItemCode = ItemCode;
         this.StartDate = startDate;
-        this.EndDate = flowCode;
+        this.EndDate = endDate;
         this.OrderSubType = orderSubType;
         this.IsFLowChange = isFLowChange;
         this.IsSupplier = isSupplier;
@@ -382,7 +382,11 @@ public partial class Distribution_OrderIssue_List : ModuleBase
                 ShowSuccessMessage("MasterData.Distribution.Ship.Successfully", inporcess.IpNo);
                 orderNoList = new List<string>();
                 orderDetIdList = new List<int>();
-                ShipSuccessEvent(new Object[] { this.FlowCode, this.ItemCode, this.StartDate, this.EndDate, this.OrderSubType, this.IsFLowChange }, e);
+                if (this.cbPrintAsn.Checked == true)
+                {
+                    PrintASN(inporcess);
+                }
+                ShipSuccessEvent(new Object[] { this.FlowCode, this.ItemCode, this.StartDate, this.EndDate, this.OrderSubType, this.IsFLowChange, false }, e);
             }
         }
         catch (BusinessErrorException ex)
@@ -536,6 +540,27 @@ public partial class Distribution_OrderIssue_List : ModuleBase
 
             }
         }
+    }
+
+    private void PrintASN(InProcessLocation inProcessLocation)
+    {
+        // inProcessLocation.InProcessLocationDetails = TheInProcessLocationDetailMgr.SummarizeInProcessLocationDetails(inProcessLocation.InProcessLocationDetails);
+        if (inProcessLocation.AsnTemplate == null || inProcessLocation.AsnTemplate == string.Empty)
+        {
+            ShowErrorMessage("ASN.PrintError.NoASNTemplate");
+            return;
+        }
+
+        IList<object> list = new List<object>();
+        list.Add(inProcessLocation);
+        list.Add(inProcessLocation.InProcessLocationDetails);
+
+        //报表url
+        string asnUrl = TheReportMgr.WriteToFile(inProcessLocation.AsnTemplate, list);
+        //客户端打印
+        //如果在UpdatePanel中调用JavaScript需要使用 ScriptManager.RegisterClientScriptBlock
+        //ScriptManager.RegisterClientScriptBlock(this, GetType(), "method", " <script language='javascript' type='text/javascript'>PrintOrder('" + asnUrl + "'); </script>", false);
+        Page.ClientScript.RegisterStartupScript(GetType(), "method", " <script language='javascript' type='text/javascript'>PrintOrder('" + asnUrl + "'); </script>");
     }
     
 }
