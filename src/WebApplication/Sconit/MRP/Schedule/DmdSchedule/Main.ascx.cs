@@ -615,7 +615,7 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
 
             if (!isExport)
             {
-                for (int i = 6; i < columnCount; i++)
+                for (int i = 6; i < columnCount; i=i+2)
                 {
                     string headerText = this.GV_List.Columns[i].SortExpression;
                     //string headerText = this.GV_List.Columns[i].HeaderText;
@@ -864,6 +864,15 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
             }
         }
 
+        //if (isFlow && this.rblListFormat.SelectedIndex == 1 && button == this.btnSearch)
+        //{
+        //    this.btnCreate2.Visible = true;
+        //}
+        //else
+        //{
+        //    this.btnCreate2.Visible = false;
+        //}
+
         DetachedCriteria criteria = DetachedCriteria.For<ExpectTransitInventory>();
         criteria.Add(Expression.Eq("EffectiveDate", this.EffDate));
         var expectTransitInventories = this.TheCriteriaMgr.FindAll<ExpectTransitInventory>(criteria);
@@ -1003,6 +1012,15 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
                             bfColumn.SortExpression = isWinTime ? scheduleHead.DateTo.ToString("yyyy-MM-dd") : scheduleHead.DateFrom.ToString("yyyy-MM-dd");
                             bfColumn.FooterText = isWinTime ? (scheduleHead.LastDateTo.HasValue ? scheduleHead.LastDateTo.Value.ToString("yyyy-MM-dd") : string.Empty) : (scheduleHead.LastDateFrom.HasValue ? scheduleHead.LastDateFrom.Value.ToString("yyyy-MM-dd") : string.Empty);
                             this.GV_List.Columns.Add(bfColumn);
+
+                            //if (this.rblListFormat.SelectedIndex == 1)
+                            //{
+                            //    TemplateField tf = new TemplateField();
+                            //    tf.HeaderText = "订单数";
+                            //    MyTemplate mt = new MyTemplate();
+                            //    tf.ItemTemplate = mt;
+                            //    this.GV_List.Columns.Add(tf);
+                            //}
                             break;
                         }
                     }
@@ -1318,6 +1336,26 @@ public partial class MRP_Schedule_DmdSchedule_Main : MainModuleBase
             Flow currentFlow = TheFlowMgr.LoadFlow(this.FlowCode, false);
             this.BindShift(currentFlow);
         }
+    }
+
+    public void btnCreate2_Click(object sender, EventArgs e)
+    {
+
+    }
+}
+
+public class MyTemplate : System.Web.UI.ITemplate
+{
+    public MyTemplate()
+    {
+
+    }
+    public void InstantiateIn(Control container)//关键实现这个方法
+    {
+        TextBox hi = new TextBox();
+        hi.Text = "";
+        hi.Width = new Unit(50);
+        container.Controls.Add(hi);
     }
 }
 
