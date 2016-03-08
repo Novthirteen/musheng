@@ -71,6 +71,19 @@ namespace com.Sconit.Entity.View
 				_qty = value;
 			}
 		}
+
+        private string _ipNo;
+        public string IpNo
+        {
+            get
+            {
+                return _ipNo;
+            }
+            set
+            {
+                _ipNo = value;
+            }
+        }
         
         #endregion
 

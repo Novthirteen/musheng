@@ -7,6 +7,7 @@
 		<many-to-one name="Flow" column="Flow" class="com.Sconit.Entity.MasterData.Flow, com.Sconit.Entity" cascade="none" />
 		<!--<property name="CurrentOperation" column="CurrOp" type="Int32"  />-->	
 		<many-to-one name="OrderDetail" column="OrderDetId" class="com.Sconit.Entity.MasterData.OrderDetail, com.Sconit.Entity" cascade="none" />
-		<property name="Qty" column="Qty" type="Decimal"  />	
-  	</class>
+    <property name="Qty" column="Qty" type="Decimal"  />
+    <property name="IpNo" column="IpNo" type="String" length="50" />
+  </class>
 </hibernate-mapping>
