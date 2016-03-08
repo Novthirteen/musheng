@@ -99,7 +99,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="${MasterData.ActingBill.CurrentBillQty}">
                     <ItemTemplate>
-                        <asp:TextBox ID="tbQty" runat="server" onmouseup="if(!readOnly)select();" Width="50"
+                        <asp:TextBox ID="tbQty" runat="server" onmouseup="if(!readOnly)select();" Width="50" OnTextChanged="tbQty_TextChanged" AutoPostBack="true"
                             onchange="CalCulateRowAmount(this, 'tbQty', 'BaseOnDiscountRate', 'hfUnitPrice', 'tbQty', 'tbDiscount', 'tbDiscountRate', 'tbAmount',false);"></asp:TextBox>
                         <span style="display: none">
                             <asp:TextBox ID="tbDiscountRate" runat="server" Text="0" />

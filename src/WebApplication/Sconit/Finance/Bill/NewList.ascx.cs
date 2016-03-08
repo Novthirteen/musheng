@@ -188,7 +188,30 @@ public partial class Finance_Bill_NewList : ListModuleBase
     }
     protected void CheckAll_CheckedChanged(Object sender, EventArgs e)
     {
-        
+        CheckBox chk = (CheckBox)sender;
+
+        if (chk.Checked)
+        {
+            double totalQty = 0;
+            double totalAmount = 0;
+            foreach (GridViewRow gvr in GV_List.Rows)
+            {
+                CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
+                totalQty += double.Parse(((TextBox)gvr.FindControl("tbQty")).Text);
+                totalAmount += double.Parse(((TextBox)gvr.FindControl("tbAmount")).Text);
+            }
+            this.ltlCurrentBillQtyTotal1.Text = totalQty.ToString();
+            this.ltlAmountTotal1.Text = totalAmount.ToString();
+        }
+        else
+        {
+            foreach (GridViewRow gvr in GV_List.Rows)
+            {
+                this.ltlCurrentBillQtyTotal1.Text = "0";
+                this.ltlAmountTotal1.Text = "0";
+
+            }
+        }
     }
 
     public void InitializationTotal()
@@ -197,4 +220,20 @@ public partial class Finance_Bill_NewList : ListModuleBase
         ltlCurrentBillQtyTotal1.Text = "0";
     }
     //add by ljz end
+    protected void tbQty_TextChanged(object sender, EventArgs e)
+    {
+        double totalQty = 0;
+        double totalAmount = 0;
+        foreach (GridViewRow gvr in GV_List.Rows)
+        {
+            CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
+            if (cbCheckBoxGroup.Checked)
+            {
+                totalQty += double.Parse(((TextBox)gvr.FindControl("tbQty")).Text);
+                totalAmount += double.Parse(((TextBox)gvr.FindControl("tbAmount")).Text);
+            }
+        }
+        this.ltlCurrentBillQtyTotal1.Text = totalQty.ToString();
+        this.ltlAmountTotal1.Text = totalAmount.ToString();
+    }
 }
