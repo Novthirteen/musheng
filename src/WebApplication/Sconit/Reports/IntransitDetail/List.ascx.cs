@@ -10,6 +10,8 @@ using NHibernate.Expression;
 using com.Sconit.Entity.View;
 using com.Sconit.Entity.Exception;
 using System.Text;
+using System.Data.SqlClient;
+using System.Data;
 
 public partial class Reports_IntransitDetail_List : ListModuleBase
 {
@@ -99,49 +101,61 @@ public partial class Reports_IntransitDetail_List : ListModuleBase
         }
 
         #region 查询
-        DetachedCriteria selectCriteria = DetachedCriteria.For(typeof(InProcessLocationDetailTrackView));
-        selectCriteria.CreateAlias("OrderDetail", "od");
-        selectCriteria.CreateAlias("OrderDetail.Item", "oi");
-        selectCriteria.CreateAlias("Flow", "f");
+        IList<SqlParameter> commandParameters = new List<SqlParameter>();;
+        string sql = @"select om.OrderNo, im.IpNo, pf.Name, pt.Name, od.Item, i.Desc1 + '[' + ISNULL(i.Desc2, '') + ']', od.RefItemCode, od.Uom, od.UC, id.Qty - id.RecQty
+                        from IpMstr as im 
+                        inner join IpDet as id on im.IpNo = id.IpNo
+                        inner join OrderLocTrans as olt on id.OrderLocTransId = olt.Id
+                        inner join OrderDet as od on olt.OrderDetId = od.Id
+                        inner join OrderMstr as om on od.OrderNo = om.OrderNo
+                        inner join Party as pf on om.PartyFrom = pf.Code
+                        inner join Party as pt on om.PartyTo = pt.Code
+                        inner join Item as i on od.Item = i.Code
+                        WHERE im.Status IN ('Create', 'In-Process') and im.Type = 'Nml' and 
+                            id.Qty > id.RecQty and om.Type = 'Procurement' ";
 
         if (FlowCode != null && FlowCode.Trim() != string.Empty)
-            selectCriteria.Add(Expression.Eq("f.Code", FlowCode));
+        {
+            sql += "and om.Flow = @Flow ";
+            SqlParameter parameter= new SqlParameter();
+            parameter = new SqlParameter("@Flow", SqlDbType.NVarChar, 50);
+            parameter.Value = FlowCode;
+            commandParameters.Add(parameter);
+        }
+          
         if (itemCode != null && itemCode.Trim() != string.Empty)
         {
-           // selectCriteria.Add(Expression.Eq("oi.Code", itemCode));
+            sql += "and (i.Code like @Item or i.Desc1 like @Item or i.Desc2 like @Item)";
 
-            selectCriteria.Add(
-               Expression.Like("oi.Code", itemCode, MatchMode.Anywhere) ||
-               Expression.Like("oi.Desc1", itemCode, MatchMode.Anywhere) ||
-               Expression.Like("oi.Desc2", itemCode, MatchMode.Anywhere)
-               );
+            SqlParameter parameter= new SqlParameter();
+            parameter = new SqlParameter("@Item", SqlDbType.NVarChar, 50);
+            parameter.Value = itemCode;
+            commandParameters.Add(parameter);
         }
-        selectCriteria.AddOrder(Order.Asc("od.Item"));
-        selectCriteria.AddOrder(Order.Asc("od.Uom"));
-        selectCriteria.AddOrder(Order.Asc("od.UnitCount"));
-        //selectCriteria.AddOrder(Order.Asc("CurrentOperation"));
 
-        IList<InProcessLocationDetailTrackView> inProcessLocationDetailTrackViewList = this.TheCriteriaMgr.FindAll<InProcessLocationDetailTrackView>(selectCriteria);
+        DataSet dataSet = this.TheGenericMgr.GetDatasetBySql(sql, commandParameters.ToArray());
         #endregion
 
+
+
         #region 转换查询结果为IntransitDetail
-        if (inProcessLocationDetailTrackViewList != null && inProcessLocationDetailTrackViewList.Count > 0)
+        if (dataSet != null && dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
         {
             IntransitDetail intransitDetail = null;
             IList<IntransitDetail> intransitDetailList = new List<IntransitDetail>();
-            foreach (InProcessLocationDetailTrackView inProcessLocationDetailTrackView in inProcessLocationDetailTrackViewList)
+            for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
             {
                 intransitDetail = new IntransitDetail();
-                intransitDetail.PartyFrom = inProcessLocationDetailTrackView.OrderDetail.OrderHead.PartyFrom.Name;
-                intransitDetail.PartyTo = inProcessLocationDetailTrackView.OrderDetail.OrderHead.PartyTo.Name;
-                intransitDetail.OrderNo = inProcessLocationDetailTrackView.OrderDetail.OrderHead.OrderNo;
-                intransitDetail.ItemCode = inProcessLocationDetailTrackView.OrderDetail.Item.Code;
-                intransitDetail.ItemName = inProcessLocationDetailTrackView.OrderDetail.Item.Description;
-                intransitDetail.ReferenceItem = inProcessLocationDetailTrackView.OrderDetail.ReferenceItemCode;
-                intransitDetail.Uom = inProcessLocationDetailTrackView.OrderDetail.Uom.Code;
-                intransitDetail.UnitCount = inProcessLocationDetailTrackView.OrderDetail.UnitCount;
-                intransitDetail.DefaultActivity = inProcessLocationDetailTrackView.Qty;
-                intransitDetail.IpNo = inProcessLocationDetailTrackView.IpNo;
+                intransitDetail.OrderNo = dataSet.Tables[0].Rows[i][0] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][0];
+                intransitDetail.IpNo = dataSet.Tables[0].Rows[i][1] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][1];
+                intransitDetail.PartyFrom = dataSet.Tables[0].Rows[i][2] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][2];
+                intransitDetail.PartyTo = dataSet.Tables[0].Rows[i][3] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][3];
+                intransitDetail.ItemCode = dataSet.Tables[0].Rows[i][4] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][4];
+                intransitDetail.ItemName = dataSet.Tables[0].Rows[i][5] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][5];
+                intransitDetail.ReferenceItem = dataSet.Tables[0].Rows[i][6] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][6];
+                intransitDetail.Uom = dataSet.Tables[0].Rows[i][7] is DBNull ? string.Empty : (string)dataSet.Tables[0].Rows[i][7];
+                intransitDetail.UnitCount = (decimal)dataSet.Tables[0].Rows[i][8];
+                intransitDetail.DefaultActivity = (decimal)dataSet.Tables[0].Rows[i][9];
 
                 intransitDetailList.Add(intransitDetail);
 
