@@ -115,9 +115,10 @@ public partial class MasterData_Bom_BomDetail_Main : MainModuleBase
     void Search_Render(object sender, EventArgs e)
     {
         this.ucImport.Visible = false;
-        this.ucList.SetSearchCriteria((DetachedCriteria)((object[])sender)[0], (DetachedCriteria)((object[])sender)[1]);
+        this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], string.Empty, (bool)((object[])sender)[2], (bool)((object[])sender)[3], 0);
+        //this.ucList.SetSearchCriteria((DetachedCriteria)((object[])sender)[0], (DetachedCriteria)((object[])sender)[1]);
         this.ucList.Visible = true;
-        this.ucList.UpdateView();
+        //this.ucList.UpdateView();
     }
 
     //The event handler when user click button "New" button

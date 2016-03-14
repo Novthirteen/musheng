@@ -207,5 +207,9 @@ namespace com.Sconit.Entity.MasterData
         public int BomLevel { get; set; }
 
         public decimal AccumQty { get; set; }
+
+        public bool IsNewRow { get; set; }
+
+        public bool IsEditRow { get; set; }
     }
 }

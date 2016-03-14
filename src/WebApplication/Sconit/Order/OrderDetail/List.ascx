@@ -16,6 +16,7 @@
         CalCulateRowAmount(obj, "tbOrderQty", "BaseOnDiscountRate", "tbUnitPrice", "tbOrderQty", "tbDiscount", "tbDiscountRate", "tbPrice", '#<%= tbOrderDiscount.ClientID %>', '#<%= tbOrderDiscountRate.ClientID %>', '#<%= tbOrderDetailPrice.ClientID %>', '#<%= tbOrderPrice.ClientID %>', isBlank);
     }
     function GenerateFlowDetail(obj) {
+        debugger;
         var objId = $(obj).attr("id");
         var parentId = objId.substring(0, objId.length - "tbItemCode_suggest".length);
         if ($(obj).val() != "") {

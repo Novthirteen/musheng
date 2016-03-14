@@ -51,7 +51,15 @@ public partial class MasterData_Bom_BomDetail_Search : SearchModuleBase
 
     protected void btnNew_Click(object sender, EventArgs e)
     {
-        NewEvent(sender, e);
+        if (SearchEvent != null)
+        {
+            SearchEvent(new object[] { this.tbParCode.Text, this.tbCompCode.Text, this.cbIncludeInactive.Checked, true }, null);
+            //object[] criteriaParam = CollectParam();
+            //if (criteriaParam != null)
+            //{
+            //    SearchEvent(criteriaParam, null);
+            //}
+        }
     }
 
 
@@ -105,11 +113,12 @@ public partial class MasterData_Bom_BomDetail_Search : SearchModuleBase
     {
         if (SearchEvent != null)
         {
-            object[] criteriaParam = CollectParam();
-            if (criteriaParam != null)
-            {
-                SearchEvent(criteriaParam, null);
-            }
+            SearchEvent(new object[] { this.tbParCode.Text, this.tbCompCode.Text, this.cbIncludeInactive.Checked, false }, null);
+            //object[] criteriaParam = CollectParam();
+            //if (criteriaParam != null)
+            //{
+            //    SearchEvent(criteriaParam, null);
+            //}
         }
     }
 
