@@ -70,7 +70,9 @@ namespace com.Sconit.Service.MasterData.Impl
         public IBomMgrE bomMgr { set; get; }
         public IBomDetailMgrE bomDetailMgr { set; get; }
         public IRoutingDetailMgrE routingDetailMgr { set; get; }
-        public IOrderProductionPlanMgrE orderProductionPlanMgr{ get; set; }
+        public IOrderProductionPlanMgrE orderProductionPlanMgr { get; set; }
+
+        public IExpectTransitInventoryMgrE expectTransitInventoryMgr { get; set; }
 
         private string[] FlowHead2OrderHeadCloneFields = new string[] 
             { 
@@ -1431,6 +1433,32 @@ namespace com.Sconit.Service.MasterData.Impl
                 orderHead.LastModifyUser = user;
 
                 this.orderHeadMgrE.UpdateOrderHead(orderHead);
+
+                if ((orderHead.Type == BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_CUSTOMERGOODS
+                    || orderHead.Type == BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT)
+                    && orderHead.SubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML)
+                {
+                    foreach (OrderDetail orderDetail in orderHead.OrderDetails)
+                    {
+
+                        ExpectTransitInventory expectTransitInventory = (from olt in orderDetail.OrderLocationTransactions
+                                                                         where olt.IOType == BusinessConstants.IO_TYPE_IN
+                                                                         select new ExpectTransitInventory
+                                                                         {
+                                                                             OrderNo = orderHead.OrderNo,
+                                                                             Flow = orderHead.Flow,
+                                                                             Location = olt.Location.Code,
+                                                                             Item = orderDetail.Item.Code,
+                                                                             Uom = orderDetail.Uom.Code,
+                                                                             UnitCount = orderDetail.UnitCount,
+                                                                             StartTime = orderHead.StartTime,
+                                                                             WindowTime = orderHead.WindowTime,
+                                                                             TransitQty = orderDetail.OrderedQty,
+                                                                             EffectiveDate = DateTime.Now.Date
+                                                                         }).FirstOrDefault();
+                        this.expectTransitInventoryMgr.CreateExpectTransitInventory(expectTransitInventory);
+                    }
+                }
 
                 #region 判断自动Start
                 if (orderHead.IsAutoStart)
@@ -3522,13 +3550,13 @@ namespace com.Sconit.Service.MasterData.Impl
 
                 #region 根据生产单找是否有计划单 更新计划单状态
                 IList<OrderProductionPlan> oppList = orderProductionPlanMgr.GetOrderProductionPlanByOrderNo(orderHead.OrderNo);
-                if (oppList.Count <= 0) 
+                if (oppList.Count <= 0)
                 {
                     //找不到计划单
                 }
                 else
                 {
-                    foreach(OrderProductionPlan opp in oppList)
+                    foreach (OrderProductionPlan opp in oppList)
                     {
                         opp.Status = BusinessConstants.CODE_MASTER_STATUS_VALUE_COMPLETE;
                         opp.ActualEndTime = nowDate;

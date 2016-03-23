@@ -70,6 +70,48 @@ namespace com.Sconit.Entity.MRP
         public decimal Qty39 { get; set; }
         public decimal Qty40 { get; set; }
 
+        public decimal ReqQty0 { get; set; }
+        public decimal ReqQty1 { get; set; }
+        public decimal ReqQty2 { get; set; }
+        public decimal ReqQty3 { get; set; }
+        public decimal ReqQty4 { get; set; }
+        public decimal ReqQty5 { get; set; }
+        public decimal ReqQty6 { get; set; }
+        public decimal ReqQty7 { get; set; }
+        public decimal ReqQty8 { get; set; }
+        public decimal ReqQty9 { get; set; }
+        public decimal ReqQty10 { get; set; }
+        public decimal ReqQty11 { get; set; }
+        public decimal ReqQty12 { get; set; }
+        public decimal ReqQty13 { get; set; }
+        public decimal ReqQty14 { get; set; }
+        public decimal ReqQty15 { get; set; }
+        public decimal ReqQty16 { get; set; }
+        public decimal ReqQty17 { get; set; }
+        public decimal ReqQty18 { get; set; }
+        public decimal ReqQty19 { get; set; }
+        public decimal ReqQty20 { get; set; }
+        public decimal ReqQty21 { get; set; }
+        public decimal ReqQty22 { get; set; }
+        public decimal ReqQty23 { get; set; }
+        public decimal ReqQty24 { get; set; }
+        public decimal ReqQty25 { get; set; }
+        public decimal ReqQty26 { get; set; }
+        public decimal ReqQty27 { get; set; }
+        public decimal ReqQty28 { get; set; }
+        public decimal ReqQty29 { get; set; }
+        public decimal ReqQty30 { get; set; }
+        public decimal ReqQty31 { get; set; }
+        public decimal ReqQty32 { get; set; }
+        public decimal ReqQty33 { get; set; }
+        public decimal ReqQty34 { get; set; }
+        public decimal ReqQty35 { get; set; }
+        public decimal ReqQty36 { get; set; }
+        public decimal ReqQty37 { get; set; }
+        public decimal ReqQty38 { get; set; }
+        public decimal ReqQty39 { get; set; }
+        public decimal ReqQty40 { get; set; }
+
         public decimal ActQty0 { get; set; }
         public decimal ActQty1 { get; set; }
         public decimal ActQty2 { get; set; }

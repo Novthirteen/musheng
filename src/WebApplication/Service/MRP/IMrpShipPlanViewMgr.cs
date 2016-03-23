@@ -17,6 +17,9 @@ namespace com.Sconit.Service.MRP
         ScheduleView TransferMrpShipPlanViews2ScheduleView(IList<MrpShipPlanView> mrpShipPlanViews, IList<ExpectTransitInventoryView> expectTransitInventoryViews,
             IList<ItemDiscontinue> itemDiscontinueList, string locOrFlow, string winOrStartTime);
 
+        ScheduleView TransferMrpShipPlanViews2ScheduleView2(IList<MrpShipPlanView> mrpShipPlanViews, IList<ExpectTransitInventoryView> expectTransitInventoryViews,
+           IList<ItemDiscontinue> itemDiscontinueList);
+
         #endregion Customized Methods
     }
 }
