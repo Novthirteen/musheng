@@ -94,6 +94,11 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         get { return this.ucFlow.Text.Trim(); }
     }
 
+    private int dateType
+    {
+        get { return Convert.ToInt32(this.rblDateType.SelectedValue); }
+    }
+
     private string itemCode
     {
         get { return this.tbItemCode.Text.Trim(); }
@@ -790,65 +795,129 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     private IList<ExpectTransitInventoryView> ExpectTransitInventoryToExpectTransitInventoryView(IList<ExpectTransitInventory> expectTransitInventories)
     {
-        IList<ExpectTransitInventoryView> transitInventoryViews = expectTransitInventories.GroupBy(p =>
-            new
+        if (this.dateType == 1)
+        {
+            foreach(ExpectTransitInventory expectTransitInventory in expectTransitInventories) 
             {
-                p.Flow,
-                p.Item,
-                p.Uom,
-                p.UnitCount,
-                p.Location,
-                StartTime = this.rblListFormat.SelectedIndex == 0 ? p.StartTime.Date : DateTime.Parse(p.StartTime.ToString("yyyy-MM-01")),
-                WindowTime = this.rblListFormat.SelectedIndex == 0 ? p.WindowTime.Date : DateTime.Parse(p.WindowTime.ToString("yyyy-MM-01")),
-                p.EffectiveDate
-            }, (k, g) => new ExpectTransitInventoryView
-            {
-                Id = g.Max(q => q.Id),
-                Flow = k.Flow,
-                Item = k.Item,
-                Uom = k.Uom,
-                UnitCount = k.UnitCount,
-                Location = k.Location,
-                StartTime = k.StartTime,
-                WindowTime = k.WindowTime,
-                TransitQty = g.Sum(q => q.TransitQty),
-                EffectiveDate = k.EffectiveDate
+                if (expectTransitInventory.StartTime.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    expectTransitInventory.StartTime = expectTransitInventory.StartTime.Date.AddDays(-6);
+                }
+                else
+                {
+                    expectTransitInventory.StartTime = expectTransitInventory.StartTime.Date.AddDays(1 - (int)expectTransitInventory.StartTime.DayOfWeek);
+                }
+
+                if (expectTransitInventory.WindowTime.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    expectTransitInventory.WindowTime = expectTransitInventory.WindowTime.Date.AddDays(-6);
+                }
+                else
+                {
+                    expectTransitInventory.WindowTime = expectTransitInventory.WindowTime.Date.AddDays(1 - (int)expectTransitInventory.StartTime.DayOfWeek);
+                }
             }
-        ).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
+        }
+        else if (this.dateType == 2)
+        {
+            foreach (ExpectTransitInventory expectTransitInventory in expectTransitInventories)
+            {
+                expectTransitInventory.StartTime = DateTime.Parse(expectTransitInventory.StartTime.ToString("yyyy-MM-01"));
+                expectTransitInventory.WindowTime = DateTime.Parse(expectTransitInventory.WindowTime.ToString("yyyy-MM-01"));
+            }
+        }
+
+        IList<ExpectTransitInventoryView> transitInventoryViews = expectTransitInventories.GroupBy(p =>
+                  new
+                  {
+                      p.Flow,
+                      p.Item,
+                      p.Uom,
+                      p.UnitCount,
+                      p.Location,
+                      StartTime = p.StartTime.Date,
+                      WindowTime = p.WindowTime.Date,
+                      p.EffectiveDate
+                  }, (k, g) => new ExpectTransitInventoryView
+                  {
+                      Id = g.Max(q => q.Id),
+                      Flow = k.Flow,
+                      Item = k.Item,
+                      Uom = k.Uom,
+                      UnitCount = k.UnitCount,
+                      Location = k.Location,
+                      StartTime = k.StartTime,
+                      WindowTime = k.WindowTime,
+                      TransitQty = g.Sum(q => q.TransitQty),
+                      EffectiveDate = k.EffectiveDate
+                  }
+              ).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
         return transitInventoryViews;
     }
 
     private IList<MrpShipPlanView> MrpShipPlanToMrpShipPlanView(IList<MrpShipPlan> mrpShipPlans)
     {
+        if (dateType == 1)
+        {
+            foreach (MrpShipPlan mrpShipPlan in mrpShipPlans)
+            {
+                if (mrpShipPlan.StartTime.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    mrpShipPlan.StartTime = mrpShipPlan.StartTime.Date.AddDays(-6);
+                }
+                else
+                {
+                    mrpShipPlan.StartTime = mrpShipPlan.StartTime.Date.AddDays(1 - (int)mrpShipPlan.StartTime.DayOfWeek);
+                }
+
+                if (mrpShipPlan.WindowTime.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    mrpShipPlan.WindowTime = mrpShipPlan.WindowTime.Date.AddDays(-6);
+                }
+                else
+                {
+                    mrpShipPlan.WindowTime = mrpShipPlan.WindowTime.Date.AddDays(1 - (int)mrpShipPlan.WindowTime.DayOfWeek);
+                }
+            }
+        }
+        else if (dateType == 2)
+        {
+            foreach (MrpShipPlan mrpShipPlan in mrpShipPlans)
+            {
+                mrpShipPlan.StartTime = DateTime.Parse(mrpShipPlan.StartTime.ToString("yyyy-MM-01"));
+                mrpShipPlan.WindowTime = DateTime.Parse(mrpShipPlan.WindowTime.ToString("yyyy-MM-01"));
+            }
+        }
+
         IList<MrpShipPlanView> mrpShipPlanViews = mrpShipPlans.GroupBy(p =>
-            new
-            {
-                p.Flow,
-                p.FlowType,
-                p.Item,
-                p.ItemDescription,
-                p.ItemReference,
-                p.BaseUom,
-                p.UnitCount,
-                p.LocationTo,
-                StartTime = this.rblListFormat.SelectedIndex == 0 ? p.StartTime.Date : DateTime.Parse(p.StartTime.ToString("yyyy-MM-01")),
-                WindowTime = this.rblListFormat.SelectedIndex == 0 ? p.WindowTime.Date : DateTime.Parse(p.WindowTime.ToString("yyyy-MM-01")),
-                p.EffectiveDate
-            }, (k, g) => new MrpShipPlanView
-            {
-                Flow = k.Flow,
-                FlowType = k.FlowType,
-                Item = k.Item,
-                ItemDescription = k.ItemDescription,
-                ItemReference = k.ItemReference,
-                Uom = k.BaseUom,
-                UnitCount = k.UnitCount,
-                Location = k.LocationTo,
-                StartTime = k.StartTime,
-                WindowTime = k.WindowTime,
-                Qty = g.Sum(j => j.Qty * j.UnitQty),
-                EffectiveDate = k.EffectiveDate
-            }).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
+               new
+               {
+                   p.Flow,
+                   p.FlowType,
+                   p.Item,
+                   p.ItemDescription,
+                   p.ItemReference,
+                   p.BaseUom,
+                   p.UnitCount,
+                   p.LocationTo,
+                   StartTime = p.StartTime.Date,
+                   WindowTime = p.WindowTime.Date,
+                   p.EffectiveDate
+               }, (k, g) => new MrpShipPlanView
+               {
+                   Flow = k.Flow,
+                   FlowType = k.FlowType,
+                   Item = k.Item,
+                   ItemDescription = k.ItemDescription,
+                   ItemReference = k.ItemReference,
+                   Uom = k.BaseUom,
+                   UnitCount = k.UnitCount,
+                   Location = k.LocationTo,
+                   StartTime = k.StartTime,
+                   WindowTime = k.WindowTime,
+                   Qty = g.Sum(j => j.Qty * j.UnitQty),
+                   EffectiveDate = k.EffectiveDate
+               }).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
         return mrpShipPlanViews;
     }
 
