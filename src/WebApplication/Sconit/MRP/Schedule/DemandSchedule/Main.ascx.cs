@@ -74,9 +74,9 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     {
         get
         {
-          
-                return null;
-          
+
+            return null;
+
         }
     }
 
@@ -84,7 +84,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     {
         get
         {
-                return null;
+            return null;
         }
     }
 
@@ -98,6 +98,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     {
         get { return this.tbItemCode.Text.Trim(); }
     }
+
+    private int dateType
+    {
+        get { return int.Parse(this.rblDateType.SelectedValue); }
+    }
+
 
     private bool isWinTime
     {
@@ -558,7 +564,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
             if (!isExport)
             {
-                for (int i = 6; i < columnCount; i=i+2)
+                for (int i = 6; i < columnCount; i = i + 2)
                 {
                     string headerText = this.GV_List.Columns[i].SortExpression;
                     //string headerText = this.GV_List.Columns[i].HeaderText;
@@ -589,7 +595,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                             var txts = e.Row.Cells[i].Text.Split('|');
                             e.Row.Cells[i].Text = txts[0] + "|<font color='blue'>" + qty.ToString("0.####") + "</font>)";
                         }
-                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails,ii);
+                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails, ii);
                         ii++;
                         e.Row.Cells[i].Attributes.Add("title", detailTitle);
                     }
@@ -726,7 +732,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         string actQty = "ActQty" + ColumnNum.ToString();
         string disconActQty = "DisconActQty" + ColumnNum.ToString();
 
-      
+
 
         DetachedCriteria criteria = DetachedCriteria.For<ExpectTransitInventory>();
         criteria.Add(Expression.Eq("EffectiveDate", this.EffDate));
@@ -819,65 +825,129 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     private IList<ExpectTransitInventoryView> ExpectTransitInventoryToExpectTransitInventoryView(IList<ExpectTransitInventory> expectTransitInventories)
     {
-        IList<ExpectTransitInventoryView> transitInventoryViews = expectTransitInventories.GroupBy(p =>
-            new
+        if (this.dateType == 1)
+        {
+            foreach(ExpectTransitInventory expectTransitInventory in expectTransitInventories) 
             {
-                p.Flow,
-                p.Item,
-                p.Uom,
-                p.UnitCount,
-                p.Location,
-                StartTime = this.rblListFormat.SelectedIndex == 0 ? p.StartTime.Date : DateTime.Parse(p.StartTime.ToString("yyyy-MM-01")),
-                WindowTime = this.rblListFormat.SelectedIndex == 0 ? p.WindowTime.Date : DateTime.Parse(p.WindowTime.ToString("yyyy-MM-01")),
-                p.EffectiveDate
-            }, (k, g) => new ExpectTransitInventoryView
-            {
-                Id = g.Max(q => q.Id),
-                Flow = k.Flow,
-                Item = k.Item,
-                Uom = k.Uom,
-                UnitCount = k.UnitCount,
-                Location = k.Location,
-                StartTime = k.StartTime,
-                WindowTime = k.WindowTime,
-                TransitQty = g.Sum(q => q.TransitQty),
-                EffectiveDate = k.EffectiveDate
+                if (expectTransitInventory.StartTime.DayOfWeek == 0)
+                {
+                    expectTransitInventory.StartTime = expectTransitInventory.StartTime.AddDays(-6);
+                }
+                else
+                {
+                    expectTransitInventory.StartTime = expectTransitInventory.StartTime.AddDays((int)expectTransitInventory.StartTime.DayOfWeek - 1);
+                }
+
+                if (expectTransitInventory.WindowTime.DayOfWeek == 0)
+                {
+                    expectTransitInventory.WindowTime = expectTransitInventory.WindowTime.AddDays(-6);
+                }
+                else
+                {
+                    expectTransitInventory.WindowTime = expectTransitInventory.WindowTime.AddDays((int)expectTransitInventory.WindowTime.DayOfWeek - 1);
+                }
             }
-        ).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
+        }
+        else if (this.dateType == 2)
+        {
+            foreach (ExpectTransitInventory expectTransitInventory in expectTransitInventories)
+            {
+                expectTransitInventory.StartTime = DateTime.Parse(expectTransitInventory.StartTime.ToString("yyyy-MM-01"));
+                expectTransitInventory.WindowTime = DateTime.Parse(expectTransitInventory.WindowTime.ToString("yyyy-MM-01"));
+            }
+        }
+
+        IList<ExpectTransitInventoryView> transitInventoryViews = expectTransitInventories.GroupBy(p =>
+                  new
+                  {
+                      p.Flow,
+                      p.Item,
+                      p.Uom,
+                      p.UnitCount,
+                      p.Location,
+                      StartTime = p.StartTime.Date,
+                      WindowTime = p.WindowTime.Date,
+                      p.EffectiveDate
+                  }, (k, g) => new ExpectTransitInventoryView
+                  {
+                      Id = g.Max(q => q.Id),
+                      Flow = k.Flow,
+                      Item = k.Item,
+                      Uom = k.Uom,
+                      UnitCount = k.UnitCount,
+                      Location = k.Location,
+                      StartTime = k.StartTime,
+                      WindowTime = k.WindowTime,
+                      TransitQty = g.Sum(q => q.TransitQty),
+                      EffectiveDate = k.EffectiveDate
+                  }
+              ).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
         return transitInventoryViews;
     }
 
     private IList<MrpShipPlanView> MrpShipPlanToMrpShipPlanView(IList<MrpShipPlan> mrpShipPlans)
     {
+        if (dateType == 1)
+        {
+            foreach (MrpShipPlan mrpShipPlan in mrpShipPlans)
+            {
+                if (mrpShipPlan.StartTime.DayOfWeek == 0)
+                {
+                    mrpShipPlan.StartTime = mrpShipPlan.StartTime.AddDays(-6);
+                }
+                else
+                {
+                    mrpShipPlan.StartTime = mrpShipPlan.StartTime.AddDays((int)mrpShipPlan.StartTime.DayOfWeek - 1);
+                }
+
+                if (mrpShipPlan.WindowTime.DayOfWeek == 0)
+                {
+                    mrpShipPlan.WindowTime = mrpShipPlan.WindowTime.AddDays(-6);
+                }
+                else
+                {
+                    mrpShipPlan.WindowTime = mrpShipPlan.WindowTime.AddDays((int)mrpShipPlan.WindowTime.DayOfWeek - 1);
+                }
+            }
+        }
+        else if (dateType == 2)
+        {
+            foreach (MrpShipPlan mrpShipPlan in mrpShipPlans)
+            {
+                mrpShipPlan.StartTime = DateTime.Parse(mrpShipPlan.StartTime.ToString("yyyy-MM-01"));
+                mrpShipPlan.WindowTime = DateTime.Parse(mrpShipPlan.WindowTime.ToString("yyyy-MM-01"));
+            }
+        }
+
         IList<MrpShipPlanView> mrpShipPlanViews = mrpShipPlans.GroupBy(p =>
-            new
-            {
-                p.Flow,
-                p.FlowType,
-                p.Item,
-                p.ItemDescription,
-                p.ItemReference,
-                p.BaseUom,
-                p.UnitCount,
-                p.LocationTo,
-                StartTime = this.rblListFormat.SelectedIndex == 0 ? p.StartTime.Date : DateTime.Parse(p.StartTime.ToString("yyyy-MM-01")),
-                WindowTime = this.rblListFormat.SelectedIndex == 0 ? p.WindowTime.Date : DateTime.Parse(p.WindowTime.ToString("yyyy-MM-01")),
-                p.EffectiveDate
-            }, (k, g) => new MrpShipPlanView
-            {
-                Flow = k.Flow,
-                FlowType = k.FlowType,
-                Item = k.Item,
-                ItemDescription = k.ItemDescription,
-                ItemReference = k.ItemReference,
-                Uom = k.BaseUom,
-                UnitCount = k.UnitCount,
-                Location = k.LocationTo,
-                StartTime = k.StartTime,
-                WindowTime = k.WindowTime,
-                Qty = g.Sum(j => j.Qty * j.UnitQty),
-                EffectiveDate = k.EffectiveDate
-            }).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
+               new
+               {
+                   p.Flow,
+                   p.FlowType,
+                   p.Item,
+                   p.ItemDescription,
+                   p.ItemReference,
+                   p.BaseUom,
+                   p.UnitCount,
+                   p.LocationTo,
+                   StartTime = p.StartTime.Date,
+                   WindowTime = p.WindowTime.Date,
+                   p.EffectiveDate
+               }, (k, g) => new MrpShipPlanView
+               {
+                   Flow = k.Flow,
+                   FlowType = k.FlowType,
+                   Item = k.Item,
+                   ItemDescription = k.ItemDescription,
+                   ItemReference = k.ItemReference,
+                   Uom = k.BaseUom,
+                   UnitCount = k.UnitCount,
+                   Location = k.LocationTo,
+                   StartTime = k.StartTime,
+                   WindowTime = k.WindowTime,
+                   Qty = g.Sum(j => j.Qty * j.UnitQty),
+                   EffectiveDate = k.EffectiveDate
+               }).OrderBy(p => p.Flow).ThenBy(p => p.Item).ThenBy(p => p.StartTime).ToList();
         return mrpShipPlanViews;
     }
 
@@ -987,7 +1057,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         this.fld_Group.Visible = false;
     }
 
-    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails,int ii)
+    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails, int ii)
     {
         StringBuilder detail = new StringBuilder();
         var mrpShipPlans = this.mrpShipPlanDic.ValueOrDefault(itemCode);
@@ -1017,7 +1087,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 }
 
             }
-            
+
             if (this.rblListFormat.SelectedIndex == 0)
             {
                 if (ii == 0)
