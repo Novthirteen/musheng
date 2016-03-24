@@ -200,287 +200,287 @@ namespace com.Sconit.Entity.MRP
         {
             get
             {
-                return FormatQty(Qty0) + "(" + FormatActQty(ActQty0) + " | " + FormatDisconActQty(DisconActQty0) + ")";
+                return FormatQty(Qty0) + "(" + FormatReqQty(ReqQty0) +" | " + FormatActQty(ActQty0) + " | " + FormatDisconActQty(DisconActQty0) + ")";
             }
         }
         public string DisplayQty1
         {
             get
             {
-                return FormatQty(Qty1) + "(" + FormatActQty(ActQty1) + " | " + FormatDisconActQty(DisconActQty1) + ")";
+                return FormatQty(Qty1) + "(" + FormatReqQty(ReqQty1) + " | " + FormatActQty(ActQty1) + " | " + FormatDisconActQty(DisconActQty1) + ")";
             }
         }
         public string DisplayQty2
         {
             get
             {
-                return FormatQty(Qty2) + "(" + FormatActQty(ActQty2) + " | " + FormatDisconActQty(DisconActQty2) + ")";
+                return FormatQty(Qty2) + "(" + FormatReqQty(ReqQty2) + " | " + FormatActQty(ActQty2) + " | " + FormatDisconActQty(DisconActQty2) + ")";
             }
         }
         public string DisplayQty3
         {
             get
             {
-                return FormatQty(Qty3) + "(" + FormatActQty(ActQty3) + " | " + FormatDisconActQty(DisconActQty3) + ")";
+                return FormatQty(Qty3) + "(" + FormatReqQty(ReqQty3) + " | " + FormatActQty(ActQty3) + " | " + FormatDisconActQty(DisconActQty3) + ")";
             }
         }
         public string DisplayQty4
         {
             get
             {
-                return FormatQty(Qty4) + "(" + FormatActQty(ActQty4) + " | " + FormatDisconActQty(DisconActQty4) + ")";
+                return FormatQty(Qty4) + "(" + FormatReqQty(ReqQty4) + " | " + FormatActQty(ActQty4) + " | " + FormatDisconActQty(DisconActQty4) + ")";
             }
         }
         public string DisplayQty5
         {
             get
             {
-                return FormatQty(Qty5) + "(" + FormatActQty(ActQty5) + " | " + FormatDisconActQty(DisconActQty5) + ")";
+                return FormatQty(Qty5) + "(" + FormatReqQty(ReqQty5) + " | " + FormatActQty(ActQty5) + " | " + FormatDisconActQty(DisconActQty5) + ")";
             }
         }
         public string DisplayQty6
         {
             get
             {
-                return FormatQty(Qty6) + "(" + FormatActQty(ActQty6) + " | " + FormatDisconActQty(DisconActQty6) + ")";
+                return FormatQty(Qty6) + "(" + FormatReqQty(ReqQty6) + " | " + FormatActQty(ActQty6) + " | " + FormatDisconActQty(DisconActQty6) + ")";
             }
         }
         public string DisplayQty7
         {
             get
             {
-                return FormatQty(Qty7) + "(" + FormatActQty(ActQty7) + " | " + FormatDisconActQty(DisconActQty7) + ")";
+                return FormatQty(Qty7) + "(" + FormatReqQty(ReqQty7) + " | " + FormatActQty(ActQty7) + " | " + FormatDisconActQty(DisconActQty7) + ")";
             }
         }
         public string DisplayQty8
         {
             get
             {
-                return FormatQty(Qty8) + "(" + FormatActQty(ActQty8) + " | " + FormatDisconActQty(DisconActQty8) + ")";
+                return FormatQty(Qty8) + "(" + FormatReqQty(ReqQty8) + " | " + FormatActQty(ActQty8) + " | " + FormatDisconActQty(DisconActQty8) + ")";
             }
         }
         public string DisplayQty9
         {
             get
             {
-                return FormatQty(Qty9) + "(" + FormatActQty(ActQty9) + " | " + FormatDisconActQty(DisconActQty9) + ")";
+                return FormatQty(Qty9) + "(" + FormatReqQty(ReqQty9) + " | " + FormatActQty(ActQty9) + " | " + FormatDisconActQty(DisconActQty9) + ")";
             }
         }
         public string DisplayQty10
         {
             get
             {
-                return FormatQty(Qty10) + "(" + FormatActQty(ActQty10) + " | " + FormatDisconActQty(DisconActQty10) + ")";
+                return FormatQty(Qty10) + "(" + FormatReqQty(ReqQty10) + " | " + FormatActQty(ActQty10) + " | " + FormatDisconActQty(DisconActQty10) + ")";
             }
         }
         public string DisplayQty11
         {
             get
             {
-                return FormatQty(Qty11) + "(" + FormatActQty(ActQty11) + " | " + FormatDisconActQty(DisconActQty11) + ")";
+                return FormatQty(Qty11) + "(" + FormatReqQty(ReqQty11) + " | " + FormatActQty(ActQty11) + " | " + FormatDisconActQty(DisconActQty11) + ")";
             }
         }
         public string DisplayQty12
         {
             get
             {
-                return FormatQty(Qty12) + "(" + FormatActQty(ActQty12) + " | " + FormatDisconActQty(DisconActQty12) + ")";
+                return FormatQty(Qty12) + "(" + FormatReqQty(ReqQty12) + " | " + FormatActQty(ActQty12) + " | " + FormatDisconActQty(DisconActQty12) + ")";
             }
         }
         public string DisplayQty13
         {
             get
             {
-                return FormatQty(Qty13) + "(" + FormatActQty(ActQty13) + " | " + FormatDisconActQty(DisconActQty13) + ")";
+                return FormatQty(Qty13) + "(" + FormatReqQty(ReqQty13) + " | " + FormatActQty(ActQty13) + " | " + FormatDisconActQty(DisconActQty13) + ")";
             }
         }
         public string DisplayQty14
         {
             get
             {
-                return FormatQty(Qty14) + "(" + FormatActQty(ActQty14) + " | " + FormatDisconActQty(DisconActQty14) + ")";
+                return FormatQty(Qty14) + "(" + FormatReqQty(ReqQty14) + " | " + FormatActQty(ActQty14) + " | " + FormatDisconActQty(DisconActQty14) + ")";
             }
         }
         public string DisplayQty15
         {
             get
             {
-                return FormatQty(Qty15) + "(" + FormatActQty(ActQty15) + " | " + FormatDisconActQty(DisconActQty15) + ")";
+                return FormatQty(Qty15) + "(" + FormatReqQty(ReqQty15) + " | " + FormatActQty(ActQty15) + " | " + FormatDisconActQty(DisconActQty15) + ")";
             }
         }
         public string DisplayQty16
         {
             get
             {
-                return FormatQty(Qty16) + "(" + FormatActQty(ActQty16) + " | " + FormatDisconActQty(DisconActQty16) + ")";
+                return FormatQty(Qty16) + "(" + FormatReqQty(ReqQty16) + " | " + FormatActQty(ActQty16) + " | " + FormatDisconActQty(DisconActQty16) + ")";
             }
         }
         public string DisplayQty17
         {
             get
             {
-                return FormatQty(Qty17) + "(" + FormatActQty(ActQty17) + " | " + FormatDisconActQty(DisconActQty17) + ")";
+                return FormatQty(Qty17) + "(" + FormatReqQty(ReqQty17) + " | " + FormatActQty(ActQty17) + " | " + FormatDisconActQty(DisconActQty17) + ")";
             }
         }
         public string DisplayQty18
         {
             get
             {
-                return FormatQty(Qty18) + "(" + FormatActQty(ActQty18) + " | " + FormatDisconActQty(DisconActQty18) + ")";
+                return FormatQty(Qty18) + "(" + FormatReqQty(ReqQty18) + " | " + FormatActQty(ActQty18) + " | " + FormatDisconActQty(DisconActQty18) + ")";
             }
         }
         public string DisplayQty19
         {
             get
             {
-                return FormatQty(Qty19) + "(" + FormatActQty(ActQty19) + " | " + FormatDisconActQty(DisconActQty19) + ")";
+                return FormatQty(Qty19) + "(" + FormatReqQty(ReqQty19) + " | " + FormatActQty(ActQty19) + " | " + FormatDisconActQty(DisconActQty19) + ")";
             }
         }
         public string DisplayQty20
         {
             get
             {
-                return FormatQty(Qty20) + "(" + FormatActQty(ActQty20) + " | " + FormatDisconActQty(DisconActQty20) + ")";
+                return FormatQty(Qty20) + "(" + FormatReqQty(ReqQty20) + " | " + FormatActQty(ActQty20) + " | " + FormatDisconActQty(DisconActQty20) + ")";
             }
         }
         public string DisplayQty21
         {
             get
             {
-                return FormatQty(Qty21) + "(" + FormatActQty(ActQty21) + " | " + FormatDisconActQty(DisconActQty21) + ")";
+                return FormatQty(Qty21) + "(" + FormatReqQty(ReqQty21) + " | " + FormatActQty(ActQty21) + " | " + FormatDisconActQty(DisconActQty21) + ")";
             }
         }
         public string DisplayQty22
         {
             get
             {
-                return FormatQty(Qty22) + "(" + FormatActQty(ActQty22) + " | " + FormatDisconActQty(DisconActQty22) + ")";
+                return FormatQty(Qty22) + "(" + FormatReqQty(ReqQty22) + " | " + FormatActQty(ActQty22) + " | " + FormatDisconActQty(DisconActQty22) + ")";
             }
         }
         public string DisplayQty23
         {
             get
             {
-                return FormatQty(Qty23) + "(" + FormatActQty(ActQty23) + " | " + FormatDisconActQty(DisconActQty23) + ")";
+                return FormatQty(Qty23) + "(" + FormatReqQty(ReqQty23) + " | " + FormatActQty(ActQty23) + " | " + FormatDisconActQty(DisconActQty23) + ")";
             }
         }
         public string DisplayQty24
         {
             get
             {
-                return FormatQty(Qty24) + "(" + FormatActQty(ActQty24) + " | " + FormatDisconActQty(DisconActQty24) + ")";
+                return FormatQty(Qty24) + "(" + FormatReqQty(ReqQty24) + " | " + FormatActQty(ActQty24) + " | " + FormatDisconActQty(DisconActQty24) + ")";
             }
         }
         public string DisplayQty25
         {
             get
             {
-                return FormatQty(Qty25) + "(" + FormatActQty(ActQty25) + " | " + FormatDisconActQty(DisconActQty25) + ")";
+                return FormatQty(Qty25) + "(" + FormatReqQty(ReqQty25) + " | " + FormatActQty(ActQty25) + " | " + FormatDisconActQty(DisconActQty25) + ")";
             }
         }
         public string DisplayQty26
         {
             get
             {
-                return FormatQty(Qty26) + "(" + FormatActQty(ActQty26) + " | " + FormatDisconActQty(DisconActQty26) + ")";
+                return FormatQty(Qty26) + "(" + FormatReqQty(ReqQty26) + " | " + FormatActQty(ActQty26) + " | " + FormatDisconActQty(DisconActQty26) + ")";
             }
         }
         public string DisplayQty27
         {
             get
             {
-                return FormatQty(Qty27) + "(" + FormatActQty(ActQty27) + " | " + FormatDisconActQty(DisconActQty27) + ")";
+                return FormatQty(Qty27) + "(" + FormatReqQty(ReqQty27) + " | " + FormatActQty(ActQty27) + " | " + FormatDisconActQty(DisconActQty27) + ")";
             }
         }
         public string DisplayQty28
         {
             get
             {
-                return FormatQty(Qty28) + "(" + FormatActQty(ActQty28) + " | " + FormatDisconActQty(DisconActQty28) + ")";
+                return FormatQty(Qty28) + "(" + FormatReqQty(ReqQty28) + " | " + FormatActQty(ActQty28) + " | " + FormatDisconActQty(DisconActQty28) + ")";
             }
         }
         public string DisplayQty29
         {
             get
             {
-                return FormatQty(Qty29) + "(" + FormatActQty(ActQty29) + " | " + FormatDisconActQty(DisconActQty29) + ")";
+                return FormatQty(Qty29) + "(" + FormatReqQty(ReqQty29) + " | " + FormatActQty(ActQty29) + " | " + FormatDisconActQty(DisconActQty29) + ")";
             }
         }
         public string DisplayQty30
         {
             get
             {
-                return FormatQty(Qty30) + "(" + FormatActQty(ActQty30) + " | " + FormatDisconActQty(DisconActQty30) + ")";
+                return FormatQty(Qty30) + "(" + FormatReqQty(ReqQty30) + " | " + FormatActQty(ActQty30) + " | " + FormatDisconActQty(DisconActQty30) + ")";
             }
         }
         public string DisplayQty31
         {
             get
             {
-                return FormatQty(Qty31) + "(" + FormatActQty(ActQty31) + " | " + FormatDisconActQty(DisconActQty31) + ")";
+                return FormatQty(Qty31) + "(" + FormatReqQty(ReqQty31) + " | " + FormatActQty(ActQty31) + " | " + FormatDisconActQty(DisconActQty31) + ")";
             }
         }
         public string DisplayQty32
         {
             get
             {
-                return FormatQty(Qty32) + "(" + FormatActQty(ActQty32) + " | " + FormatDisconActQty(DisconActQty32) + ")";
+                return FormatQty(Qty32) + "(" + FormatReqQty(ReqQty32) + " | " + FormatActQty(ActQty32) + " | " + FormatDisconActQty(DisconActQty32) + ")";
             }
         }
         public string DisplayQty33
         {
             get
             {
-                return FormatQty(Qty33) + "(" + FormatActQty(ActQty33) + " | " + FormatDisconActQty(DisconActQty33) + ")";
+                return FormatQty(Qty33) + "(" + FormatReqQty(ReqQty33) + " | " + FormatActQty(ActQty33) + " | " + FormatDisconActQty(DisconActQty33) + ")";
             }
         }
         public string DisplayQty34
         {
             get
             {
-                return FormatQty(Qty34) + "(" + FormatActQty(ActQty34) + " | " + FormatDisconActQty(DisconActQty34) + ")";
+                return FormatQty(Qty34) + "(" + FormatReqQty(ReqQty34) + " | " + FormatActQty(ActQty34) + " | " + FormatDisconActQty(DisconActQty34) + ")";
             }
         }
         public string DisplayQty35
         {
             get
             {
-                return FormatQty(Qty35) + "(" + FormatActQty(ActQty35) + " | " + FormatDisconActQty(DisconActQty35) + ")";
+                return FormatQty(Qty35) + "(" + FormatReqQty(ReqQty35) + " | " + FormatActQty(ActQty35) + " | " + FormatDisconActQty(DisconActQty35) + ")";
             }
         }
         public string DisplayQty36
         {
             get
             {
-                return FormatQty(Qty36) + "(" + FormatActQty(ActQty36) + " | " + FormatDisconActQty(DisconActQty36) + ")";
+                return FormatQty(Qty36) + "(" + FormatReqQty(ReqQty36) + " | " + FormatActQty(ActQty36) + " | " + FormatDisconActQty(DisconActQty36) + ")";
             }
         }
         public string DisplayQty37
         {
             get
             {
-                return FormatQty(Qty37) + "(" + FormatActQty(ActQty37) + " | " + FormatDisconActQty(DisconActQty37) + ")";
+                return FormatQty(Qty37) + "(" + FormatReqQty(ReqQty37) + " | " + FormatActQty(ActQty37) + " | " + FormatDisconActQty(DisconActQty37) + ")";
             }
         }
         public string DisplayQty38
         {
             get
             {
-                return FormatQty(Qty38) + "(" + FormatActQty(ActQty38) + " | " + FormatDisconActQty(DisconActQty38) + ")";
+                return FormatQty(Qty38) + "(" + FormatReqQty(ReqQty38) + " | " + FormatActQty(ActQty38) + " | " + FormatDisconActQty(DisconActQty38) + ")";
             }
         }
         public string DisplayQty39
         {
             get
             {
-                return FormatQty(Qty39) + "(" + FormatActQty(ActQty39) + " | " + FormatDisconActQty(DisconActQty39) + ")";
+                return FormatQty(Qty39) + "(" + FormatReqQty(ReqQty39) + " | " + FormatActQty(ActQty39) + " | " + FormatDisconActQty(DisconActQty39) + ")";
             }
         }
         public string DisplayQty40
         {
             get
             {
-                return FormatQty(Qty40) + "(" + FormatActQty(ActQty40) + " | " + FormatDisconActQty(DisconActQty40) + ")";
+                return FormatQty(Qty40) + "(" + FormatReqQty(ReqQty40) + " | " + FormatActQty(ActQty40) + " | " + FormatDisconActQty(DisconActQty40) + ")";
             }
         }
         #endregion
@@ -501,6 +501,18 @@ namespace com.Sconit.Entity.MRP
             if (qty != 0)
             {
                 return "<font color='red'>" + qty.ToString("#,##0") + "</font>";
+            }
+            else
+            {
+                return qty.ToString("#,##0");
+            }
+        }
+
+        private string FormatReqQty(decimal qty)
+        {
+            if (qty != 0)
+            {
+                return "<font color='orange'>" + qty.ToString("#,##0") + "</font>";
             }
             else
             {

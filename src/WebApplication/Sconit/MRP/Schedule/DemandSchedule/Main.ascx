@@ -72,13 +72,13 @@
             <td class="td01">
             </td>
             <td class="td02">
-                <asp:RadioButtonList ID="rblListFormat" runat="server" RepeatDirection="Horizontal">
+              <%--  <asp:RadioButtonList ID="rblListFormat" runat="server" RepeatDirection="Horizontal">
                     <asp:ListItem Text="${Common.ListFormat.Detail}" Value="Detail" Selected="True" />
                     <asp:ListItem Text="${Common.ListFormat.Group}" Value="Group" />
-                </asp:RadioButtonList>
+                </asp:RadioButtonList>--%>
             </td>
             <td class="td01">
-                <asp:CheckBox ID="cbDetail" runat="server" Text="显示所有明细" Visible="false" />
+              
             </td>
             <td class="td02">
                 <asp:Button ID="btnSearch" runat="server" Text="${Common.Button.Search}" OnClick="btnSearch_Click" />
