@@ -74,9 +74,9 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     {
         get
         {
-          
-                return null;
-          
+
+            return null;
+
         }
     }
 
@@ -84,12 +84,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     {
         get
         {
-                return null;
+            return null;
         }
     }
 
 
-    private string flowOrLoc
+    private string flowCode
     {
         get { return this.ucFlow.Text.Trim(); }
     }
@@ -99,15 +99,6 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         get { return this.tbItemCode.Text.Trim(); }
     }
 
-    private bool isWinTime
-    {
-        get { return this.rblDateType.SelectedIndex == 1; }
-    }
-
-    private bool isFlow
-    {
-        get { return true; }
-    }
 
     private string FlowCode
     {
@@ -156,7 +147,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        this.ucFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:true,bool:true,bool:true,bool:true,bool:true,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_TO;
+        this.ucFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:false,bool:false,bool:false,bool:false,bool:false,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_FROM;
 
         if (!IsPostBack)
         {
@@ -558,7 +549,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
             if (!isExport)
             {
-                for (int i = 6; i < columnCount; i=i+2)
+                for (int i = 6; i < columnCount; i = i + 2)
                 {
                     string headerText = this.GV_List.Columns[i].SortExpression;
                     //string headerText = this.GV_List.Columns[i].HeaderText;
@@ -589,7 +580,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                             var txts = e.Row.Cells[i].Text.Split('|');
                             e.Row.Cells[i].Text = txts[0] + "|<font color='blue'>" + qty.ToString("0.####") + "</font>)";
                         }
-                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails,ii);
+                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails, ii);
                         ii++;
                         e.Row.Cells[i].Attributes.Add("title", detailTitle);
                     }
@@ -708,13 +699,11 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
                 OrderDataBind();
 
-                if (isFlow)
-                {
-                    this.tbFlow.Text = this.flowOrLoc;
-                    Flow flow = TheFlowMgr.LoadFlow(tbFlow.Text.Trim(), false, false);
-                    SetOrderHead(flow);
-                }
-                //this.ucShift.Date = DateTime.Today;
+
+                this.tbFlow.Text = this.flowCode;
+                Flow flow = TheFlowMgr.LoadFlow(tbFlow.Text.Trim(), false, false);
+                SetOrderHead(flow);
+
                 break;
             }
         }
@@ -726,12 +715,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         string actQty = "ActQty" + ColumnNum.ToString();
         string disconActQty = "DisconActQty" + ColumnNum.ToString();
 
-      
+
 
         DetachedCriteria criteria = DetachedCriteria.For<ExpectTransitInventory>();
         criteria.Add(Expression.Eq("EffectiveDate", this.EffDate));
         var expectTransitInventories = this.TheCriteriaMgr.FindAll<ExpectTransitInventory>(criteria);
-        var mrpShipPlans = TheMrpShipPlanMgr.GetMrpShipPlans((isFlow ? this.flowOrLoc : null), (!isFlow ? this.flowOrLoc : null), this.itemCode, this.EffDate, this.WinDate, this.StartDate);
+        var mrpShipPlans = TheMrpShipPlanMgr.GetMrpShipPlans(this.flowCode, null, this.itemCode, this.EffDate, this.WinDate, this.StartDate);
         IList<MrpShipPlanView> mrpShipPlanViews = MrpShipPlanToMrpShipPlanView(mrpShipPlans);
         IList<ExpectTransitInventoryView> transitInventoryViews = ExpectTransitInventoryToExpectTransitInventoryView(expectTransitInventories);
         itemDiscontinueList = this.TheCriteriaMgr.FindAll<ItemDiscontinue>();
@@ -763,39 +752,21 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     private void DoSearch(Button button)
     {
-        if (this.flowOrLoc == string.Empty)
+        if (this.flowCode == string.Empty)
         {
             ShowErrorMessage("MRP.Schedule.Import.CustomerSchedule.Result.SelectFlow");
             return;
         }
-        else if (isFlow)
-        {
-            Flow flow = TheFlowMgr.LoadFlow(this.flowOrLoc);
-            if (flow.Type == BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_DISTRIBUTION)
-            {
-                this.PartyCode = flow.PartyTo.Code;
-            }
-            else
-            {
-                this.PartyCode = flow.PartyFrom.Code;
-            }
-        }
 
-        //if (isFlow && this.rblListFormat.SelectedIndex == 1 && button == this.btnSearch)
-        //{
-        //    this.btnCreate2.Visible = true;
-        //}
-        //else
-        //{
-        //    this.btnCreate2.Visible = false;
-        //}
+        Flow flow = TheFlowMgr.LoadFlow(this.flowCode);
+        this.PartyCode = flow.PartyFrom.Code;
 
         DetachedCriteria criteria = DetachedCriteria.For<ExpectTransitInventory>();
         criteria.Add(Expression.Eq("EffectiveDate", this.EffDate));
         var expectTransitInventories = this.TheCriteriaMgr.FindAll<ExpectTransitInventory>(criteria);
         expectTransitInventorieDic = expectTransitInventories.GroupBy(p => p.Item, (k, g) => new { k, g }).ToDictionary(d => d.k, d => d.g.ToList());
 
-        var mrpShipPlans = TheMrpShipPlanMgr.GetMrpShipPlans((isFlow ? this.flowOrLoc : null), (!isFlow ? this.flowOrLoc : null), this.itemCode, this.EffDate, this.WinDate, this.StartDate);
+        var mrpShipPlans = TheMrpShipPlanMgr.GetMrpShipPlans(this.flowCode , null, this.itemCode, this.EffDate, this.WinDate, this.StartDate);
         mrpShipPlanDic = mrpShipPlans.GroupBy(p => p.Item, (k, g) => new { k, g }).ToDictionary(d => d.k, d => d.g.ToList());
 
         itemDiscontinueList = this.TheCriteriaMgr.FindAll<ItemDiscontinue>();
@@ -920,14 +891,14 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                             bfColumn.HtmlEncode = false;
                             if (this.rblListFormat.SelectedIndex == 0)
                             {
-                                bfColumn.HeaderText = isWinTime ? scheduleHead.DateTo.ToString("MM-dd") : scheduleHead.DateFrom.ToString("MM-dd");
+                                bfColumn.HeaderText = scheduleHead.DateTo.ToString("MM-dd");
                             }
                             else
                             {
-                                bfColumn.HeaderText = isWinTime ? scheduleHead.DateTo.ToString("yyyy-MM") : scheduleHead.DateFrom.ToString("yyyy-MM");
+                                bfColumn.HeaderText =  scheduleHead.DateTo.ToString("yyyy-MM");
                             }
-                            bfColumn.SortExpression = isWinTime ? scheduleHead.DateTo.ToString("yyyy-MM-dd") : scheduleHead.DateFrom.ToString("yyyy-MM-dd");
-                            bfColumn.FooterText = isWinTime ? (scheduleHead.LastDateTo.HasValue ? scheduleHead.LastDateTo.Value.ToString("yyyy-MM-dd") : string.Empty) : (scheduleHead.LastDateFrom.HasValue ? scheduleHead.LastDateFrom.Value.ToString("yyyy-MM-dd") : string.Empty);
+                            bfColumn.SortExpression = scheduleHead.DateTo.ToString("yyyy-MM-dd");
+                            bfColumn.FooterText = scheduleHead.LastDateTo.HasValue ? scheduleHead.LastDateTo.Value.ToString("yyyy-MM-dd") : string.Empty;
                             this.GV_List.Columns.Add(bfColumn);
 
                             //if (this.rblListFormat.SelectedIndex == 1)
@@ -987,16 +958,14 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         this.fld_Group.Visible = false;
     }
 
-    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails,int ii)
+    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails, int ii)
     {
         StringBuilder detail = new StringBuilder();
         var mrpShipPlans = this.mrpShipPlanDic.ValueOrDefault(itemCode);
         if (mrpShipPlans != null)
         {
-            var q_MrpShipPlans = isFlow ?
-                mrpShipPlans.Where(m => StringHelper.Eq(flowOrLoc, m.Flow))
-                :
-                mrpShipPlans.Where(m => StringHelper.Eq(flowOrLoc, m.LocationTo));
+            var q_MrpShipPlans =
+                mrpShipPlans.Where(m => StringHelper.Eq(flowCode, m.Flow));
 
             IList<ExpectTransitInventory> expectTransitInventoryList = new List<ExpectTransitInventory>();
             IList<ExpectTransitInventory> disconExpectTransitInventoryList = new List<ExpectTransitInventory>();
@@ -1017,7 +986,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 }
 
             }
-            
+
             if (this.rblListFormat.SelectedIndex == 0)
             {
                 if (ii == 0)
@@ -1043,12 +1012,10 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
             if (expectTransitInventories != null)
             {
                 var p = from inv in expectTransitInventories
-                        where (isFlow ? inv.Flow == this.flowOrLoc : inv.Location == this.flowOrLoc)
+                        where (inv.Flow == this.flowCode)
                         && inv.Item == itemCode
-                        && (isWinTime ?
-                             (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
-                             :
-                             (inv.StartTime.Date > startDate && inv.StartTime.Date <= endDate))
+                        && (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
+                           
                         select inv;
 
                 if (p != null && p.Count() > 0)
@@ -1061,12 +1028,9 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                     var r = from discon in itemDiscontinueList
                             join inv in expectTransitInventories
                             on discon.DiscontinueItem.Code equals inv.Item
-                            where (isFlow ? inv.Flow == this.flowOrLoc : inv.Location == this.flowOrLoc)
+                            where (inv.Flow == this.flowCode)
                             && discon.Item.Code == itemCode
-                            && (isWinTime ?
-                             (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
-                             :
-                             (inv.StartTime.Date > startDate && inv.StartTime.Date <= endDate))
+                            && (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
                             && discon.StartDate <= inv.StartTime.Date
                             && (!discon.EndDate.HasValue || discon.EndDate.Value >= inv.WindowTime)
                             select inv;
@@ -1078,10 +1042,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 }
             }
 
-            q_MrpShipPlans = q_MrpShipPlans.Where(m => isWinTime ?
-                             (m.WindowTime.Date > startDate && m.WindowTime.Date <= endDate)
-                             :
-                             (m.StartTime.Date > startDate && m.StartTime.Date <= endDate));
+            q_MrpShipPlans = q_MrpShipPlans.Where(m =>(m.WindowTime.Date > startDate && m.WindowTime.Date <= endDate));
 
             if (q_MrpShipPlans.Count() > 0 || expectTransitInventoryList.Count > 0
                 || disconExpectTransitInventoryList.Count > 0 || locationDetails.Count > 0)
@@ -1191,20 +1152,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         this.cbPrintOrder.Checked = currentFlow.NeedPrintOrder;
         if (this.ScheduleDate.HasValue)
         {
-            if (isWinTime)
-            {
+            
                 DateTime winTime = FlowHelper.GetWinTime(currentFlow, this.ScheduleDate.Value);
                 this.tbWinTime.Text = winTime.ToString("yyyy-MM-dd HH:mm");
                 double leadTime = currentFlow.LeadTime.HasValue ? (double)currentFlow.LeadTime.Value : 0;
                 this.tbStartTime.Text = winTime.AddHours(-leadTime).ToString("yyyy-MM-dd HH:mm");
-            }
-            else
-            {
-                double leadTime = currentFlow.LeadTime.HasValue ? (double)currentFlow.LeadTime.Value : 0;
-                DateTime winTime = FlowHelper.GetWinTime(currentFlow, this.ScheduleDate.Value.AddHours(leadTime));
-                this.tbWinTime.Text = winTime.ToString("yyyy-MM-dd HH:mm");
-                this.tbStartTime.Text = winTime.AddHours(-leadTime).ToString("yyyy-MM-dd HH:mm");
-            }
+          
         }
 
         this.hfLeadTime.Value = currentFlow.LeadTime.ToString();
