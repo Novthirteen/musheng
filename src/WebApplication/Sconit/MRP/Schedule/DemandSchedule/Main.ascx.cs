@@ -155,8 +155,8 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-        this.tbFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:true,bool:true,bool:true,bool:true,bool:true,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_TO;
+
+        this.ucFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:true,bool:true,bool:true,bool:true,bool:true,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_TO;
 
         if (!IsPostBack)
         {

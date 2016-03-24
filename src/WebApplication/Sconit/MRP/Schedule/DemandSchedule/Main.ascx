@@ -52,21 +52,20 @@
         </tr>
         <tr>
             <td class="td01">
-                <asp:RadioButtonList ID="rblDateType" runat="server" RepeatDirection="Horizontal"
-                    CssClass="floatright">
-                    <asp:ListItem Text="${MRP.Schedule.DateType.Day}" Value="0" Selected="True" />
-                    <asp:ListItem Text="${MRP.Schedule.DateType.Week}" Value="1" />
-                    <asp:ListItem Text="${MRP.Schedule.DateType.Month}" Value="2" />
-                </asp:RadioButtonList>
-            </td>
-            <td class="td02">
-            </td>
-            <td class="td01">
                 ${MRP.Schedule.ItemCode}:
             </td>
             <td class="td02">
                 <uc3:textbox ID="tbItemCode" runat="server" Visible="true" Width="250" MustMatch="false"
                     DescField="Description" ValueField="Code" ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem" />
+            </td>
+            <td class="td01">
+            </td>
+            <td class="td02">
+                <asp:RadioButtonList ID="rblDateType" runat="server" RepeatDirection="Horizontal">
+                    <asp:ListItem Text="${MRP.Schedule.DateType.Day}" Value="0" Selected="True" />
+                    <asp:ListItem Text="${MRP.Schedule.DateType.Week}" Value="1" />
+                    <asp:ListItem Text="${MRP.Schedule.DateType.Month}" Value="2" />
+                </asp:RadioButtonList>
             </td>
         </tr>
         <tr>
