@@ -808,7 +808,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
         IList<ExpectTransitInventoryView> transitInventoryViews = ExpectTransitInventoryToExpectTransitInventoryView(expectTransitInventories);
 
-        ScheduleView scheduleView = TheMrpShipPlanViewMgr.TransferMrpShipPlanViews2ScheduleView(mrpShipPlanViews, transitInventoryViews, itemDiscontinueList, "Flow", this.rblDateType.SelectedValue);
+        ScheduleView scheduleView = TheMrpShipPlanViewMgr.TransferMrpShipPlanViews2ScheduleView2(mrpShipPlanViews, transitInventoryViews, itemDiscontinueList);
         this.GV_List_DataBind(scheduleView);
         if (button == this.btnExport)
         {
