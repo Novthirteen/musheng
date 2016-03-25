@@ -9,7 +9,8 @@ namespace com.Sconit.Entity.MRP
     {
         #region Non O/R Mapping Properties
 
-        //TODO: Add Non O/R Mapping Properties here. 
+        public DateTime OrgStartTime { get; set; }
+        public DateTime OrgWindowTime { get; set; }
 
         #endregion
     }

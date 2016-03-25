@@ -19,6 +19,8 @@ namespace com.Sconit.Entity.MRP
             }
             FlowDetailIdList.Add(id);
         }
+        public DateTime OrgStartTime { get; set; }
+        public DateTime OrgWindowTime { get; set; }
         #endregion
     }
 }

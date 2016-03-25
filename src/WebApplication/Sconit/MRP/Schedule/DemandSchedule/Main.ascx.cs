@@ -88,6 +88,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         }
     }
 
+
     private string flowCode
     {
         get { return this.ucFlow.Text.Trim(); }
@@ -794,6 +795,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     private IList<ExpectTransitInventoryView> ExpectTransitInventoryToExpectTransitInventoryView(IList<ExpectTransitInventory> expectTransitInventories)
     {
+        foreach (ExpectTransitInventory expectTransitInventory in expectTransitInventories)
+        {
+            expectTransitInventory.OrgStartTime = expectTransitInventory.StartTime;
+            expectTransitInventory.OrgWindowTime = expectTransitInventory.WindowTime;
+        }
+
         if (this.dateType == 1)
         {
             foreach (ExpectTransitInventory expectTransitInventory in expectTransitInventories)
@@ -856,6 +863,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     private IList<MrpShipPlanView> MrpShipPlanToMrpShipPlanView(IList<MrpShipPlan> mrpShipPlans)
     {
+        foreach (MrpShipPlan mrpShipPlan in mrpShipPlans)
+        {
+            mrpShipPlan.OrgStartTime = mrpShipPlan.StartTime;
+            mrpShipPlan.OrgWindowTime = mrpShipPlan.WindowTime;
+        }
+
         if (dateType == 1)
         {
             foreach (MrpShipPlan mrpShipPlan in mrpShipPlans)
@@ -964,7 +977,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                             bfColumn.FooterText = scheduleHead.LastDateTo.HasValue ? scheduleHead.LastDateTo.Value.ToString("yyyy-MM-dd") : string.Empty;
                             this.GV_List.Columns.Add(bfColumn);
 
-
+                          
                             break;
                         }
                     }
@@ -1027,51 +1040,32 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
             IList<ExpectTransitInventory> disconExpectTransitInventoryList = new List<ExpectTransitInventory>();
 
             DateTime startDate = effTime.Date;
-            DateTime endDate = effTime.Date;
-            //if (this.rblListFormat.SelectedIndex == 1)
-            //{
-            //    endDate = effTime.Date.AddMonths(1).AddDays(-1);
+            DateTime endDate = startDate;
+            if (dateType == 0)
+            {
+                endDate = effTime.Date.AddDays(1);
+            }
+            else if (dateType == 1)
+            {
+                endDate = effTime.Date.AddDays(7);
+            }
+            else
+            {
+                endDate = effTime.Date.AddMonths(1);
+            }
 
-            //    if (ii == 0)
-            //    {
-            //        startDate = DateTime.MinValue;
-            //    }
-            //    else
-            //    {
-            //        startDate = effTime.Date;
-            //    }
-
-            //}
-
-            //if (this.rblListFormat.SelectedIndex == 0)
-            //{
             if (ii == 0)
             {
                 startDate = DateTime.MinValue;
             }
-            else
-            {
-                for (int i = 0; i < mrpShipPlans.Count; i++)
-                {
-                    if (i != 0)
-                    {
-                        if (effTime.Date == mrpShipPlans[i].WindowTime)
-                        {
-                            startDate = mrpShipPlans[i - 1].WindowTime;
-                            break;
-                        }
-                    }
-                }
-            }
-            //}
+
             var expectTransitInventories = this.expectTransitInventorieDic.ValueOrDefault(itemCode);
             if (expectTransitInventories != null)
             {
                 var p = from inv in expectTransitInventories
                         where (inv.Flow == this.flowCode)
                         && inv.Item == itemCode
-                        && (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
-
+                        && (inv.OrgWindowTime.Date >= startDate && inv.OrgWindowTime.Date < endDate)
                         select inv;
 
                 if (p != null && p.Count() > 0)
@@ -1086,9 +1080,9 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                             on discon.DiscontinueItem.Code equals inv.Item
                             where (inv.Flow == this.flowCode)
                             && discon.Item.Code == itemCode
-                            && (inv.WindowTime.Date > startDate && inv.WindowTime.Date <= endDate)
-                            && discon.StartDate <= inv.StartTime.Date
-                            && (!discon.EndDate.HasValue || discon.EndDate.Value >= inv.WindowTime)
+                            && (inv.OrgWindowTime.Date >= startDate && inv.OrgWindowTime.Date < endDate)
+                            && discon.StartDate <= inv.OrgStartTime.Date
+                            && (!discon.EndDate.HasValue || discon.EndDate.Value > inv.OrgWindowTime)
                             select inv;
 
                     if (r != null && r.Count() >= 0)
@@ -1098,7 +1092,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 }
             }
 
-            q_MrpShipPlans = q_MrpShipPlans.Where(m => (m.WindowTime.Date > startDate && m.WindowTime.Date <= endDate));
+            q_MrpShipPlans = q_MrpShipPlans.Where(m => (m.OrgWindowTime.Date >= startDate && m.OrgWindowTime.Date < endDate));
 
             if (q_MrpShipPlans.Count() > 0 || expectTransitInventoryList.Count > 0
                 || disconExpectTransitInventoryList.Count > 0 || locationDetails.Count > 0)
@@ -1108,8 +1102,8 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 foreach (MrpShipPlan mrpShipPlan in q_MrpShipPlans)
                 {
                     string Qty = mrpShipPlan.Qty.ToString("#,##0.##");
-                    string startTime = mrpShipPlan.StartTime.ToString("MM-dd");
-                    string winTime = mrpShipPlan.WindowTime.ToString("MM-dd");
+                    string startTime = mrpShipPlan.OrgStartTime.ToString("MM-dd");
+                    string winTime = mrpShipPlan.OrgWindowTime.ToString("MM-dd");
                     string periodType = mrpShipPlan.SourceDateType;
                     string sourceType = mrpShipPlan.SourceType;
                     string sourceItemCode = mrpShipPlan.SourceItemCode;
@@ -1130,8 +1124,8 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 {
                     string orderNo = expectTransitInventory.OrderNo;
                     string Qty = expectTransitInventory.TransitQty.ToString("#,##0.##");
-                    string startTime = expectTransitInventory.StartTime.ToString("MM-dd");
-                    string winTime = expectTransitInventory.WindowTime.ToString("MM-dd");
+                    string startTime = expectTransitInventory.OrgStartTime.ToString("MM-dd");
+                    string winTime = expectTransitInventory.OrgWindowTime.ToString("MM-dd");
 
                     detail.Append("<tr><td>订单</td><td>");
                     detail.Append(Qty);
@@ -1149,8 +1143,8 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                     string item = expectTransitInventory.Item;
                     string orderNo = expectTransitInventory.OrderNo;
                     string Qty = expectTransitInventory.TransitQty.ToString("#,##0.##");
-                    string startTime = expectTransitInventory.StartTime.ToString("MM-dd");
-                    string winTime = expectTransitInventory.WindowTime.ToString("MM-dd");
+                    string startTime = expectTransitInventory.OrgStartTime.ToString("MM-dd");
+                    string winTime = expectTransitInventory.OrgWindowTime.ToString("MM-dd");
 
                     detail.Append("<tr><td>${MRP.Schedule.Discon}</td><td>");
                     detail.Append(Qty);
@@ -1210,8 +1204,6 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         {
 
             // DateTime winTime = FlowHelper.GetWinTime(currentFlow, this.ScheduleDate.Value);
-            //this.tbWinTime.Text = winTime.ToString("yyyy-MM-dd HH:mm");
-
             DateTime winTime = this.ScheduleDate.Value;
             this.tbWinTime.Text = winTime.ToString("yyyy-MM-dd HH:mm");
             double leadTime = currentFlow.LeadTime.HasValue ? (double)currentFlow.LeadTime.Value : 0;
