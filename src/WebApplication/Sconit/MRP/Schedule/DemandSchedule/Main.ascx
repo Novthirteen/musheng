@@ -172,7 +172,7 @@
     </script>
     <fieldset>
         <legend>${MRP.Schedule.CreateOrder}</legend>
-        <table class="mtable">
+         <table class="mtable">
             <tr>
                 <td class="td01">
                     <asp:Literal ID="ltlFlow" runat="server" Text="${MRP.Schedule.Flow}:" />
@@ -241,7 +241,7 @@
                     <asp:TextBox ID="tbMemo" runat="server"></asp:TextBox>
                 </td>
             </tr>
-            >
+   
             <tr>
                 <td class="td01">
                 </td>

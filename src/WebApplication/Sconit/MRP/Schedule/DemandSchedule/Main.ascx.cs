@@ -729,7 +729,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         IList<MrpShipPlanView> mrpShipPlanViews = MrpShipPlanToMrpShipPlanView(mrpShipPlans);
         IList<ExpectTransitInventoryView> transitInventoryViews = ExpectTransitInventoryToExpectTransitInventoryView(expectTransitInventories);
         itemDiscontinueList = this.TheCriteriaMgr.FindAll<ItemDiscontinue>();
-        ScheduleView scheduleView = TheMrpShipPlanViewMgr.TransferMrpShipPlanViews2ScheduleView(mrpShipPlanViews, transitInventoryViews, itemDiscontinueList, "Flow", "WindowTime");
+        ScheduleView scheduleView = TheMrpShipPlanViewMgr.TransferMrpShipPlanViews2ScheduleView2(mrpShipPlanViews, transitInventoryViews, itemDiscontinueList);
 
         foreach (ScheduleBody body in scheduleView.ScheduleBodys)
         {
