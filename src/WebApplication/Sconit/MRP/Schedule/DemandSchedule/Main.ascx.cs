@@ -554,7 +554,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
             if (!isExport)
             {
-                for (int i = 6; i < columnCount; i = i + 2)
+                for (int i = 6; i < columnCount; i = i + 1)
                 {
                     string headerText = this.GV_List.Columns[i].SortExpression;
                     //string headerText = this.GV_List.Columns[i].HeaderText;
