@@ -170,7 +170,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
             this.ddlDate.DataSource = effDate;
             this.ddlDate.DataBind();
         }
-
+        
         this.GV_Order.Columns[7].Visible = enableDiscon;
         this.GV_Order.Columns[8].Visible = enableDiscon;
 
@@ -963,7 +963,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                     string qty = "Qty" + i.ToString();
                     if (enableDiscon)
                     {
-                        qty = "DisplayQty" + i.ToString();
+                        qty = "NewDisplayQty" + i.ToString();
                     }
 
                     PropertyInfo[] scheduleBodyPropertyInfo = typeof(ScheduleBody).GetProperties();
