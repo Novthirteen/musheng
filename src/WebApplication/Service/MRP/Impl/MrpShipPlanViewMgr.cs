@@ -563,7 +563,7 @@ namespace com.Sconit.Service.MRP.Impl
 
                     //if(scheduleHead.)
                     var q = from inv in expectTransitInventoryViews
-                            where inv.Flow == scheduleHead.Flow
+                            where inv.Location == scheduleHead.Location
                             && inv.Item == scheduleBody.Item
                             && inv.WindowTime <= scheduleHead.DateTo
                             && inv.WindowTime > dtS
@@ -590,7 +590,7 @@ namespace com.Sconit.Service.MRP.Impl
                         var r = from discon in itemDisconList
                                 join inv in expectTransitInventoryViews
                                 on discon.DiscontinueItem.Code equals inv.Item
-                                where inv.Flow == scheduleHead.Flow
+                                where inv.Location == scheduleHead.Location
                                 && inv.WindowTime <= scheduleHead.DateTo
                                 && (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
                                 && discon.StartDate <= inv.StartTime
@@ -683,7 +683,7 @@ namespace com.Sconit.Service.MRP.Impl
                         }
 
                         if (scheduleHead.DateTo >= expectTransitInventoryView.WindowTime
-                            && scheduleHead.Flow == expectTransitInventoryView.Flow)
+                            && scheduleHead.Location == expectTransitInventoryView.Location)
                         {
                             ScheduleBody scheduleBody = scheduleBodys.Where(b => b.Item == expectTransitInventoryView.Item).FirstOrDefault();
                             if (scheduleBody != null)

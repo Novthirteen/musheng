@@ -1059,11 +1059,12 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 startDate = DateTime.MinValue;
             }
 
+          
             var expectTransitInventories = this.expectTransitInventorieDic.ValueOrDefault(itemCode);
             if (expectTransitInventories != null)
             {
                 var p = from inv in expectTransitInventories
-                        where (inv.Flow == this.flowCode)
+                        where (inv.Location == location)
                         && inv.Item == itemCode
                         && (inv.OrgWindowTime.Date >= startDate && inv.OrgWindowTime.Date < endDate)
                         select inv;
@@ -1078,7 +1079,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                     var r = from discon in itemDiscontinueList
                             join inv in expectTransitInventories
                             on discon.DiscontinueItem.Code equals inv.Item
-                            where (inv.Flow == this.flowCode)
+                            where (inv.Location == location)
                             && discon.Item.Code == itemCode
                             && (inv.OrgWindowTime.Date >= startDate && inv.OrgWindowTime.Date < endDate)
                             && discon.StartDate <= inv.OrgStartTime.Date
