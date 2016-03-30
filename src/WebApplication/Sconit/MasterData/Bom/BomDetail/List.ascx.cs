@@ -100,11 +100,11 @@ public partial class MasterData_Bom_BomDetail_List : ListModuleBase
         selectCriteria.CreateAlias("Bom", "b");
         if (!string.IsNullOrEmpty(bomCode))
         {
-            selectCriteria.Add(Expression.Eq("b.Code", bomCode));
+            selectCriteria.Add(Expression.Like("b.Code", bomCode, MatchMode.Start));
         }
         if (!string.IsNullOrEmpty(itemCode))
         {
-            selectCriteria.Add(Expression.Eq("Item.Code", itemCode));
+            selectCriteria.Add(Expression.Like("Item.Code", itemCode, MatchMode.Start));
         }
 
         if (IsIncludeInactive == false)

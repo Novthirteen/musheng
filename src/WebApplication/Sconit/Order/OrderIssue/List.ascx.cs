@@ -441,7 +441,10 @@ public partial class Distribution_OrderIssue_List : ModuleBase
             if (cbCheckBoxGroup.Checked)
             {
                 string orderNo = ((Literal)gvr.FindControl("ltlOrderNo")).Text;
-                orderNoList.Add(orderNo);
+                if (!orderNoList.Contains(orderNo))
+                {
+                    orderNoList.Add(orderNo);
+                }
             }
         }
         return orderNoList;

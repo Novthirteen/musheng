@@ -127,11 +127,13 @@
         FunctionId="ShipOrder" OnClientClick="return confirm('${Common.Order.Confirm.Ship}')"  />
     <cc1:Button ID="btnPrint" runat="server" Text="${Common.Button.Print}" CssClass="button2"
         OnClick="btnPrint_Click" FunctionId="PrintOrder" />
+    <cc1:Button ID="btnCreatePickList" runat="server" Visible="false" OnClick="btnCreatePickList_Click"
+        Text="${Warehouse.PickList.CreatePickList}" CssClass="button2" FunctionId="ShipOrder" />
 </div>
 <div class="tablefooter" style=" display:none;">
 <%--<div class="tablefooter">--%>
     <cc1:Button ID="btnEditShipQty" runat="server" OnClick="btnEditShipQty_Click" Text="${MasterData.Distribution.Button.EditShipQty}"
         CssClass="button2" FunctionId="ShipOrder" />
-    <cc1:Button ID="btnCreatePickList" runat="server" Visible="false" OnClick="btnCreatePickList_Click"
-        Text="${Warehouse.PickList.CreatePickList}" CssClass="button2" FunctionId="ShipOrder" />
+<%--    <cc1:Button ID="btnCreatePickList" runat="server" Visible="false" OnClick="btnCreatePickList_Click"
+        Text="${Warehouse.PickList.CreatePickList}" CssClass="button2" FunctionId="ShipOrder" />--%>
 </div>
