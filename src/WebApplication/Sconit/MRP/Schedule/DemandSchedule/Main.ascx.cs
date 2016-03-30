@@ -591,8 +591,8 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                     }
                     else
                     {
-                        var txts = e.Row.Cells[i].Text.Split('(');
-                        e.Row.Cells[i].Text = txts[0];
+                        var txts = e.Row.Cells[i].Text.Split('|');
+                        e.Row.Cells[i].Text = txts[0] + ")";
                     }
                 }
             }
