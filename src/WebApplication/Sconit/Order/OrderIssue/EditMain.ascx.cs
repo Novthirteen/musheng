@@ -75,7 +75,6 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucPickListInfo.DeleteEvent += new EventHandler(this.PickListInfoBack_Render);
 
         this.ucSearch.SearchEventByNull += new System.EventHandler(this.Search_RenderNull); //add by ljz 
-        this.ucList.ShipSuccessEvent += new System.EventHandler(this.Search_Render);
     }
 
     //add by ljz start
@@ -89,28 +88,28 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
     void Search_Render(object sender, EventArgs e)
     {
         //if (this.ModuleType == BusinessConstants.ORDER_MODULETYPE_VALUE_SUPPLIERDISTRIBUTION)
-        //if (this.IsSupplier)
-        //{
-        //    this.ucList.Visible = false;
-        //    this.ucSupplierList.Visible = true;
-        //    this.ucSupplierList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
-        //}
-        //else
-        //{
+        if (this.IsSupplier)
+        {
+            this.ucList.Visible = false;
+            this.ucSupplierList.Visible = true;
+            this.ucSupplierList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
+        }
+        else
+        {
             this.ucSupplierList.Visible = false;
             this.ucList.Visible = true;
             //modify by ljz start
             //this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
-            //if (((string)((object[])sender)[2]) == "Flow")
-            //{
-            this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1], (string)((object[])sender)[2], (string)((object[])sender)[3], (string)((object[])sender)[4], (bool)((object[])sender)[5], (bool)((object[])sender)[6], this.IsSupplier);
-            //}
-            //else if (((string)((object[])sender)[2]) == "ItemCode")
-            //{
-            //    this.ucList.InitPageParameterByItemCode((string)((object[])sender)[0], (string)((object[])sender)[1]);
-            //}
+            if (((string)((object[])sender)[2]) == "Flow")
+            {
+                this.ucList.InitPageParameter((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            }
+            else if (((string)((object[])sender)[2]) == "ItemCode")
+            {
+                this.ucList.InitPageParameterByItemCode((string)((object[])sender)[0], (string)((object[])sender)[1]);
+            }
             //modify by ljz end
-        //}
+        }
     }
 
 
@@ -124,7 +123,7 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucDetailMain.Visible = true;
         this.ucViewShipList.Visible = false;
         this.ucFlowInfo.InitPageParameter(((List<string>)((object[])sender)[0])[0]);
-        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0], (List<List<string>>)((object[])sender)[1]);
+        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0]);
     }
 
     void SaveDetail_Render(object sender, EventArgs e)
@@ -140,14 +139,14 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         //if (this.ModuleType == BusinessConstants.ORDER_MODULETYPE_VALUE_SUPPLIERDISTRIBUTION)
         if (this.IsSupplier)
         {
-            this.ucSupplierList.Visible = true; 
+            this.ucSupplierList.Visible = true;
         }
         else
         {
             this.ucList.Visible = true;
         }
         this.ucSearch.QuickSearch(new Dictionary<string, string>());
-      
+
     }
 
     void DetailBindInfo_Render(object sender, EventArgs e)
@@ -186,7 +185,7 @@ public partial class Order_OrderIssue_EditMain : MainModuleBase
         this.ucDetailMain.Visible = true;
         this.ucViewShipList.Visible = false;
         this.ucFlowInfo.InitPageParameter(((List<string>)((object[])sender)[0])[0]);
-        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0],(List<List<string>>)((object[])sender)[1], true);
+        this.ucDetailMain.InitPageParameter((List<string>)((object[])sender)[0], true);
     }
 
     void PickListInfoBack_Render(object sender, EventArgs e)

@@ -30,36 +30,5 @@
                 <%--add by ljz end--%>
             </td>
         </tr>
-        <tr>
-            <td class="td01">
-                <asp:Literal ID="lblDataFrom" runat="server" Text="${Common.Business.StartDate}:" />
-            </td>
-            <td class="td02">
-                <asp:TextBox ID="tbStartDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
-            </td>
-            <td class="td01">
-              <%--<asp:Literal ID="ltlOrderSubType" runat="server" Text="${MasterData.Order.OrderHead.SubType}:" />--%>
-              <%--add by ljz start--%>
-              <asp:Literal ID="lblDataTo" runat="server" Text="${Common.Business.EndDate}:" />
-              <%--add by ljz end--%>
-            </td>
-            <td class="td02">
-                <asp:TextBox ID="tbEndDate" runat="server" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
-            </td>
-        </tr>
-        <tr>
-            <td class="td01">
-                仅显示选中
-            </td>
-            <td class="td02">
-                <asp:CheckBox ID="ckShowChecked" runat="server" AutoPostBack="true" OnCheckedChanged="IsShowChecked_CheckedChanged"  />
-            </td>
-            <td class="td01">
-            </td>
-            <td class="td02">
-                <asp:Button ID="btnSearch" runat="server" Text="${Common.Button.Search}" OnClick="btnSearch_Click"
-                    CssClass="button2" />
-            </td>
-        </tr>
     </table>
 </fieldset>

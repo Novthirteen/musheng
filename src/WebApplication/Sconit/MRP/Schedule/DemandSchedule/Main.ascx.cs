@@ -152,7 +152,17 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        this.ucFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:false,bool:false,bool:false,bool:false,bool:false,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_FROM;
+        if (isSupplier)
+        {
+            this.ucFlow.ServiceMethod = "GetFlowListForMushengRequire";
+            this.ucFlow.ServiceParameter = "string:" + this.CurrentUser.Code;
+        }
+        else
+        {
+            this.ucFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:false,bool:false,bool:false,bool:true,bool:false,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_FROM;
+        }
+        this.tbFlow.ServiceParameter = "string:" + this.CurrentUser.Code + ",bool:true,bool:false,bool:false,bool:false,bool:true,bool:false,string:" + BusinessConstants.PARTY_AUTHRIZE_OPTION_TO;
+
 
         if (!IsPostBack)
         {
