@@ -245,7 +245,8 @@
                     <asp:Literal ID="ltlMemo" runat="server" Text="${MasterData.Order.OrderHead.Memo}:"  />
                 </td>
                 <td class="td02">
-                    <asp:TextBox ID="tbMemo" runat="server" ></asp:TextBox>
+                    <asp:TextBox ID="tbMemo" runat="server" TextMode="MultiLine"
+                            Rows="3" Columns="80" ></asp:TextBox>
                 </td>
             </tr>>
             <tr>

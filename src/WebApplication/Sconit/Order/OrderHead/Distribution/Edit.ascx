@@ -130,7 +130,8 @@
                         <asp:Literal ID="lblMemo" runat="server" Text="${MasterData.Order.OrderHead.Memo}:" />
                     </td>
                     <td class="td02" >
-                        <asp:TextBox ID="tbMemo" runat="server" Text='<%# Bind("Memo") %>'></asp:TextBox>
+                        <asp:TextBox ID="tbMemo" runat="server" Text='<%# Bind("Memo") %>' TextMode="MultiLine"
+                            Rows="3" Columns="80" ></asp:TextBox>
                     </td>
                     <td class="td01">
                         <asp:Literal ID="ltlFlow" runat="server" Text="${Common.Business.Flow}:" />

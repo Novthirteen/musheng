@@ -52,7 +52,8 @@
                     Visible="true" />
             </td>
             <td class="td02">
-                <asp:TextBox ID="tbMemo" runat="server" ></asp:TextBox>
+                <asp:TextBox ID="tbMemo" runat="server"  TextMode="MultiLine"
+                            Rows="3" Columns="80"></asp:TextBox>
             </td>
         </tr>
         <tr>
