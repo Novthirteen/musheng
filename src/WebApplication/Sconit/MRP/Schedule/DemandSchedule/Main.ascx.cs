@@ -843,8 +843,23 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         {
             foreach (ExpectTransitInventory expectTransitInventory in expectTransitInventories)
             {
-                expectTransitInventory.StartTime = DateTime.Parse(expectTransitInventory.StartTime.ToString("yyyy-MM-01"));
-                expectTransitInventory.WindowTime = DateTime.Parse(expectTransitInventory.WindowTime.ToString("yyyy-MM-01"));
+                if (expectTransitInventory.StartTime.Day > 26)
+                {
+                    expectTransitInventory.StartTime = DateTime.Parse(expectTransitInventory.StartTime.AddMonths(1).ToString("yyyy-MM-01"));
+                }
+                else
+                {
+                    expectTransitInventory.StartTime = DateTime.Parse(expectTransitInventory.StartTime.ToString("yyyy-MM-01"));
+                }
+
+                if (expectTransitInventory.WindowTime.Day > 26)
+                {
+                    expectTransitInventory.WindowTime = DateTime.Parse(expectTransitInventory.WindowTime.AddMonths(1).ToString("yyyy-MM-01"));
+                }
+                else
+                {
+                    expectTransitInventory.WindowTime = DateTime.Parse(expectTransitInventory.WindowTime.ToString("yyyy-MM-01"));
+                }
             }
         }
 
