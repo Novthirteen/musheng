@@ -8,15 +8,13 @@
                 <asp:Literal ID="lblParCode" runat="server" Text="${MasterData.Bom.ParCode}:" />
             </td>
             <td class="ttd02">
-                <uc3:textbox ID="tbParCode" runat="server" Visible="true" Width="250" DescField="Description"
-                    ValueField="Code" ServicePath="BomMgr.service" ServiceMethod="GetAllBom" ServiceParameter="bool:#cbIncludeInactive"/>
+                <asp:TextBox ID="tbParCode" runat="server" Visible="true" />
             </td>
             <td class="ttd01">
                 <asp:Literal ID="lblCompCode" runat="server" Text="${MasterData.Bom.CompCode}:" />
             </td>
             <td class="ttd02">
-                <uc3:textbox ID="tbCompCode" runat="server" Visible="true" Width="250" DescField="Description"
-                    ValueField="Code" ServicePath="ItemMgr.service" ServiceMethod="GetAllItem" />
+                <asp:TextBox ID="tbCompCode" runat="server" Visible="true" />
             </td>
         </tr>
         <tr>

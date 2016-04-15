@@ -151,6 +151,10 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userLanguage = this.CurrentUser.UserLanguage;
+        this.tbWinTime.Attributes.Add("onclick", "WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',lang:'" + this.CurrentUser.UserLanguage + "'})");
+        this.tbWinTime.Attributes["onchange"] += "setStartTime();";
+        this.cbIsUrgent.Attributes["onchange"] += "setStartTime();";
 
         if (isSupplier)
         {
@@ -570,10 +574,10 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                     //string headerText = this.GV_List.Columns[i].HeaderText;
                     string lastHeaderText = this.GV_List.Columns[i].FooterText;
                     DateTime headerTextTime = DateTime.Parse(headerText);
-                    DateTime? lastHeaderTextTime = null;
-                    if (lastHeaderText != string.Empty)
+                    DateTime? nextHeaderTextTime = null;
+                    if (i + 1 < columnCount)
                     {
-                        lastHeaderTextTime = DateTime.Parse(lastHeaderText);
+                        nextHeaderTextTime = DateTime.Parse(this.GV_List.Columns[i + 1].SortExpression);
                     }
                     if (!isSupplier)
                     {
@@ -595,7 +599,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                             var txts = e.Row.Cells[i].Text.Split('|');
                             e.Row.Cells[i].Text = txts[0] + " | " + txts[1] + "|<font color='blue'>" + qty.ToString("0.####") + "</font>)";
                         }
-                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, lastHeaderTextTime, locationDetails, ii);
+                        string detailTitle = GetDetail(body.Location, body.Item, headerTextTime, nextHeaderTextTime, locationDetails, ii);
                         ii++;
                         e.Row.Cells[i].Attributes.Add("title", detailTitle);
                     }
@@ -1057,7 +1061,7 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
         this.fld_Group.Visible = false;
     }
 
-    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? lastHeaderTextTime, List<LocationDetail> locationDetails, int ii)
+    private string GetDetail(string location, string itemCode, DateTime effTime, DateTime? nextHeaderTextTime, List<LocationDetail> locationDetails, int ii)
     {
         StringBuilder detail = new StringBuilder();
         var mrpShipPlans = this.mrpShipPlanDic.ValueOrDefault(itemCode);
@@ -1070,18 +1074,11 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
             IList<ExpectTransitInventory> disconExpectTransitInventoryList = new List<ExpectTransitInventory>();
 
             DateTime startDate = effTime.Date;
-            DateTime endDate = startDate;
-            if (dateType == 0)
+            DateTime? endDate = nextHeaderTextTime;
+
+            if (!endDate.HasValue)
             {
-                endDate = effTime.Date.AddDays(1);
-            }
-            else if (dateType == 1)
-            {
-                endDate = effTime.Date.AddDays(7);
-            }
-            else
-            {
-                endDate = effTime.Date.AddMonths(1);
+                endDate = DateTime.MaxValue;
             }
 
             if (ii == 0)
@@ -1089,7 +1086,6 @@ public partial class MRP_Schedule_DemandSchedule_Main : MainModuleBase
                 startDate = DateTime.MinValue;
             }
 
-          
             var expectTransitInventories = this.expectTransitInventorieDic.ValueOrDefault(itemCode);
             if (expectTransitInventories != null)
             {

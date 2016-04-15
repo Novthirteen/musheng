@@ -527,20 +527,34 @@ namespace com.Sconit.Service.MRP.Impl
                 ScheduleHead lastScheduleHead = null;
 
                 DateTime dtS = DateTime.MinValue;
+                DateTime dtT = DateTime.MinValue;
 
                 var itemDisconList = itemDiscontinueList == null ? null :
                         from discon in itemDiscontinueList
                         where discon.Item.Code == scheduleBody.Item && discon.StartDate <= DateTime.Now && discon.EndDate >= DateTime.Now
                         select discon;
 
-                foreach (ScheduleHead scheduleHead in scheduleHeads)
+                for (int j = 0; j < scheduleHeads.Count; j++)
                 {
+                    ScheduleHead scheduleHead = scheduleHeads[j];
 
+
+                    if (j > 0)
+                    {
+                        dtS = scheduleHeads[j].DateTo;
+                    }
+                    if (j + 1 < scheduleHeads.Count)
+                    {
+                        dtT = scheduleHeads[j + 1].DateTo;
+                    }
+                    else
+                    {
+                        dtT = DateTime.MaxValue;
+                    }
                     string qty = "Qty" + i.ToString();
                     string ReqQty = "ReqQty" + i.ToString();
                     string actQty = "ActQty" + i.ToString();
                     string disconActQty = "DisconActQty" + i.ToString();
-
 
                     var p = from plan in mrpShipPlanViews
                             where plan.Flow == scheduleHead.Flow
@@ -565,8 +579,8 @@ namespace com.Sconit.Service.MRP.Impl
                     var q = from inv in expectTransitInventoryViews
                             where inv.Location == scheduleHead.Location
                             && inv.Item == scheduleBody.Item
-                            && inv.WindowTime <= scheduleHead.DateTo
-                            && inv.WindowTime > dtS
+                            && inv.WindowTime < dtT
+                            && inv.WindowTime >= dtS
                             //&& (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
                             select inv;
 
@@ -579,7 +593,6 @@ namespace com.Sconit.Service.MRP.Impl
                             if (pi.Name != null && StringHelper.Eq(pi.Name.ToLower(), actQty))
                             {
                                 pi.SetValue(scheduleBody, q.Sum(qq => qq.TransitQty), null);
-                                dtS = scheduleHead.DateTo;
                                 break;
                             }
                         }
@@ -591,7 +604,7 @@ namespace com.Sconit.Service.MRP.Impl
                                 join inv in expectTransitInventoryViews
                                 on discon.DiscontinueItem.Code equals inv.Item
                                 where inv.Location == scheduleHead.Location
-                                && inv.WindowTime <= scheduleHead.DateTo
+                                && inv.WindowTime < dtT
                                 && (!lastDate.HasValue || inv.WindowTime > lastDate.Value)
                                 && discon.StartDate <= inv.StartTime
                                 && (!discon.EndDate.HasValue || discon.EndDate.Value >= inv.WindowTime)

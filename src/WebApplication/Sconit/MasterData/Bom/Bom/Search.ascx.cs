@@ -22,8 +22,6 @@ public partial class MasterData_Bom_Bom_Search : SearchModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        this.tbCode.ServiceParameter = "bool:true";
-        this.tbCode.DataBind();
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)

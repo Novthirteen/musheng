@@ -7,8 +7,7 @@
                 <asp:Literal ID="lblCode" runat="server" Text="${Common.Business.Code}:" />
             </td>
             <td class="ttd02">
-                <uc3:textbox ID="tbCode" runat="server" Visible="true" Width="250" DescField="Description"
-                    ValueField="Code" ServicePath="BomMgr.service" ServiceMethod="GetAllBom" />
+                 <asp:TextBox ID="tbCode" runat="server" Visible="true" />
             </td>
             <td class="ttd01">
             </td>

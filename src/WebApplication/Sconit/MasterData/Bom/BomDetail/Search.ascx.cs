@@ -105,8 +105,6 @@ public partial class MasterData_Bom_BomDetail_Search : SearchModuleBase
 
     protected void cbIncludeInactive_CheckedChanged(Object sender, EventArgs e)
     {
-        this.tbParCode.ServiceParameter = "bool:" + this.cbIncludeInactive.Checked;
-        this.tbParCode.DataBind();
     }
 
     protected override void DoSearch()
