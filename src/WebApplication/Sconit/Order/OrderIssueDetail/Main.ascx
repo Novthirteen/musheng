@@ -8,4 +8,4 @@
 <uc2:New ID="ucSearch" runat="server" Visible="true" />
 <uc2:FlowInfo ID="ucFlowInfo" runat="server" Visible="false" />
 <uc2:List ID="ucList" runat="server" Visible="false" />
-
+<uc2:ViewShipList ID="ucViewShipList" runat="server" Visible="false" />

@@ -79,7 +79,7 @@ public partial class Order_OrderIssueDetail_Main : MainModuleBase
         this.ucSearch.SearchEvent += new System.EventHandler(this.Search_Render);
 
         this.ucSearch.SearchEventByNull += new System.EventHandler(this.Search_RenderNull); //add by ljz 
-        this.ucList.ShipSuccessEvent += new System.EventHandler(this.Search_Render);
+        this.ucList.ShipSuccessEvent += new System.EventHandler(this.ShipSuccess_Render);
     }
 
 
