@@ -69,7 +69,8 @@
                 <asp:TemplateField HeaderText="${MasterData.Order.OrderHead.WindowTime}" SortExpression="Item.Description">
                     <ItemTemplate>
                        <%-- <%# DataBinder.Eval(Container.DataItem, "PartyTo.Name")%>--%>
-                        <%# DataBinder.Eval(Container.DataItem, "OrderHead.WindowTime")%>
+                       <asp:Label ID="lblWinTime" Text='<%# Bind("OrderHead.WindowTime") %>' runat="server" />
+                        <%--<%# DataBinder.Eval(Container.DataItem, "OrderHead.WindowTime")%>--%>
                     </ItemTemplate>
                 </asp:TemplateField>  
                 <%--<asp:BoundField DataField="StartTime" HeaderText="${MasterData.Order.OrderHead.StartTime}"

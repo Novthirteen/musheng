@@ -417,19 +417,16 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
 
     protected void GV_List_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        //if (e.Row.RowType == DataControlRowType.DataRow)
-        //{
-        //    OrderHead orderHead = (OrderHead)e.Row.DataItem;
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            OrderDetail orderDetail = (OrderDetail)e.Row.DataItem;
 
-        //    Label lblWinTime = (Label)e.Row.FindControl("lblWinTime");
-        //    if (orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE
-        //       || orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT
-        //       || orderHead.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS)
-        //    {
-        //        lblWinTime.ForeColor = OrderHelper.GetWinTimeColor(orderHead.StartTime, orderHead.WindowTime);
-        //    }
+            Label lblWinTime = (Label)e.Row.FindControl("lblWinTime");
 
-        //}
+            lblWinTime.ForeColor = OrderHelper.GetWinTimeColor(orderDetail.OrderHead.StartTime, orderDetail.OrderHead.WindowTime);
+
+
+        }
     }
 
     private List<string> CollectOrderNoList()
@@ -484,7 +481,7 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
             if (this.IsSupplier == true)
             {
                 var orderHead = this.TheOrderHeadMgr.LoadOrderHead(orderNo);
-                if (DateTime.Now.AddMonths(1) < orderHead.StartDate)
+                if (DateTime.Now.AddMonths(1) < orderHead.WindowTime)
                 {
                     ShowErrorMessage("订单未到达发货时间，不允许发货。");
                     chk.Checked = false;
