@@ -102,8 +102,8 @@ namespace com.Sconit.Service.MRP.Impl
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
                     left join ItemMap as im on im.Item = olt.Item
-                    where oh.Status in (?, ?) and oh.SubType = ? and oh.Type in (?, ?) and olt.IOType = ?
-                    and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?, ?) and id.OrderLocTransId = olt.Id)
+                    where oh.Status in (?) and oh.SubType = ? and oh.Type in (?, ?) and olt.IOType = ?
+                    and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?, ?) and id.OrderLocTransId = olt.Id)             
                     ";
 
             IDictionary<String, IType> columns = new Dictionary<String, IType>();
@@ -128,7 +128,6 @@ namespace com.Sconit.Service.MRP.Impl
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_DISTRIBUTION,
                     BusinessConstants.IO_TYPE_IN,
-                    BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_COMPLETE, 
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT, 
