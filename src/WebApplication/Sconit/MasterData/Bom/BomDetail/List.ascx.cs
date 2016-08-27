@@ -95,33 +95,41 @@ public partial class MasterData_Bom_BomDetail_List : ListModuleBase
         this.StartDate = startDate;
         this.IsIncludeInactive = isIncludeInactive;
 
-
+        DetachedCriteria selectCountCriteria = DetachedCriteria.For(typeof(BomDetail)).SetProjection(Projections.Count("Id"));
         DetachedCriteria selectCriteria = DetachedCriteria.For(typeof(BomDetail));
         selectCriteria.CreateAlias("Bom", "b");
+        selectCountCriteria.CreateAlias("Bom", "b");
         if (!string.IsNullOrEmpty(bomCode))
         {
             selectCriteria.Add(Expression.Like("b.Code", bomCode, MatchMode.Anywhere));
+            selectCountCriteria.Add(Expression.Like("b.Code", bomCode, MatchMode.Anywhere));
         }
         if (!string.IsNullOrEmpty(itemCode))
         {
             selectCriteria.Add(Expression.Like("Item.Code", itemCode, MatchMode.Anywhere));
+            selectCountCriteria.Add(Expression.Like("Item.Code", itemCode, MatchMode.Anywhere));
         }
 
         if (IsIncludeInactive == false)
         {
             selectCriteria.Add(Expression.Eq("b.IsActive", true));
+            selectCountCriteria.Add(Expression.Eq("b.IsActive", true));
         }
 
         selectCriteria.Add(Expression.Le("StartDate", DateTime.Now));
         selectCriteria.Add(Expression.Or(Expression.Ge("EndDate", DateTime.Now), Expression.IsNull("EndDate")));
-
-        var recordCount = this.TheCriteriaMgr.FindAll(selectCriteria).Count;
+        selectCountCriteria.Add(Expression.Le("StartDate", DateTime.Now));
+        selectCountCriteria.Add(Expression.Or(Expression.Ge("EndDate", DateTime.Now), Expression.IsNull("EndDate")));
+        //this.GV_List.SelectCriteria = selectCriteria;
+        //var recordCount = this.TheCriteriaMgr.FindAll(selectCountCriteria)[0];
+        //var recordCount = this.TheCriteriaMgr.FindAll(selectCriteria);
+        this.SetSearchCriteria(selectCriteria, selectCountCriteria);
         com.Sconit.Control.GridPager pager = GV_List.FindPager();
         int pageSize = pager.PageSize;
         int pageIndex = pager.CurrentPageIndex;
         int firstRow = (pageIndex - 1) * pageSize;
         int maxRows = pageSize;
-        pager.RecordCount = recordCount;
+        pager.RecordCount = FindCount(selectCountCriteria);
         var list = TheCriteriaMgr.FindAll<BomDetail>(selectCriteria, firstRow, maxRows);
 
         if (isAddNew == true)
@@ -250,6 +258,35 @@ public partial class MasterData_Bom_BomDetail_List : ListModuleBase
         //this.GV_List.DataBind();
     }
 
+
+    public int FindCount(DetachedCriteria selectCriteria)
+    {
+        IList list = TheCriteriaMgr.FindAll(selectCriteria);
+        if (list != null && list.Count > 0)
+        {
+            if (list[0] is int)
+            {
+                return int.Parse(list[0].ToString());
+            }
+            else if (list[0] is object[])
+            {
+                return int.Parse(((object[])list[0])[0].ToString());
+            }
+            //由于性能问题,此后禁用该方法。
+            //else if (list[0] is object)
+            //{
+            //    return list.Count;
+            //}
+            else
+            {
+                throw new Exception("unknow result type");
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
     public void Export()
     {

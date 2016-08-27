@@ -62,9 +62,14 @@
                         <asp:Label ID="lblSafeStock" runat="server" Text='<%# Bind("SafeStock","{0:0.########}") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                   <asp:TemplateField HeaderText="${MasterData.Item.FlowDetail.MaxStock}">
+                <asp:TemplateField HeaderText="${MasterData.Item.FlowDetail.MaxStock}">
                     <ItemTemplate>
                         <asp:Label ID="lblMaxStock" runat="server" Text='<%# Bind("MaxStock","{0:0.########}") %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="权重">
+                    <ItemTemplate>
+                        <asp:Label ID="lblMaxStock" runat="server" Text='<%# Bind("MRPWeight","{0:0.########}") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

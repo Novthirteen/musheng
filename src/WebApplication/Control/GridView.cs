@@ -785,6 +785,7 @@ namespace com.Sconit.Control
                 return sessionHelper.GetUserSelectCountCriteria(this.NamingContainer.TemplateControl.AppRelativeVirtualPath);
             }
         }
+
         #endregion
 
         #region 别名

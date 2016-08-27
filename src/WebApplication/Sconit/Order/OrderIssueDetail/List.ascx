@@ -26,7 +26,7 @@
                         </div>
                     </HeaderTemplate>
                     <ItemTemplate>
-                        <asp:CheckBox ID="CheckBoxGroup" OnCheckedChanged="CheckBoxGroup_CheckedChanged" AutoPostBack="true" name="CheckBoxGroup" runat="server" />
+                        <asp:CheckBox ID="CheckBoxGroup" OnCheckedChanged="CheckBoxGroup_CheckedChanged"  name="CheckBoxGroup" runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField Visible="false">
@@ -111,7 +111,7 @@
                 </asp:TemplateField>--%>
                 <asp:TemplateField HeaderText="${MasterData.Order.OrderDetail.CurrentShipQty}">
                     <ItemTemplate>
-                        <asp:TextBox ID="tbCurrentQty" runat="server" Text='<%# string.Format("{0:0.########}", Convert.ToDecimal(Eval("OrderedQty"))-Convert.ToDecimal(Eval("ShippedQty") == null? 0:Eval("ShippedQty"))) %>'
+                        <asp:TextBox ID="tbCurrentQty" runat="server" Text='<%# string.Format("{0:0.########}", Eval("CurrentShipQty"))%>'
                             onmouseup="if(!readOnly)select();" Width="50"></asp:TextBox>
                         <asp:RangeValidator ID="rvCurrentQty" ControlToValidate="tbCurrentQty" runat="server"
                             Display="Dynamic" ErrorMessage="*" MaximumValue="999999999" MinimumValue="0"

@@ -76,7 +76,8 @@ public partial class Reports_InvIOB_List : ReportModuleBase
 
         if (this._criteriaParam.Item != null)
         {
-            criteria.Add(Expression.Eq("i.Code", this._criteriaParam.Item));
+            criteria.Add(Expression.Like("i.Code", this._criteriaParam.Item, MatchMode.Start));
+            //criteria.Add(Expression.Eq("i.Code", this._criteriaParam.Item));
         }
         // if (this._criteriaParam.ItemDesc != null)
         //{

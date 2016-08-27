@@ -87,6 +87,27 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         set { ViewState["IsSupplier"] = value; }
     }
 
+    //public List<int> orderDetIdList
+    //{
+    //    get { return (List<int>)ViewState["orderDetIdList"]; }
+    //    set { ViewState["orderDetIdList"] = value; }
+    //}
+
+    public Dictionary<int,decimal> orderDetQtyDic
+    {
+        get { return (Dictionary<int, decimal>)ViewState["orderDetQtyDic"]; }
+        set { ViewState["orderDetQtyDic"] = value; }
+    }
+
+    public List<string> orderNoList
+    {
+        get { return (List<string>)ViewState["orderNoList"]; }
+        set { ViewState["orderNoList"] = value; }
+    }
+
+
+    static List<List<string>> ItemList = new List<List<string>>();//ljz
+
     private decimal GetActedQty(GridViewRow gvr)
     {
         return GetCurrentQtyTextBox(gvr).Text.Trim() != string.Empty ? decimal.Parse(GetCurrentQtyTextBox(gvr).Text.Trim()) : 0;
@@ -113,7 +134,7 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
     {
         IList<OrderHead> orderList = new List<OrderHead>();
         orderNoList = new List<string>();
-        orderDetIdList = new List<int>();
+        orderDetQtyDic = new Dictionary<int, decimal>();
         this.GV_List.DataSource = orderList;
         this.GV_List.DataBind();
     }
@@ -132,7 +153,7 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         if (isFLowChange == true)
         {
             orderNoList = new List<string>();
-            orderDetIdList = new List<int>();
+            orderDetQtyDic = new Dictionary<int, decimal>();
         }
         this.ModuleSubType = orderSubType;
         
@@ -175,15 +196,15 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         {
             if (!string.IsNullOrEmpty(startDate) && string.IsNullOrEmpty(endDate))
             {
-                selectCriteria.Add(Expression.Ge("StartDate", DateTime.Parse(startDate)));
+                selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(startDate)));
             }
             else if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
             {
-                selectCriteria.Add(Expression.Ge("StartDate", DateTime.Parse(startDate))).Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
+                selectCriteria.Add(Expression.Ge("WindowTime", DateTime.Parse(startDate))).Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
             }
             else if (string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
             {
-                selectCriteria.Add(Expression.Le("StartDate", DateTime.Parse(endDate)));
+                selectCriteria.Add(Expression.Le("WindowTime", DateTime.Parse(endDate)));
             }
         }
 
@@ -204,13 +225,19 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
                             {
                                 if (showChecked)
                                 {
-                                    if (orderDetIdList.Contains(orderDetail.Id))
+                                    if (orderDetQtyDic.ContainsKey(orderDetail.Id))
                                     {
+                                        orderDetail.CurrentShipQty = orderDetQtyDic[orderDetail.Id];
                                         orderDetailList.Add(orderDetail);
                                     }
                                 }
                                 else
-                                { 
+                                {
+                                    orderDetail.CurrentShipQty = orderDetail.ShippedQty == null ? orderDetail.OrderedQty : orderDetail.OrderedQty - orderDetail.ShippedQty.Value;
+                                    if (orderDetQtyDic.ContainsKey(orderDetail.Id))
+                                    {
+                                        orderDetail.CurrentShipQty = orderDetQtyDic[orderDetail.Id];
+                                    }
                                     orderDetailList.Add(orderDetail);
                                 }
                             }
@@ -219,13 +246,19 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
                         {
                             if (showChecked)
                             {
-                                if (orderDetIdList.Contains(orderDetail.Id))
+                                if (orderDetQtyDic.ContainsKey(orderDetail.Id))
                                 {
+                                    orderDetail.CurrentShipQty = orderDetQtyDic[orderDetail.Id];
                                     orderDetailList.Add(orderDetail);
                                 }
                             }
                             else
                             {
+                                orderDetail.CurrentShipQty = orderDetail.ShippedQty == null ? orderDetail.OrderedQty : orderDetail.OrderedQty - orderDetail.ShippedQty.Value;
+                                if (orderDetQtyDic.ContainsKey(orderDetail.Id))
+                                {
+                                    orderDetail.CurrentShipQty = orderDetQtyDic[orderDetail.Id];
+                                }
                                 orderDetailList.Add(orderDetail);
                             }
                         }
@@ -238,9 +271,8 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         {
             this.OrderType = orderList[0].Type;
             this.InitialUI();
-
-
         }
+
         this.GV_List.DataSource = orderDetailList;
         this.GV_List.DataBind();
         LoadCK();
@@ -294,11 +326,11 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
 
     private void LoadCK()
     {
-        foreach (var orderDetId in orderDetIdList)
+        foreach (var orderDetQty in orderDetQtyDic)
         {
             foreach(GridViewRow row in GV_List.Rows)
             {
-                if ( int.Parse(((Literal)row.FindControl("ltlId")).Text) == orderDetId )
+                if (int.Parse(((Literal)row.FindControl("ltlId")).Text) == orderDetQty.Key)
                 {
                     ((CheckBox)row.FindControl("CheckBoxGroup")).Checked = true;
                 }
@@ -329,8 +361,8 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         ItemList = null;
         ItemList = new List<List<string>>();
 
-        orderDetIdList = null;
-        orderDetIdList = new List<int>();
+        orderDetQtyDic = null;
+        orderDetQtyDic = new Dictionary<int, decimal>();
     }
 
     protected void btnCreatePickList_Click(object sender, EventArgs e)
@@ -361,6 +393,13 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
                 {
                     var qty = GetActedQty(row);
                     var id = int.Parse(((Literal)row.FindControl("ltlId")).Text);
+                    var windowTime = DateTime.Parse(((Label)row.FindControl("lblWinTime")).Text);
+                    if (DateTime.Now.AddDays(15) < windowTime && this.IsSupplier == true)
+                    {
+                        ShowErrorMessage("本次发货有未到达发货时间的明细，不允许发货。");
+                        this.btnShip.Enabled = true;
+                        return;
+                    }
                     if (qty > 0)
                     {
                         var orderDetail = this.TheOrderDetailMgr.LoadOrderDetail(id);
@@ -381,12 +420,13 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
                 this.btnShip.Enabled = true ;
                 ShowSuccessMessage("MasterData.Distribution.Ship.Successfully", inporcess.IpNo);
                 orderNoList = new List<string>();
-                orderDetIdList = new List<int>();
+                orderDetQtyDic = new Dictionary<int, decimal>();
                 //if (this.cbPrintAsn.Checked == true)
                 //{
                 //    PrintASN(inporcess);
                 //}
                 ShipSuccessEvent(new Object[] { inporcess.IpNo, this.cbPrintAsn.Checked }, e);
+                InitPageParameter(this.FlowCode, this.ItemCode, this.StartDate, this.EndDate, this.OrderSubType, this.IsFLowChange, false, this.IsSupplier);
             }
         }
         catch (BusinessErrorException ex)
@@ -459,9 +499,6 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         }
     }
 
-    static List<string> orderNoList = new List<string>();
-    static List<int> orderDetIdList = new List<int>();
-    static List<List<string>> ItemList = new List<List<string>>();//ljz
     protected void CheckBoxGroup_CheckedChanged(Object sender, EventArgs e)
     {
         CheckBox chk = (CheckBox)sender;
@@ -471,6 +508,8 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         string orderNo = ((Literal)gr.FindControl("ltlOrderNo")).Text;
         string item = ((Literal)gr.FindControl("ltlItem")).Text;//ljz
         int orderDetId = int.Parse(((Literal)gr.FindControl("ltlId")).Text);
+        decimal currentQty = decimal.Parse(((TextBox)gr.FindControl("tbCurrentQty")).Text);
+
 
         List<string> olit = new List<string>();
         List<string> it = new List<string>();
@@ -481,19 +520,20 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
             if (this.IsSupplier == true)
             {
                 var orderHead = this.TheOrderHeadMgr.LoadOrderHead(orderNo);
-                if (DateTime.Now.AddMonths(1) < orderHead.WindowTime)
+                if (DateTime.Now.AddDays(15) < orderHead.WindowTime)
                 {
                     ShowErrorMessage("订单未到达发货时间，不允许发货。");
                     chk.Checked = false;
+                    return;
                 }
             }
             if (!orderNoList.Contains(orderNo))
             {
                 orderNoList.Add(orderNo);
             }
-            if (!orderDetIdList.Contains(orderDetId))
+            if (!orderDetQtyDic.ContainsKey(orderDetId))
             {
-                orderDetIdList.Add(orderDetId);
+                orderDetQtyDic.Add(orderDetId, currentQty);
             }
             ItemList.Add(olit);//ljz
             
@@ -501,7 +541,7 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
         else
         {
             orderNoList.Remove(orderNo);
-            orderDetIdList.Remove(orderDetId);
+            orderDetQtyDic.Remove(orderDetId);
             ItemList.Remove(ItemList.FirstOrDefault(i => i[0] == orderNo && i[1] == item));
             //ItemList.Remove(olit);//ljz
         }
@@ -517,13 +557,15 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
                 CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
                 string orderNo = ((Literal)gvr.FindControl("ltlOrderNo")).Text;
                 int orderDetId = int.Parse(((Literal)gvr.FindControl("ltlId")).Text);
+                decimal currentQty = decimal.Parse(((TextBox)gvr.FindControl("tbCurrentQty")).Text);
+
                 if (!orderNoList.Contains(orderNo))
                 {
                     orderNoList.Add(orderNo);
                 }
-                if (orderDetIdList.Contains(orderDetId))
+                if (!orderDetQtyDic.ContainsKey(orderDetId))
                 {
-                    orderDetIdList.Add(orderDetId);
+                    orderDetQtyDic.Add(orderDetId, currentQty);
                 }
 
             }
@@ -536,7 +578,7 @@ public partial class Order_OrderIssueDetail_List : ModuleBase
                 string orderNo = ((Literal)gvr.FindControl("ltlOrderNo")).Text;
                 int orderDetId = int.Parse(((Literal)gvr.FindControl("ltlId")).Text);
                 orderNoList.Remove(orderNo);
-                orderDetIdList.Remove(orderDetId);
+                orderDetQtyDic.Remove(orderDetId);
 
             }
         }

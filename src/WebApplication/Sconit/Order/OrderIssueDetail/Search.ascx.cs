@@ -69,6 +69,10 @@ public partial class Order_OrderIssueDetail_Search : SearchModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            this.tbEndDate.Text = DateTime.Now.AddDays(15).ToString("yyyy-MM-dd HH:mm");
+        }
         this.lblFlow.Text = FlowHelper.GetFlowLabel(this.ModuleType) + ":";
 
         if (IsSupplier)
@@ -142,18 +146,18 @@ public partial class Order_OrderIssueDetail_Search : SearchModuleBase
     }
 
 
-    protected void IsShowChecked_CheckedChanged(Object sender, EventArgs e)
-    {
-        bool showChecked = this.ckShowChecked.Checked;
-        SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
-    }
+    //protected void IsShowChecked_CheckedChanged(Object sender, EventArgs e)
+    //{
+    //    bool showChecked = this.ckShowChecked.Checked;
+    //    SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
+    //}
 
     //add by ljz start
-    protected void tbItemCode_TextChanged(Object sender, EventArgs e)
-    {
-        bool showChecked = this.ckShowChecked.Checked;
-        SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
-    }
+    //protected void tbItemCode_TextChanged(Object sender, EventArgs e)
+    //{
+    //    bool showChecked = this.ckShowChecked.Checked;
+    //    SearchEvent((new object[] { this.tbFlow.Text.Trim(), this.tbItemCode.Text.Trim(), this.tbStartDate.Text, this.tbEndDate.Text, BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, false, showChecked }), null);
+    //}
     //add by ljz end
 
     protected override void DoSearch()
