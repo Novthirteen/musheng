@@ -192,16 +192,16 @@ public partial class Finance_Bill_NewList : ListModuleBase
 
         if (chk.Checked)
         {
-            double totalQty = 0;
-            double totalAmount = 0;
-            foreach (GridViewRow gvr in GV_List.Rows)
-            {
-                CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
-                totalQty += double.Parse(((TextBox)gvr.FindControl("tbQty")).Text);
-                totalAmount += double.Parse(((TextBox)gvr.FindControl("tbAmount")).Text);
-            }
-            this.ltlCurrentBillQtyTotal1.Text = totalQty.ToString();
-            this.ltlAmountTotal1.Text = totalAmount.ToString();
+            //double totalQty = 0;
+            //double totalAmount = 0;
+            //foreach (GridViewRow gvr in GV_List.Rows)
+            //{
+            //    CheckBox cbCheckBoxGroup = (CheckBox)gvr.FindControl("CheckBoxGroup");
+            //    totalQty += double.Parse(((TextBox)gvr.FindControl("tbQty")).Text);
+            //    totalAmount += double.Parse(((TextBox)gvr.FindControl("tbAmount")).Text);
+            //}
+            //this.ltlCurrentBillQtyTotal1.Text = totalQty.ToString();
+            //this.ltlAmountTotal1.Text = totalAmount.ToString();
         }
         else
         {

@@ -62,9 +62,9 @@
             </td>
             <td class="td02">
                 <asp:RadioButtonList ID="rblDateType" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="${MRP.Schedule.DateType.Day}" Value="0" Selected="True" />
+                    <asp:ListItem Text="${MRP.Schedule.DateType.Day}" Value="0" />
                     <asp:ListItem Text="${MRP.Schedule.DateType.Week}" Value="1" />
-                    <asp:ListItem Text="${MRP.Schedule.DateType.Month}" Value="2" />
+                    <asp:ListItem Text="${MRP.Schedule.DateType.Month}" Value="2" Selected="True" />
                 </asp:RadioButtonList>
             </td>
         </tr>

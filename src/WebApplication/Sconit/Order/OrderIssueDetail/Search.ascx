@@ -25,8 +25,7 @@
                 <%--add by ljz start--%>
                 <uc3:textbox ID="tbItemCode" runat="server" Visible="true" DescField="Description" ValueField="Code"
                             ServicePath="ItemMgr.service" ServiceMethod="GetCacheAllItem"
-                            AutoPostBack="true" MustMatch="true" Width="250" 
-                            OnTextChanged="tbItemCode_TextChanged" />
+                            MustMatch="true" Width="250"  />
                 <%--add by ljz end--%>
             </td>
         </tr>
@@ -52,7 +51,7 @@
                 仅显示选中
             </td>
             <td class="td02">
-                <asp:CheckBox ID="ckShowChecked" runat="server" AutoPostBack="true" OnCheckedChanged="IsShowChecked_CheckedChanged"  />
+                <asp:CheckBox ID="ckShowChecked" runat="server"  />
             </td>
             <td class="td01">
             </td>
