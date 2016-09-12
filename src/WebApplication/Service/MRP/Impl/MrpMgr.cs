@@ -94,14 +94,14 @@ namespace com.Sconit.Service.MRP.Impl
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
-                    left join ItemMap as im on im.Item = olt.Item
+                    left join ItemMap as im on im.Item = olt.Item and im.StartDate <= ? and (im.EndDate >= ? and im.EndDate is null)
                     where oh.Status in (?, ?) and oh.SubType = ? and not oh.Type = ? and olt.IOType = ?
                     union all
                     select oh.OrderNo, oh.Type, oh.Flow, ISNULL(od.LocTo, oh.LocTo) as Loc, ISNULL(im.MapItem, olt.Item) as Item, olt.Uom, od.UC, oh.StartTime, oh.WindowTime, od.OrderQty, ISNULL(od.ShipQty, 0) as ShipQty, ISNULL(od.RecQty, 0) as RecQty, olt.UnitQty
                     from OrderLocTrans as olt 
                     inner join OrderDet as od on olt.OrderDetId = od.Id
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
-                    left join ItemMap as im on im.Item = olt.Item
+                    left join ItemMap as im on im.Item = olt.Item and im.StartDate <= ? and (im.EndDate >= ? and im.EndDate is null)
                     where oh.Status in (?) and oh.SubType = ? and oh.Type in (?, ?) and olt.IOType = ?
                     and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?, ?) and id.OrderLocTransId = olt.Id)             
                     ";
@@ -123,11 +123,15 @@ namespace com.Sconit.Service.MRP.Impl
 
             IList<object[]> expectTransitInvList = hqlMgr.FindAllWithNativeSql<object[]>(sql,
                 new Object[] {
+                    effectiveDate,
+                    effectiveDate,
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS, 
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_DISTRIBUTION,
                     BusinessConstants.IO_TYPE_IN,
+                    effectiveDate,
+                    effectiveDate,
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_COMPLETE, 
                     BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML, 
                     BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PROCUREMENT, 
@@ -363,7 +367,7 @@ namespace com.Sconit.Service.MRP.Impl
                                                                && (string)inv[1] != BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_CUSTOMERGOODS ?
                                                                                 ((decimal)inv[9] - (inv[10] != null ? (decimal)inv[10] : 0) * (decimal)inv[12])
                                                                                 : ((decimal)inv[9] - (inv[11] != null ? (decimal)inv[11] : 0) * (decimal)inv[12]),
-                                                  EffectiveDate = effectiveDate
+                                                  EffectiveDate = effectiveDate,
                                               };
 
                 foreach (ExpectTransitInventory snapShot in expTransInvListSnapShot)
