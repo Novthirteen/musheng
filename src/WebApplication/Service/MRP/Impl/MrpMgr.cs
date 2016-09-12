@@ -103,7 +103,7 @@ namespace com.Sconit.Service.MRP.Impl
                     inner join OrderMstr as oh on od.OrderNo = oh.OrderNo
                     left join ItemMap as im on im.Item = olt.Item and im.StartDate <= ? and (im.EndDate >= ? and im.EndDate is null)
                     where oh.Status in (?) and oh.SubType = ? and oh.Type in (?, ?) and olt.IOType = ?
-                    and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?, ?) and id.OrderLocTransId = olt.Id)             
+                    and exists(select top 1 1 from IpDet as id inner join IpMstr as im on id.IpNo = im.IpNo where id.Qty > id.RecQty and im.Status in (?, ?, ?) and id.OrderLocTransId = olt.Id and im.Type = ?)             
                     ";
 
             IDictionary<String, IType> columns = new Dictionary<String, IType>();
@@ -139,7 +139,8 @@ namespace com.Sconit.Service.MRP.Impl
                     BusinessConstants.IO_TYPE_OUT,
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE, 
                     BusinessConstants.CODE_MASTER_STATUS_VALUE_SUBMIT, 
-                    BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS
+                    BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS,
+                    BusinessConstants.CODE_MASTER_INPROCESS_LOCATION_TYPE_VALUE_NORMAL, 
                 }, columns);
             #endregion
 
