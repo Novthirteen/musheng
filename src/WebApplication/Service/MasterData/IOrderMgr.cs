@@ -222,10 +222,14 @@ namespace com.Sconit.Service.MasterData
         Receipt QuickReceiveOrder(string flowCode, IList<OrderDetail> orderDetailList, string userCode);
 
         Receipt QuickReceiveOrder(string flowCode, IList<OrderDetail> orderDetailList, string userCode, string orderSubType, DateTime winTime, DateTime startTime, bool isUrgent, string referenceOrderNo, string externalOrderNo);
+        
+        Receipt QuickReceiveOrder2(string flowCode, IList<OrderDetail> orderDetailList, string userCode, string orderSubType, DateTime winTime, DateTime startTime, bool isUrgent, string referenceOrderNo, string externalOrderNo);
 
         Receipt QuickReceiveOrder(Flow flow, IList<OrderDetail> orderDetailList, User user);
 
         Receipt QuickReceiveOrder(Flow flow, IList<OrderDetail> orderDetailList, User user, string orderSubType, DateTime winTime, DateTime startTime, bool isUrgent, string referenceOrderNo, string externalOrderNo);
+
+        Receipt QuickReceiveOrder2(Flow flow, IList<OrderDetail> orderDetailList, User user, string orderSubType, DateTime winTime, DateTime startTime, bool isUrgent, string referenceOrderNo, string externalOrderNo);
 
         void ManualCompleteOrder(string orderNo, string userCode);
 

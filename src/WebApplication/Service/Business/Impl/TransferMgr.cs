@@ -154,7 +154,7 @@ namespace com.Sconit.Service.Business.Impl
             resolver.IOType = (resolver.IOType == null || resolver.IOType == string.Empty) ?
                 resolver.IOType = BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML : resolver.IOType;
             //Receipt receipt = orderMgrE.QuickReceiveOrder(resolver.Code, orderDetails, resolver.UserCode);
-            Receipt receipt = orderMgrE.QuickReceiveOrder(resolver.Code, orderDetails, resolver.UserCode, resolver.IOType, DateTime.Now, DateTime.Now, false, null, null);
+            Receipt receipt = orderMgrE.QuickReceiveOrder2(resolver.Code, orderDetails, resolver.UserCode, resolver.IOType, DateTime.Now, DateTime.Now, false, null, null);
             #region Print
             if (resolver.NeedPrintReceipt && resolver.IsCSClient)
             {

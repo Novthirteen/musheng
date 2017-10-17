@@ -3124,6 +3124,14 @@ namespace com.Sconit.Service.MasterData.Impl
         }
 
         [Transaction(TransactionMode.Requires)]
+        public Receipt QuickReceiveOrder2(string flowCode, IList<OrderDetail> orderDetailList, string userCode, string orderSubType, DateTime winTime, DateTime startTime, bool isUrgent, string referenceOrderNo, string externalOrderNo)
+        {
+            Flow flow = this.flowMgrE.CheckAndLoadFlow(flowCode, true);
+            User user = this.userMgrE.CheckAndLoadUser(userCode);
+            return this.QuickReceiveOrder2(flow, orderDetailList, user, orderSubType, winTime, startTime, isUrgent, referenceOrderNo, externalOrderNo);
+        }
+
+        [Transaction(TransactionMode.Requires)]
         public Receipt QuickReceiveOrder(Flow flow, IList<OrderDetail> orderDetailList, User user)
         {
             DateTime dateTimeNow = DateTime.Now;
@@ -3410,6 +3418,291 @@ namespace com.Sconit.Service.MasterData.Impl
             }
             #endregion
         }
+
+        [Transaction(TransactionMode.Requires)]
+        public Receipt QuickReceiveOrder2(Flow flow, IList<OrderDetail> orderDetailList, User user, string orderSubType, DateTime winTime, DateTime startTime, bool isUrgent, string referenceOrderNo, string externalOrderNo)
+        {
+            if (flow.Type == BusinessConstants.CODE_MASTER_ORDER_TYPE_VALUE_PRODUCTION)
+            {
+                throw new TechnicalException("QuickReceiveOrder not support Production");
+            }
+
+            #region 缓存上架信息
+            IDictionary<string, string> huIdStorageBinDic = new Dictionary<string, string>();
+            foreach (OrderDetail sourceOrderDetail in orderDetailList)
+            {
+                if (sourceOrderDetail.HuId != null && sourceOrderDetail.HuId.Trim() != string.Empty &&
+                    sourceOrderDetail.PutAwayBinCode != null && sourceOrderDetail.PutAwayBinCode.Trim() != string.Empty)
+                {
+                    if (!huIdStorageBinDic.ContainsKey(sourceOrderDetail.HuId.Trim()))
+                    {
+                        huIdStorageBinDic.Add(sourceOrderDetail.HuId.Trim(), sourceOrderDetail.PutAwayBinCode.Trim());
+                    }
+                    else
+                    {
+                        if (huIdStorageBinDic[sourceOrderDetail.HuId.Trim()] != sourceOrderDetail.PutAwayBinCode.Trim())
+                        {
+                            throw new BusinessErrorException("Common.Business.Error.OneHuCannotInTwoBin");
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 初始化订单头
+            OrderHead orderHead = this.TransferFlow2Order(flow, orderSubType);
+
+            #region 从不合格品库位退货，收货扫描一定要设为False
+            if (orderDetailList != null && orderDetailList.Count > 0)
+            {
+                //如果不是所有明细的目的库位都是Reject，可能有问题。
+                //if (orderSubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_RTN &&
+                //    orderDetailList[0].DefaultLocationTo != null &&
+                //    orderDetailList[0].DefaultLocationTo.Code == BusinessConstants.SYSTEM_LOCATION_REJECT)
+                //{
+                //    orderHead.IsReceiptScanHu = false;
+                //    orderHead.LocationTo = this.locationMgrE.GetRejectLocation();
+                //}
+                if (orderSubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_REJ)
+                {
+                    orderHead.IsReceiptScanHu = false;
+                }
+            }
+            #endregion
+
+            IList<OrderDetail> targetOrderDetailList = orderHead.OrderDetails;
+
+            if (targetOrderDetailList == null)
+            {
+                targetOrderDetailList = new List<OrderDetail>();
+            }
+
+            orderHead.SubType = orderSubType;
+            orderHead.WindowTime = winTime;
+            orderHead.StartTime = startTime;
+            orderHead.ReferenceOrderNo = referenceOrderNo;
+            orderHead.ExternalOrderNo = externalOrderNo;
+            if (isUrgent)
+            {
+                orderHead.Priority = BusinessConstants.CODE_MASTER_ORDER_PRIORITY_VALUE_URGENT;
+            }
+            else
+            {
+                orderHead.Priority = BusinessConstants.CODE_MASTER_ORDER_PRIORITY_VALUE_NORMAL;
+            }
+
+            orderHead.IsAutoRelease = true;
+            orderHead.IsAutoStart = true;
+            orderHead.IsAutoCreatePickList = false;
+            orderHead.IsAutoShip = false;
+            orderHead.IsAutoReceive = false;
+            #endregion
+
+            #region 合并OrderDetailList
+            if (orderDetailList != null && orderDetailList.Count > 0)
+            {
+                IList<OrderDetail> newOrderDetailList = new List<OrderDetail>();
+                foreach (OrderDetail sourceOrderDetail in orderDetailList)
+                {
+                    bool findMatch = false;
+
+                    #region 在FlowDetail转换的OrderDetail里面查找匹配项
+                    foreach (OrderDetail targetOrderDetail in targetOrderDetailList)
+                    {
+                        if (sourceOrderDetail.Item.Code == targetOrderDetail.Item.Code
+                            && sourceOrderDetail.Uom.Code == targetOrderDetail.Uom.Code
+                            && sourceOrderDetail.UnitCount == targetOrderDetail.UnitCount
+                            //&& LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationFrom, targetOrderDetail.DefaultLocationFrom)
+                            //&& LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationTo, targetOrderDetail.DefaultLocationTo)
+                            )
+                        {
+                            targetOrderDetail.RequiredQty += sourceOrderDetail.OrderedQty;
+                            targetOrderDetail.OrderedQty += sourceOrderDetail.OrderedQty;
+                            targetOrderDetail.LocationFrom = sourceOrderDetail.DefaultLocationFrom;
+                            targetOrderDetail.LocationTo = sourceOrderDetail.DefaultLocationTo;
+
+                            findMatch = true;
+
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    if (!findMatch)
+                    {
+                        #region 没有找到匹配项，从新增匹配项中找
+                        foreach (OrderDetail newOrderDetail in newOrderDetailList)
+                        {
+                            if (sourceOrderDetail.Item.Code == newOrderDetail.Item.Code
+                            && sourceOrderDetail.Uom.Code == newOrderDetail.Uom.Code
+                            && sourceOrderDetail.UnitCount == newOrderDetail.UnitCount
+                            && LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationFrom, newOrderDetail.DefaultLocationFrom)
+                            && LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationTo, newOrderDetail.DefaultLocationTo))
+                            {
+                                newOrderDetail.RequiredQty += sourceOrderDetail.OrderedQty;
+                                newOrderDetail.OrderedQty += sourceOrderDetail.OrderedQty;
+
+                                findMatch = true;
+
+                                break;
+                            }
+                        }
+                        #endregion
+
+                        if (!findMatch)
+                        {
+                            #region 还没有找到匹配项，新增到newOrderDetailList中
+                            OrderDetail clonedSourceOrderDetail = new OrderDetail();
+                            CloneHelper.CopyProperty(sourceOrderDetail, clonedSourceOrderDetail);
+                            //CloneHelper.DeepClone<OrderDetail>(sourceOrderDetail);
+                            clonedSourceOrderDetail.OrderHead = orderHead;
+                            newOrderDetailList.Add(clonedSourceOrderDetail);
+                            #endregion
+                        }
+                    }
+                }
+
+                if (newOrderDetailList.Count > 0)
+                {
+                    #region 合并新增的OrderDetail
+                    int seqInterval = int.Parse(this.entityPreferenceMgrE.LoadEntityPreference(BusinessConstants.ENTITY_PREFERENCE_CODE_SEQ_INTERVAL).Value);
+                    int maxSeq = 0;
+                    foreach (OrderDetail targetOrderDetail in targetOrderDetailList)
+                    {
+                        if (targetOrderDetail.Sequence > maxSeq)
+                        {
+                            maxSeq = targetOrderDetail.Sequence;
+                        }
+                    }
+
+                    foreach (OrderDetail newOrderDetail in newOrderDetailList)
+                    {
+                        maxSeq += seqInterval;
+                        newOrderDetail.Sequence = maxSeq;
+
+                        orderHead.AddOrderDetail(newOrderDetail);
+                    }
+                    #endregion
+                }
+            }
+
+            #endregion
+
+            #region 创建订单
+            this.CreateOrder(orderHead, user);
+            #endregion
+
+            #region 发货
+            IList<InProcessLocationDetail> inProcessLocationDetailList = new List<InProcessLocationDetail>();
+            foreach (OrderDetail sourceOrderDetail in orderDetailList)
+            {
+                foreach (OrderDetail targetOrderDetail in orderHead.OrderDetails)
+                {
+                    if (sourceOrderDetail.Item.Code == targetOrderDetail.Item.Code
+                        && sourceOrderDetail.Uom.Code == targetOrderDetail.Uom.Code
+                        && sourceOrderDetail.UnitCount == targetOrderDetail.UnitCount
+                        && LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationFrom, targetOrderDetail.DefaultLocationFrom)
+                        && LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationTo, targetOrderDetail.DefaultLocationTo))
+                    {
+
+                        if ((orderSubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_ADJ)
+                            && sourceOrderDetail.HuId != null && sourceOrderDetail.HuId.Trim() != string.Empty)
+                        {
+                            #region 处理按条码的调整，去掉条码，只调整原库位数量
+                            InProcessLocationDetail rtnInProcessLocationDetail = new InProcessLocationDetail();
+
+                            rtnInProcessLocationDetail.OrderLocationTransaction = this.orderLocationTransactionMgrE.GetOrderLocationTransaction(targetOrderDetail.Id, BusinessConstants.IO_TYPE_OUT)[0];
+                            Hu hu = this.huMgrE.CheckAndLoadHu(sourceOrderDetail.HuId);
+                            rtnInProcessLocationDetail.LotNo = hu.LotNo;
+                            rtnInProcessLocationDetail.Qty = 0 - hu.Qty;
+                            inProcessLocationDetailList.Add(rtnInProcessLocationDetail);
+
+                            InProcessLocationDetail adjInProcessLocationDetail = new InProcessLocationDetail();
+                            adjInProcessLocationDetail.OrderLocationTransaction = rtnInProcessLocationDetail.OrderLocationTransaction;
+                            adjInProcessLocationDetail.LotNo = hu.LotNo;
+                            adjInProcessLocationDetail.Qty = sourceOrderDetail.OrderedQty + hu.Qty;
+                            inProcessLocationDetailList.Add(adjInProcessLocationDetail);
+                            #endregion
+                        }
+                        else
+                        {
+                            InProcessLocationDetail inProcessLocationDetail = new InProcessLocationDetail();
+
+                            inProcessLocationDetail.OrderLocationTransaction = this.orderLocationTransactionMgrE.GetOrderLocationTransaction(targetOrderDetail.Id, BusinessConstants.IO_TYPE_OUT)[0];
+                            if (flow.IsShipScanHu)
+                            {
+                                inProcessLocationDetail.HuId = sourceOrderDetail.HuId;
+                                if (inProcessLocationDetail.HuId != null && inProcessLocationDetail.HuId.Trim() != string.Empty)
+                                {
+                                    Hu hu = this.huMgrE.CheckAndLoadHu(inProcessLocationDetail.HuId);
+                                    inProcessLocationDetail.LotNo = hu.LotNo;
+
+                                    //设置退货上架库格
+                                    if (orderHead.SubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_RTN)
+                                    {
+                                        if (huIdStorageBinDic.ContainsKey(hu.HuId))
+                                        {
+                                            inProcessLocationDetail.ReturnPutAwaySorageBinCode = huIdStorageBinDic[hu.HuId];
+                                        }
+                                    }
+                                }
+                            }
+                            inProcessLocationDetail.Qty = sourceOrderDetail.OrderedQty;
+
+                            inProcessLocationDetailList.Add(inProcessLocationDetail);
+
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            InProcessLocation inProcessLocation = this.ShipOrder(inProcessLocationDetailList, user);
+            #endregion
+
+            #region 为收货调整重新赋条码，增加目的库位的条码数量
+            if (orderSubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_ADJ
+                || flow.IsReceiptScanHu)
+            {
+                foreach (InProcessLocationDetail inProcessLocationDetail in inProcessLocation.InProcessLocationDetails)
+                {
+                    foreach (OrderDetail sourceOrderDetail in orderDetailList)
+                    {
+                        if (sourceOrderDetail.HuId != null && sourceOrderDetail.HuId.Trim() != string.Empty)
+                        {
+                            if (sourceOrderDetail.Item.Code == inProcessLocationDetail.OrderLocationTransaction.OrderDetail.Item.Code
+                            && sourceOrderDetail.Uom.Code == inProcessLocationDetail.OrderLocationTransaction.OrderDetail.Uom.Code
+                            && sourceOrderDetail.UnitCount == inProcessLocationDetail.OrderLocationTransaction.OrderDetail.UnitCount
+                            && LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationFrom, inProcessLocationDetail.OrderLocationTransaction.OrderDetail.DefaultLocationFrom)
+                            && LocationHelper.IsLocationEqual(sourceOrderDetail.DefaultLocationTo, inProcessLocationDetail.OrderLocationTransaction.OrderDetail.DefaultLocationTo))
+                            {
+
+                                Hu hu = this.huMgrE.CheckAndLoadHu(sourceOrderDetail.HuId);
+                                inProcessLocationDetail.HuId = hu.HuId;
+                                inProcessLocationDetail.LotNo = hu.LotNo;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region 收货
+            if (orderSubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_NML)
+            {
+                var receipt = ReceiveFromInProcessLocation(inProcessLocation, user, huIdStorageBinDic, externalOrderNo);
+                //SendReceiveEmail(receipt, user);
+                return receipt;
+            }
+            else
+            {
+                return ReceiveFromInProcessLocation(inProcessLocation, user, null, externalOrderNo);
+            }
+            #endregion
+        }
+
 
         [Transaction(TransactionMode.Requires)]
         public void ManualCompleteOrder(string orderNo, string userCode)
