@@ -67,10 +67,12 @@ public partial class Order_OrderIssue_ShipItemList : BusinessModuleBase
             if (IsPickList)
             {
                 this.CacheResolver.IsScanHu = false;
+                this.CacheResolver.Result = "Pick";
                 //this.CacheResolver.IsDetailContainHu = false;
             }
             else
             {
+                this.CacheResolver.Result = string.Empty;
                 foreach (Transformer t in this.CacheResolver.Transformers)
                 {
                     t.CurrentQty = 0;

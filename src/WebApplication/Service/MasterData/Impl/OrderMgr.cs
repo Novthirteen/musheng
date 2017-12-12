@@ -3665,11 +3665,11 @@ namespace com.Sconit.Service.MasterData.Impl
             if (orderSubType == BusinessConstants.CODE_MASTER_ORDER_SUB_TYPE_VALUE_ADJ
                 || flow.IsReceiptScanHu)
             {
-                foreach (InProcessLocationDetail inProcessLocationDetail in inProcessLocation.InProcessLocationDetails)
+                foreach (OrderDetail sourceOrderDetail in orderDetailList)
                 {
-                    foreach (OrderDetail sourceOrderDetail in orderDetailList)
+                    foreach (InProcessLocationDetail inProcessLocationDetail in inProcessLocation.InProcessLocationDetails)
                     {
-                        if (sourceOrderDetail.HuId != null && sourceOrderDetail.HuId.Trim() != string.Empty)
+                        if (sourceOrderDetail.HuId != null && sourceOrderDetail.HuId.Trim() != string.Empty && string.IsNullOrEmpty(inProcessLocationDetail.HuId) == true)
                         {
                             if (sourceOrderDetail.Item.Code == inProcessLocationDetail.OrderLocationTransaction.OrderDetail.Item.Code
                             && sourceOrderDetail.Uom.Code == inProcessLocationDetail.OrderLocationTransaction.OrderDetail.Uom.Code

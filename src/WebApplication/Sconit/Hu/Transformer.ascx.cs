@@ -34,6 +34,12 @@ public partial class Hu_Transformer : ModuleBase
         set { ViewState["IsScanHu"] = value; }
     }
 
+    private bool IsPick
+    { 
+        get { return ViewState["IsPick"] != null ? (bool)ViewState["IsPick"] : false; }
+        set { ViewState["IsPick"] = value; }
+    }
+
     private List<Transformer> TransformerList
     {
         get { return (List<Transformer>)ViewState["TransformerList"]; }
@@ -89,6 +95,7 @@ public partial class Hu_Transformer : ModuleBase
     public void InitPageParameter(Resolver resolver)
     {
         this.IsScanHu = resolver.IsScanHu;
+        this.IsPick = resolver.Result == "Pick" ? true : false;
         this.TransformerList = resolver.Transformers;
         this.InitialUI(resolver.OrderType, resolver.ModuleType);
         this.BindTransformer(resolver.Transformers);
@@ -120,7 +127,14 @@ public partial class Hu_Transformer : ModuleBase
 
             if (receiptOpt == BusinessConstants.ENTITY_PREFERENCE_CODE_DEFAULT_RECEIPT_OPTION_GOODS_RECEIPT_LOTSIZE && !GetCurrentQtyTextBox(e.Row).ReadOnly)
             {
-                GetCurrentQtyTextBox(e.Row).Text = transformer.CurrentQty.ToString("0.#########");
+                if (this.IsPick == true)
+                {
+                    GetCurrentQtyTextBox(e.Row).Text = (transformer.OrderedQty - transformer.ShippedQty).ToString("0.#########");
+                }
+                else
+                {
+                    GetCurrentQtyTextBox(e.Row).Text = transformer.CurrentQty.ToString("0.#########");
+                }
             }
             if (IncludeOrderTracers)
             {

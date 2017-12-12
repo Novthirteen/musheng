@@ -258,7 +258,7 @@ public partial class Order_OrderHead_QuickNew : NewModuleBase
             {
                 if (this.IsQuick)
                 {
-                    Receipt receipt = TheOrderMgr.QuickReceiveOrder(orderHead.Flow, orderHead.OrderDetails, this.CurrentUser.Code, this.ModuleSubType, orderHead.WindowTime, orderHead.StartTime, false, orderHead.ReferenceOrderNo, orderHead.ExternalOrderNo);
+                    Receipt receipt = TheOrderMgr.QuickReceiveOrder2(orderHead.Flow, orderHead.OrderDetails, this.CurrentUser.Code, this.ModuleSubType, orderHead.WindowTime, orderHead.StartTime, false, orderHead.ReferenceOrderNo, orderHead.ExternalOrderNo);
                     if (receipt.ReceiptDetails != null && receipt.ReceiptDetails.Count > 0)
                     {
                         orderHead = receipt.ReceiptDetails[0].OrderLocationTransaction.OrderDetail.OrderHead;

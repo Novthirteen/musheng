@@ -86,8 +86,8 @@ namespace com.Sconit.Service.Business.Impl
                 throw new BusinessErrorException("Common.Business.Error.NoDetailToReceive");
             }
 
-
-            List<Transformer> newTransformerList = TransformerHelper.ConvertInProcessLocationDetailsToTransformers(inProcessLocation.InProcessLocationDetails);
+         
+            List<Transformer> newTransformerList = TransformerHelper.ConvertInProcessLocationDetailsToTransformers(inProcessLocation.InProcessLocationDetails).ToList();
 
             if (resolver.IsScanHu)
             {
@@ -219,11 +219,13 @@ namespace com.Sconit.Service.Business.Impl
             {
                 foreach (Transformer transformer in transformers)
                 {
+                    transformer.Qty = transformer.CurrentQty;
                     transformer.CurrentQty = 0M;
                     if (transformer.TransformerDetails != null)
                     {
                         foreach (TransformerDetail transformerDetail in transformer.TransformerDetails)
                         {
+                            transformerDetail.Qty = transformerDetail.CurrentQty;
                             transformerDetail.CurrentQty = 0M;
                         }
                     }

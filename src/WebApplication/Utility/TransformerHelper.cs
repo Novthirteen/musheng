@@ -223,7 +223,15 @@ namespace com.Sconit.Utility
                         if (inProcessLocationDetail.InProcessLocation.Status == null)
                         {
                             transformer.Qty = inProcessLocationDetail.QtyToShip;
-                            transformer.CurrentQty = inProcessLocationDetail.Qty;
+                            if (inProcessLocationDetail.InProcessLocation.IsShipScanHu == true)
+                            {
+                                transformer.CurrentQty = 0;
+                            }
+                            else
+                            {
+                                transformer.CurrentQty = inProcessLocationDetail.Qty;
+                            }
+                           // transformer.CurrentQty = inProcessLocationDetail.Qty;
                         }
                         else if (inProcessLocationDetail.InProcessLocation.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_CREATE)
                         {
@@ -232,7 +240,7 @@ namespace com.Sconit.Utility
                         }
                         else if (inProcessLocationDetail.InProcessLocation.Status == BusinessConstants.CODE_MASTER_STATUS_VALUE_INPROCESS)
                         {
-                            transformer.Qty = inProcessLocationDetail.Qty;
+                            transformer.Qty = inProcessLocationDetail.Qty;// -inProcessLocationDetail.ReceivedQty;
                             if (inProcessLocationDetail.ReceivedQty != 0)
                             {
                                 if (inProcessLocationDetail.Qty > inProcessLocationDetail.ReceivedQty)
