@@ -62,16 +62,16 @@ public partial class Reports_LocAging_View : ReportModuleBase
         CriteriaHelper.SetPartyCriteria(criteria, "Region.Code", this._criteriaParam);
         CriteriaHelper.SetLocationCriteria(criteria, "Location.Code", this._criteriaParam);
         CriteriaHelper.SetItemCriteria(criteria, "Item.Code", this._criteriaParam, MatchMode.Exact);
-        //CriteriaHelper.SetStartDateCriteria(criteria, "CreateDate", this._criteriaParam);
-        //CriteriaHelper.SetEndDateCriteria(criteria, "CreateDate", this._criteriaParam);
-        if (this._criteriaParam.StartDate.HasValue)
-        {
-            criteria.Add(Expression.Ge("CreateDate", this._criteriaParam.StartDate.Value));
-        }
-        if (this._criteriaParam.EndDate.HasValue)
-        {
-            criteria.Add(Expression.Lt("CreateDate", this._criteriaParam.EndDate.Value));
-        }
+        CriteriaHelper.SetStartDateCriteria(criteria, "CreateDate", this._criteriaParam);
+        CriteriaHelper.SetEndDateCriteria(criteria, "CreateDate", this._criteriaParam);
+        //if (this._criteriaParam.StartDate.HasValue && this._criteriaParam.NotResolve == false)
+        //{
+        //    criteria.Add(Expression.Ge("LotNo", this._criteriaParam.StartDate.Value.ToString("yyyyMMdd")));
+        //}
+        //if (this._criteriaParam.EndDate.HasValue && this._criteriaParam.NotResolve == false)
+        //{
+        //    criteria.Add(Expression.Lt("LotNo", this._criteriaParam.EndDate.Value.ToString("yyyyMMdd")));
+        //}
         #endregion
 
         return criteria;
