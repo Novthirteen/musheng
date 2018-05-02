@@ -242,7 +242,7 @@ public partial class Finance_Bill_Edit : ListModuleBase
 
         totalPrice -= (bill.Discount.HasValue ? bill.Discount.Value : decimal.Zero);
         this.tbTotalAmount.Text = totalPrice.ToString("F2");
-        this.txtTaxAmount.Text = (totalPrice + totalPrice * ((decimal)0.17)).ToString("F2");
+        this.txtTaxAmount.Text = (totalPrice + totalPrice * ((decimal)0.16)).ToString("F2");
     }
 
 
